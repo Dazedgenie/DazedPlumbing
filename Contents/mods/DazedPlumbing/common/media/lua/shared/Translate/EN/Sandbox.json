@@ -1,0 +1,9 @@
+{
+    "Sandbox_DazedPlumb": "Dazed Plumbing",
+    "Sandbox_DazedPlumb_NeedWrench": "Pipe work needs a pipe wrench",
+    "Sandbox_DazedPlumb_NeedWrench_tooltip": "Laying, mending and cutting pipe and fitting valves need a pipe wrench in your inventory. Turning a valve does not.",
+    "Sandbox_DazedPlumb_MainReach": "Water main reach (squares)",
+    "Sandbox_DazedPlumb_MainReach_tooltip": "How far a water main may stand from the building it serves. Default 6.",
+    "Sandbox_DazedPlumb_MainFlow": "Water main line rate (litres a minute)",
+    "Sandbox_DazedPlumb_MainFlow_tooltip": "The most water one main delivers to its whole house each minute, shared among the fixtures. Default 30."
+}

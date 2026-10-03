@@ -1,0 +1,4375 @@
+version = 1
+tileset
+{
+    file = dazedplumb_01
+    size = 8,31
+    id = 1
+    // dazedplumb_01_0
+    tile
+    {
+        xy = 0,0
+        CustomName = Salvaged Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_1
+    tile
+    {
+        xy = 1,0
+        CustomName = Salvaged Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_2
+    tile
+    {
+        xy = 2,0
+        CustomName = Salvaged Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_3
+    tile
+    {
+        xy = 3,0
+        CustomName = Salvaged Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_4
+    tile
+    {
+        xy = 4,0
+        CustomName = Crafted Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_5
+    tile
+    {
+        xy = 5,0
+        CustomName = Crafted Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_6
+    tile
+    {
+        xy = 6,0
+        CustomName = Crafted Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_7
+    tile
+    {
+        xy = 7,0
+        CustomName = Crafted Small Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallPropaneCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_8
+    tile
+    {
+        xy = 0,1
+        CustomName = Salvaged Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_9
+    tile
+    {
+        xy = 1,1
+        CustomName = Salvaged Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_10
+    tile
+    {
+        xy = 2,1
+        CustomName = Salvaged Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_11
+    tile
+    {
+        xy = 3,1
+        CustomName = Salvaged Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_12
+    tile
+    {
+        xy = 4,1
+        CustomName = Crafted Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_13
+    tile
+    {
+        xy = 5,1
+        CustomName = Crafted Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_14
+    tile
+    {
+        xy = 6,1
+        CustomName = Crafted Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_15
+    tile
+    {
+        xy = 7,1
+        CustomName = Crafted Small Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallGasCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_16
+    tile
+    {
+        xy = 0,2
+        CustomName = Salvaged Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_17
+    tile
+    {
+        xy = 1,2
+        CustomName = Salvaged Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_18
+    tile
+    {
+        xy = 2,2
+        CustomName = Salvaged Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_19
+    tile
+    {
+        xy = 3,2
+        CustomName = Salvaged Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterSalvaged
+        PickUpWeight = 120
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_20
+    tile
+    {
+        xy = 4,2
+        CustomName = Crafted Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_21
+    tile
+    {
+        xy = 5,2
+        CustomName = Crafted Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_22
+    tile
+    {
+        xy = 6,2
+        CustomName = Crafted Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_23
+    tile
+    {
+        xy = 7,2
+        CustomName = Crafted Small Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankSmallWaterCrafted
+        PickUpWeight = 150
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_24
+    tile
+    {
+        xy = 0,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_25
+    tile
+    {
+        xy = 1,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_26
+    tile
+    {
+        xy = 2,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_27
+    tile
+    {
+        xy = 3,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_28
+    tile
+    {
+        xy = 4,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_29
+    tile
+    {
+        xy = 5,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_30
+    tile
+    {
+        xy = 6,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_31
+    tile
+    {
+        xy = 7,3
+        CustomName = Salvaged Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_32
+    tile
+    {
+        xy = 0,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_33
+    tile
+    {
+        xy = 1,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_34
+    tile
+    {
+        xy = 2,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_35
+    tile
+    {
+        xy = 3,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_36
+    tile
+    {
+        xy = 4,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_37
+    tile
+    {
+        xy = 5,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_38
+    tile
+    {
+        xy = 6,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_39
+    tile
+    {
+        xy = 7,4
+        CustomName = Crafted Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargePropaneCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_40
+    tile
+    {
+        xy = 0,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_41
+    tile
+    {
+        xy = 1,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_42
+    tile
+    {
+        xy = 2,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_43
+    tile
+    {
+        xy = 3,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_44
+    tile
+    {
+        xy = 4,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_45
+    tile
+    {
+        xy = 5,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_46
+    tile
+    {
+        xy = 6,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_47
+    tile
+    {
+        xy = 7,5
+        CustomName = Salvaged Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_48
+    tile
+    {
+        xy = 0,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_49
+    tile
+    {
+        xy = 1,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_50
+    tile
+    {
+        xy = 2,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_51
+    tile
+    {
+        xy = 3,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_52
+    tile
+    {
+        xy = 4,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_53
+    tile
+    {
+        xy = 5,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_54
+    tile
+    {
+        xy = 6,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_55
+    tile
+    {
+        xy = 7,6
+        CustomName = Crafted Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeGasCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_56
+    tile
+    {
+        xy = 0,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_57
+    tile
+    {
+        xy = 1,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_58
+    tile
+    {
+        xy = 2,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_59
+    tile
+    {
+        xy = 3,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_60
+    tile
+    {
+        xy = 4,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_61
+    tile
+    {
+        xy = 5,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_62
+    tile
+    {
+        xy = 6,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_63
+    tile
+    {
+        xy = 7,7
+        CustomName = Salvaged Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterSalvaged
+        PickUpWeight = 320
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_64
+    tile
+    {
+        xy = 0,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_65
+    tile
+    {
+        xy = 1,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 2
+        Woffset = 4
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_66
+    tile
+    {
+        xy = 2,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_67
+    tile
+    {
+        xy = 3,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = 0
+        Woffset = 2
+        Noffset = 4
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_68
+    tile
+    {
+        xy = 4,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_69
+    tile
+    {
+        xy = 5,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -4
+        Soffset = -2
+        Woffset = 0
+        Noffset = 2
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_70
+    tile
+    {
+        xy = 6,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_71
+    tile
+    {
+        xy = 7,8
+        CustomName = Crafted Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankLargeWaterCrafted
+        PickUpWeight = 400
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -4
+        Woffset = -2
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_72
+    tile
+    {
+        xy = 0,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_73
+    tile
+    {
+        xy = 1,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_74
+    tile
+    {
+        xy = 2,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_75
+    tile
+    {
+        xy = 3,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_76
+    tile
+    {
+        xy = 4,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_77
+    tile
+    {
+        xy = 5,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_78
+    tile
+    {
+        xy = 6,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_79
+    tile
+    {
+        xy = 7,9
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_80
+    tile
+    {
+        xy = 0,10
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_81
+    tile
+    {
+        xy = 1,10
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_82
+    tile
+    {
+        xy = 2,10
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_83
+    tile
+    {
+        xy = 3,10
+        CustomName = Salvaged Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_84
+    tile
+    {
+        xy = 4,10
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_85
+    tile
+    {
+        xy = 5,10
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_86
+    tile
+    {
+        xy = 6,10
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_87
+    tile
+    {
+        xy = 7,10
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_88
+    tile
+    {
+        xy = 0,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_89
+    tile
+    {
+        xy = 1,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_90
+    tile
+    {
+        xy = 2,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_91
+    tile
+    {
+        xy = 3,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_92
+    tile
+    {
+        xy = 4,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_93
+    tile
+    {
+        xy = 5,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_94
+    tile
+    {
+        xy = 6,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_95
+    tile
+    {
+        xy = 7,11
+        CustomName = Crafted Extra-Large Propane Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLPropaneCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_96
+    tile
+    {
+        xy = 0,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_97
+    tile
+    {
+        xy = 1,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_98
+    tile
+    {
+        xy = 2,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_99
+    tile
+    {
+        xy = 3,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_100
+    tile
+    {
+        xy = 4,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_101
+    tile
+    {
+        xy = 5,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_102
+    tile
+    {
+        xy = 6,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_103
+    tile
+    {
+        xy = 7,12
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_104
+    tile
+    {
+        xy = 0,13
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_105
+    tile
+    {
+        xy = 1,13
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_106
+    tile
+    {
+        xy = 2,13
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_107
+    tile
+    {
+        xy = 3,13
+        CustomName = Salvaged Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_108
+    tile
+    {
+        xy = 4,13
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_109
+    tile
+    {
+        xy = 5,13
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_110
+    tile
+    {
+        xy = 6,13
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_111
+    tile
+    {
+        xy = 7,13
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_112
+    tile
+    {
+        xy = 0,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_113
+    tile
+    {
+        xy = 1,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_114
+    tile
+    {
+        xy = 2,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_115
+    tile
+    {
+        xy = 3,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_116
+    tile
+    {
+        xy = 4,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_117
+    tile
+    {
+        xy = 5,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_118
+    tile
+    {
+        xy = 6,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_119
+    tile
+    {
+        xy = 7,14
+        CustomName = Crafted Extra-Large Gas Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLGasCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_120
+    tile
+    {
+        xy = 0,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_121
+    tile
+    {
+        xy = 1,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_122
+    tile
+    {
+        xy = 2,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_123
+    tile
+    {
+        xy = 3,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_124
+    tile
+    {
+        xy = 4,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_125
+    tile
+    {
+        xy = 5,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_126
+    tile
+    {
+        xy = 6,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_127
+    tile
+    {
+        xy = 7,15
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_128
+    tile
+    {
+        xy = 0,16
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_129
+    tile
+    {
+        xy = 1,16
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_130
+    tile
+    {
+        xy = 2,16
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_131
+    tile
+    {
+        xy = 3,16
+        CustomName = Salvaged Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterSalvaged
+        PickUpWeight = 750
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_132
+    tile
+    {
+        xy = 4,16
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_133
+    tile
+    {
+        xy = 5,16
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_134
+    tile
+    {
+        xy = 6,16
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 3
+        Woffset = 6
+        Noffset = 9
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_135
+    tile
+    {
+        xy = 7,16
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_136
+    tile
+    {
+        xy = 0,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_137
+    tile
+    {
+        xy = 1,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = 0
+        Woffset = 3
+        Noffset = 6
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_138
+    tile
+    {
+        xy = 2,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_139
+    tile
+    {
+        xy = 3,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,1
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_140
+    tile
+    {
+        xy = 4,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -6
+        Soffset = -3
+        Woffset = 0
+        Noffset = 3
+        solidtrans = 
+        SpriteGridPos = 0,2
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_141
+    tile
+    {
+        xy = 5,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 0,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_142
+    tile
+    {
+        xy = 6,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 1,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_143
+    tile
+    {
+        xy = 7,17
+        CustomName = Crafted Extra-Large Water Tank
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedTankXLWaterCrafted
+        PickUpWeight = 950
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -9
+        Soffset = -6
+        Woffset = -3
+        Noffset = 0
+        solidtrans = 
+        SpriteGridPos = 2,0
+        ForceSingleItem = 
+    }
+    // dazedplumb_01_176
+    tile
+    {
+        xy = 0,22
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_177
+    tile
+    {
+        xy = 1,22
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_178
+    tile
+    {
+        xy = 2,22
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_179
+    tile
+    {
+        xy = 3,22
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_180
+    tile
+    {
+        xy = 4,22
+        CustomName = Electric Water Pump
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpElectric
+        PickUpWeight = 180
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_181
+    tile
+    {
+        xy = 5,22
+        CustomName = Electric Water Pump
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpElectric
+        PickUpWeight = 180
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_182
+    tile
+    {
+        xy = 6,22
+        CustomName = Electric Water Pump
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpElectric
+        PickUpWeight = 180
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_183
+    tile
+    {
+        xy = 7,22
+        CustomName = Electric Water Pump
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpElectric
+        PickUpWeight = 180
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_184
+    tile
+    {
+        xy = 0,23
+        CustomName = Water Purifier
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPurifier
+        PickUpWeight = 200
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_185
+    tile
+    {
+        xy = 1,23
+        CustomName = Water Purifier
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPurifier
+        PickUpWeight = 200
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_186
+    tile
+    {
+        xy = 2,23
+        CustomName = Water Purifier
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPurifier
+        PickUpWeight = 200
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_187
+    tile
+    {
+        xy = 3,23
+        CustomName = Water Purifier
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPurifier
+        PickUpWeight = 200
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_192
+    tile
+    {
+        xy = 0,24
+        CustomName = Downspout
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDownspout
+        PickUpWeight = 60
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_193
+    tile
+    {
+        xy = 1,24
+        CustomName = Downspout
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDownspout
+        PickUpWeight = 60
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_194
+    tile
+    {
+        xy = 2,24
+        CustomName = Downspout
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDownspout
+        PickUpWeight = 60
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_195
+    tile
+    {
+        xy = 3,24
+        CustomName = Downspout
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDownspout
+        PickUpWeight = 60
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_204
+    tile
+    {
+        xy = 4,25
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_205
+    tile
+    {
+        xy = 5,25
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_206
+    tile
+    {
+        xy = 6,25
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_207
+    tile
+    {
+        xy = 7,25
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_208
+    tile
+    {
+        xy = 0,26
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_209
+    tile
+    {
+        xy = 1,26
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_210
+    tile
+    {
+        xy = 2,26
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_211
+    tile
+    {
+        xy = 3,26
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_212
+    tile
+    {
+        xy = 4,26
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_213
+    tile
+    {
+        xy = 5,26
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_214
+    tile
+    {
+        xy = 6,26
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_215
+    tile
+    {
+        xy = 7,26
+        CustomName = Hand Pump
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedPumpHand
+        PickUpWeight = 140
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_232
+    tile
+    {
+        xy = 0,29
+        CustomName = Water Main
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterMain
+        PickUpWeight = 250
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_233
+    tile
+    {
+        xy = 1,29
+        CustomName = Water Main
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterMain
+        PickUpWeight = 250
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_234
+    tile
+    {
+        xy = 2,29
+        CustomName = Water Main
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterMain
+        PickUpWeight = 250
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_235
+    tile
+    {
+        xy = 3,29
+        CustomName = Water Main
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterMain
+        PickUpWeight = 250
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_236
+    tile
+    {
+        xy = 4,29
+        CustomName = Hand Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpHand
+        PickUpWeight = 160
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_237
+    tile
+    {
+        xy = 5,29
+        CustomName = Hand Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpHand
+        PickUpWeight = 160
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_238
+    tile
+    {
+        xy = 6,29
+        CustomName = Hand Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpHand
+        PickUpWeight = 160
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_239
+    tile
+    {
+        xy = 7,29
+        CustomName = Hand Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpHand
+        PickUpWeight = 160
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_240
+    tile
+    {
+        xy = 0,30
+        CustomName = Electric Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpElectric
+        PickUpWeight = 220
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_241
+    tile
+    {
+        xy = 1,30
+        CustomName = Electric Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpElectric
+        PickUpWeight = 220
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_242
+    tile
+    {
+        xy = 2,30
+        CustomName = Electric Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpElectric
+        PickUpWeight = 220
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_243
+    tile
+    {
+        xy = 3,30
+        CustomName = Electric Fuel Pump
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedFuelPumpElectric
+        PickUpWeight = 220
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_244
+    tile
+    {
+        xy = 4,30
+        CustomName = Biogas Digester
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDigester
+        PickUpWeight = 280
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_245
+    tile
+    {
+        xy = 5,30
+        CustomName = Biogas Digester
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDigester
+        PickUpWeight = 280
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_246
+    tile
+    {
+        xy = 6,30
+        CustomName = Biogas Digester
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDigester
+        PickUpWeight = 280
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_247
+    tile
+    {
+        xy = 7,30
+        CustomName = Biogas Digester
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDigester
+        PickUpWeight = 280
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+}

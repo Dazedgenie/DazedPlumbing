@@ -1,0 +1,29 @@
+VERSION = 1,
+
+option DazedPlumb.NeedWrench
+{
+    type = boolean,
+    default = true,
+    page = DazedPlumb,
+    translation = DazedPlumb_NeedWrench,
+}
+
+option DazedPlumb.MainReach
+{
+    type = integer,
+    min = 1,
+    max = 30,
+    default = 6,
+    page = DazedPlumb,
+    translation = DazedPlumb_MainReach,
+}
+
+option DazedPlumb.MainFlow
+{
+    type = integer,
+    min = 1,
+    max = 300,
+    default = 30,
+    page = DazedPlumb,
+    translation = DazedPlumb_MainFlow,
+}

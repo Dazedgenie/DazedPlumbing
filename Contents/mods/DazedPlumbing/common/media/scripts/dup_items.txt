@@ -1,0 +1,470 @@
+module Base
+{
+    /* ------------------------------------------------------------------ *
+     * Dazed Utilities: Plumbing -- the tank items.
+     *
+     * 18 moveables: 3 sizes x 3 types x 2 tiers (salvaged, crafted). Each
+     * WorldObjectSprite is the south-facing MASTER piece (piece 1) of its row on this mod's
+     * own sheet, dazedplumb_01: row = (size * 3 + type) * 2 + tier, four
+     * facing columns, so the item for row r points at tile r * 4 + 1.
+     * Weight is item kilograms; tools/pack_tiles.py writes PickUpWeight
+     * (x10) to match.
+     * ------------------------------------------------------------------ */
+
+    item DazedTankSmallPropaneSalvaged
+    {
+        DisplayName         = Salvaged Small Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 12.0,
+        Icon                = DazedTankSmallPropaneSalvaged,
+        WorldObjectSprite   = dazedplumb_01_1,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankSmallPropaneCrafted
+    {
+        DisplayName         = Crafted Small Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 15.0,
+        Icon                = DazedTankSmallPropaneCrafted,
+        WorldObjectSprite   = dazedplumb_01_5,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankSmallGasSalvaged
+    {
+        DisplayName         = Salvaged Small Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 12.0,
+        Icon                = DazedTankSmallGasSalvaged,
+        WorldObjectSprite   = dazedplumb_01_9,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankSmallGasCrafted
+    {
+        DisplayName         = Crafted Small Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 15.0,
+        Icon                = DazedTankSmallGasCrafted,
+        WorldObjectSprite   = dazedplumb_01_13,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankSmallWaterSalvaged
+    {
+        DisplayName         = Salvaged Small Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 12.0,
+        Icon                = DazedTankSmallWaterSalvaged,
+        WorldObjectSprite   = dazedplumb_01_17,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankSmallWaterCrafted
+    {
+        DisplayName         = Crafted Small Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 15.0,
+        Icon                = DazedTankSmallWaterCrafted,
+        WorldObjectSprite   = dazedplumb_01_21,
+        ConditionMax        = 100,
+        MetalValue          = 20.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargePropaneSalvaged
+    {
+        DisplayName         = Salvaged Large Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 32.0,
+        Icon                = DazedTankLargePropaneSalvaged,
+        WorldObjectSprite   = dazedplumb_01_26,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargePropaneCrafted
+    {
+        DisplayName         = Crafted Large Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 40.0,
+        Icon                = DazedTankLargePropaneCrafted,
+        WorldObjectSprite   = dazedplumb_01_34,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargeGasSalvaged
+    {
+        DisplayName         = Salvaged Large Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 32.0,
+        Icon                = DazedTankLargeGasSalvaged,
+        WorldObjectSprite   = dazedplumb_01_42,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargeGasCrafted
+    {
+        DisplayName         = Crafted Large Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 40.0,
+        Icon                = DazedTankLargeGasCrafted,
+        WorldObjectSprite   = dazedplumb_01_50,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargeWaterSalvaged
+    {
+        DisplayName         = Salvaged Large Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 32.0,
+        Icon                = DazedTankLargeWaterSalvaged,
+        WorldObjectSprite   = dazedplumb_01_58,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankLargeWaterCrafted
+    {
+        DisplayName         = Crafted Large Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 40.0,
+        Icon                = DazedTankLargeWaterCrafted,
+        WorldObjectSprite   = dazedplumb_01_66,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLPropaneSalvaged
+    {
+        DisplayName         = Salvaged Extra-Large Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 75.0,
+        Icon                = DazedTankXLPropaneSalvaged,
+        WorldObjectSprite   = dazedplumb_01_75,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLPropaneCrafted
+    {
+        DisplayName         = Crafted Extra-Large Propane Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 95.0,
+        Icon                = DazedTankXLPropaneCrafted,
+        WorldObjectSprite   = dazedplumb_01_87,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankPropane,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLGasSalvaged
+    {
+        DisplayName         = Salvaged Extra-Large Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 75.0,
+        Icon                = DazedTankXLGasSalvaged,
+        WorldObjectSprite   = dazedplumb_01_99,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLGasCrafted
+    {
+        DisplayName         = Crafted Extra-Large Gas Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 95.0,
+        Icon                = DazedTankXLGasCrafted,
+        WorldObjectSprite   = dazedplumb_01_111,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankGas,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLWaterSalvaged
+    {
+        DisplayName         = Salvaged Extra-Large Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 75.0,
+        Icon                = DazedTankXLWaterSalvaged,
+        WorldObjectSprite   = dazedplumb_01_123,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedTankXLWaterCrafted
+    {
+        DisplayName         = Crafted Extra-Large Water Tank,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 95.0,
+        Icon                = DazedTankXLWaterCrafted,
+        WorldObjectSprite   = dazedplumb_01_135,
+        ConditionMax        = 100,
+        MetalValue          = 90.0,
+        Tooltip             = Tooltip_DazedTankWater,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    /* ------------------------------------------------------------------ *
+     * The water pumps: moveables on tiles 176-183 (kind x facing; the item
+     * points at its kind's south tile: hand 177, electric 181).
+     * ------------------------------------------------------------------ */
+
+    item DazedPumpHand
+    {
+        DisplayName         = Hand Pump,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 14.0,
+        Icon                = DazedPumpHand,
+        WorldObjectSprite   = dazedplumb_01_177,
+        ConditionMax        = 100,
+        MetalValue          = 30.0,
+        Tooltip             = Tooltip_DazedPumpHand,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedPumpElectric
+    {
+        DisplayName         = Electric Water Pump,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 18.0,
+        Icon                = DazedPumpElectric,
+        WorldObjectSprite   = dazedplumb_01_181,
+        ConditionMax        = 100,
+        MetalValue          = 40.0,
+        Tooltip             = Tooltip_DazedPumpElectric,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    /* The water purifier (tile 185, its S facing) and its filter cartridge. */
+
+    item DazedPurifier
+    {
+        DisplayName         = Water Purifier,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 20.0,
+        Icon                = DazedPurifier,
+        WorldObjectSprite   = dazedplumb_01_185,
+        ConditionMax        = 100,
+        MetalValue          = 40.0,
+        Tooltip             = Tooltip_DazedPurifier,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedPurifierFilter
+    {
+        DisplayName         = Purifier Filter Cartridge,
+        DisplayCategory     = Material,
+        ItemType            = base:normal,
+        Weight              = 0.5,
+        Icon                = DazedPurifierFilter,
+        ConditionMax        = 100,
+        Tooltip             = Tooltip_DazedPurifierFilter,
+        Tags                = base:showcondition,
+    }
+
+    /* Pipe sections (one is used up per square of pipe laid or mended) and the
+     * shut-off valve. Placeholder icons. */
+
+    item DazedPipeSection
+    {
+        DisplayName         = Pipe Section,
+        DisplayCategory     = Material,
+        ItemType            = base:normal,
+        Weight              = 0.4,
+        Icon                = DazedPipeSection,
+        MetalValue          = 5.0,
+        Tags                = base:hasmetal,
+        Tooltip             = Tooltip_DazedPipeSection,
+    }
+
+    item DazedValve
+    {
+        DisplayName         = Shut-off Valve,
+        DisplayCategory     = Material,
+        ItemType            = base:normal,
+        Weight              = 0.6,
+        Icon                = DazedValve,
+        MetalValue          = 8.0,
+        Tags                = base:hasmetal,
+        Tooltip             = Tooltip_DazedValve,
+    }
+
+    /* The downspout: bolted to a wall, it feeds roof water to a tank (see DUP_Downspouts). */
+
+    item DazedDownspout
+    {
+        DisplayName         = Downspout,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 6.0,
+        Icon                = DazedDownspout,
+        WorldObjectSprite   = dazedplumb_01_193,
+        ConditionMax        = 100,
+        MetalValue          = 15.0,
+        Tooltip             = Tooltip_DazedDownspout,
+        Tags                = base:hasmetal;base:showcondition,
+    }
+
+    item DazedSprinkler
+    {
+        DisplayName         = Garden Sprinkler,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 3.0,
+        Icon                = DazedSprinkler,
+        WorldObjectSprite   = dazedplumb_01_205,
+        ConditionMax        = 100,
+        MetalValue          = 8.0,
+        Tooltip             = Tooltip_DazedSprinkler,
+        Tags                = base:hasmetal;base:showcondition,
+    }
+
+    /* The water main (tile 233, its S facing): a stop-cock box that plumbs a whole house. */
+
+    item DazedWaterMain
+    {
+        DisplayName         = Water Main,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 25.0,
+        Icon                = DazedWaterMain,
+        WorldObjectSprite   = dazedplumb_01_233,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedWaterMain,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    /* The fuel pumps (tiles 236-243, kind x facing; the items point at their south tiles: hand 237, electric 241). */
+
+    item DazedFuelPumpHand
+    {
+        DisplayName         = Hand Fuel Pump,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 16.0,
+        Icon                = DazedFuelPumpHand,
+        WorldObjectSprite   = dazedplumb_01_237,
+        ConditionMax        = 100,
+        MetalValue          = 30.0,
+        Tooltip             = Tooltip_DazedFuelPumpHand,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    item DazedFuelPumpElectric
+    {
+        DisplayName         = Electric Fuel Pump,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 22.0,
+        Icon                = DazedFuelPumpElectric,
+        WorldObjectSprite   = dazedplumb_01_241,
+        ConditionMax        = 100,
+        MetalValue          = 40.0,
+        Tooltip             = Tooltip_DazedFuelPumpElectric,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    /* The biogas digester (tiles 244-247, facings E S W N; the item points at its south tile, 245). */
+
+    item DazedDigester
+    {
+        DisplayName         = Biogas Digester,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 28.0,
+        Icon                = DazedDigester,
+        WorldObjectSprite   = dazedplumb_01_245,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedDigester,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+}

@@ -1,0 +1,674 @@
+module Base
+{
+    /* ------------------------------------------------------------------ *
+     * Dazed Utilities: Plumbing -- the recipes.
+     *
+     * CRAFTED tanks are properly welded: sheet metal, pipe, a torch and a
+     * mask, Welding skill by size. SALVAGED ones are rigged from small
+     * sheets, screws and tape: no welding gear, a little skill, and the
+     * result is the worn, leakier kind. Everything here uses item types the
+     * vanilla metalworking recipes use.
+     * Not learn-gated: any survivor with the skill and the parts can build one.
+     * ------------------------------------------------------------------ */
+
+    craftRecipe MakeDazedTankSmallPropaneSalvaged
+    {
+        timedAction     = Welding,
+        time            = 500,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:11,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 6 [Base.SmallSheetMetal],
+            item 6 [Base.Screws],
+            item 2 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallPropaneSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankSmallPropaneCrafted
+    {
+        timedAction     = Welding,
+        time            = 700,
+        SkillRequired   = MetalWelding:3,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:25,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 2 [Base.BlowTorch],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallPropaneCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankSmallGasSalvaged
+    {
+        timedAction     = Welding,
+        time            = 500,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:11,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 6 [Base.SmallSheetMetal],
+            item 6 [Base.Screws],
+            item 2 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallGasSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankSmallGasCrafted
+    {
+        timedAction     = Welding,
+        time            = 700,
+        SkillRequired   = MetalWelding:3,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:25,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 2 [Base.BlowTorch],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallGasCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankSmallWaterSalvaged
+    {
+        timedAction     = Welding,
+        time            = 500,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:11,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 6 [Base.SmallSheetMetal],
+            item 6 [Base.Screws],
+            item 2 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallWaterSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankSmallWaterCrafted
+    {
+        timedAction     = Welding,
+        time            = 700,
+        SkillRequired   = MetalWelding:3,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:25,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 2 [Base.BlowTorch],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankSmallWaterCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargePropaneSalvaged
+    {
+        timedAction     = Welding,
+        time            = 900,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 12 [Base.SmallSheetMetal],
+            item 10 [Base.Screws],
+            item 4 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargePropaneSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargePropaneCrafted
+    {
+        timedAction     = Welding,
+        time            = 1200,
+        SkillRequired   = MetalWelding:5,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:35,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 4 [Base.BlowTorch],
+            item 5 [Base.SheetMetal],
+            item 2 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargePropaneCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargeGasSalvaged
+    {
+        timedAction     = Welding,
+        time            = 900,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 12 [Base.SmallSheetMetal],
+            item 10 [Base.Screws],
+            item 4 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargeGasSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargeGasCrafted
+    {
+        timedAction     = Welding,
+        time            = 1200,
+        SkillRequired   = MetalWelding:5,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:35,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 4 [Base.BlowTorch],
+            item 5 [Base.SheetMetal],
+            item 2 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargeGasCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargeWaterSalvaged
+    {
+        timedAction     = Welding,
+        time            = 900,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 12 [Base.SmallSheetMetal],
+            item 10 [Base.Screws],
+            item 4 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargeWaterSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankLargeWaterCrafted
+    {
+        timedAction     = Welding,
+        time            = 1200,
+        SkillRequired   = MetalWelding:5,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:35,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 4 [Base.BlowTorch],
+            item 5 [Base.SheetMetal],
+            item 2 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankLargeWaterCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLPropaneSalvaged
+    {
+        timedAction     = Welding,
+        time            = 1500,
+        SkillRequired   = MetalWelding:4,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:19,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 24 [Base.SmallSheetMetal],
+            item 16 [Base.Screws],
+            item 8 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLPropaneSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLPropaneCrafted
+    {
+        timedAction     = Welding,
+        time            = 2000,
+        SkillRequired   = MetalWelding:7,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:45,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 8 [Base.BlowTorch],
+            item 10 [Base.SheetMetal],
+            item 3 [Base.MetalPipe],
+            item 4 [Base.MetalBar],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLPropaneCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLGasSalvaged
+    {
+        timedAction     = Welding,
+        time            = 1500,
+        SkillRequired   = MetalWelding:4,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:19,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 24 [Base.SmallSheetMetal],
+            item 16 [Base.Screws],
+            item 8 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLGasSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLGasCrafted
+    {
+        timedAction     = Welding,
+        time            = 2000,
+        SkillRequired   = MetalWelding:7,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:45,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 8 [Base.BlowTorch],
+            item 10 [Base.SheetMetal],
+            item 3 [Base.MetalPipe],
+            item 4 [Base.MetalBar],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLGasCrafted,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLWaterSalvaged
+    {
+        timedAction     = Welding,
+        time            = 1500,
+        SkillRequired   = MetalWelding:4,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:19,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 24 [Base.SmallSheetMetal],
+            item 16 [Base.Screws],
+            item 8 [Base.DuctTape],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLWaterSalvaged,
+        }
+    }
+
+    craftRecipe MakeDazedTankXLWaterCrafted
+    {
+        timedAction     = Welding,
+        time            = 2000,
+        SkillRequired   = MetalWelding:7,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:45,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 8 [Base.BlowTorch],
+            item 10 [Base.SheetMetal],
+            item 3 [Base.MetalPipe],
+            item 4 [Base.MetalBar],
+        }
+        outputs
+        {
+            item 1 Base.DazedTankXLWaterCrafted,
+        }
+    }
+
+    /* The water pumps. A hand pump is pipe, a casting's worth of scrap metal
+     * and screws; the electric one is built on a hand pump with a motor's
+     * worth of parts. Not learn-gated, like the tanks. */
+
+    craftRecipe MakeDazedPumpHand
+    {
+        timedAction     = Welding,
+        time            = 600,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 3 [Base.MetalPipe],
+            item 2 [Base.SheetMetal],
+            item 4 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedPumpHand,
+        }
+    }
+
+    craftRecipe MakeDazedPumpElectric
+    {
+        timedAction     = MakingElectrical,
+        time            = 700,
+        SkillRequired   = Electricity:3;MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Electrical,
+        xpAward         = Electricity:20,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 1 [Base.DazedPumpHand] mode:destroy,
+            item 4 [Base.ElectronicsScrap],
+            item 3 [Base.ElectricWire],
+            item 1 [Base.EngineParts],
+        }
+        outputs
+        {
+            item 1 Base.DazedPumpElectric,
+        }
+    }
+
+    /* The water purifier and its filter cartridge. The cartridge is made from
+     * purifying tablets (a good use for a stack of them). */
+
+    craftRecipe MakeDazedPurifier
+    {
+        timedAction     = MakingElectrical,
+        time            = 800,
+        SkillRequired   = Electricity:3;MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Electrical,
+        xpAward         = Electricity:25,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 2 [Base.SheetMetal],
+            item 2 [Base.MetalPipe],
+            item 4 [Base.ElectronicsScrap],
+            item 3 [Base.ElectricWire],
+            item 6 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedPurifier,
+        }
+    }
+
+    craftRecipe MakeDazedPurifierFilter
+    {
+        timedAction     = Making,
+        time            = 200,
+        Tags            = AnySurfaceCraft,
+        category        = Survivalist,
+        inputs
+        {
+            item 4 [Base.WaterPurificationTablets],
+            item 2 [Base.RippedSheets],
+        }
+        outputs
+        {
+            item 1 Base.DazedPurifierFilter,
+        }
+    }
+
+    /* Pipe sections: a length of metal pipe cut and flanged into four sections.
+     * Welding 1. Laying, mending and joining pipe all need this level too. */
+
+    craftRecipe MakeDazedPipeSections
+    {
+        timedAction     = Welding,
+        time            = 200,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:5,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.MetalPipe],
+        }
+        outputs
+        {
+            item 4 Base.DazedPipeSection,
+        }
+    }
+
+    /* The shut-off valve. Welding 2. */
+
+    craftRecipe MakeDazedValve
+    {
+        timedAction     = Welding,
+        time            = 300,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:10,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.MetalPipe],
+            item 2 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedValve,
+        }
+    }
+
+    craftRecipe MakeDazedDownspout
+    {
+        timedAction     = Welding,
+        time            = 250,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:8,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.SheetMetal],
+            item 1 [Base.MetalPipe],
+            item 2 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedDownspout,
+        }
+    }
+
+    craftRecipe MakeDazedSprinkler
+    {
+        timedAction     = Welding,
+        time            = 200,
+        SkillRequired   = MetalWelding:1,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:6,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.ScrapMetal],
+            item 2 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedSprinkler,
+        }
+    }
+
+    /* The water main: a welded stop-cock box with a valve and a run of pipe. */
+
+    craftRecipe MakeDazedWaterMain
+    {
+        timedAction     = Welding,
+        time            = 600,
+        SkillRequired   = MetalWelding:4,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:20,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.PipeWrench] mode:keep,
+            item 3 [Base.MetalPipe],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.DazedValve],
+            item 6 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedWaterMain,
+        }
+    }
+
+    /* The fuel pumps. A hand fuel pump is pipe, sheet metal and a shut-off valve; the electric one is built on a hand
+     * fuel pump with a motor's worth of parts. Not learn-gated, like the water pumps. */
+
+    craftRecipe MakeDazedFuelPumpHand
+    {
+        timedAction     = Welding,
+        time            = 600,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 3 [Base.MetalPipe],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.DazedValve],
+            item 4 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedFuelPumpHand,
+        }
+    }
+
+    craftRecipe MakeDazedFuelPumpElectric
+    {
+        timedAction     = MakingElectrical,
+        time            = 700,
+        SkillRequired   = Electricity:3;MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Electrical,
+        xpAward         = Electricity:20,
+        inputs
+        {
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 1 [Base.DazedFuelPumpHand] mode:destroy,
+            item 4 [Base.ElectronicsScrap],
+            item 3 [Base.ElectricWire],
+            item 1 [Base.EngineParts],
+        }
+        outputs
+        {
+            item 1 Base.DazedFuelPumpElectric,
+        }
+    }
+
+    /* The biogas digester: a welded metal drum with a feed hatch, a gas dome, a valve and a run of pipe. */
+
+    craftRecipe MakeDazedDigester
+    {
+        timedAction     = Welding,
+        time            = 700,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 1 [Base.MetalDrum],
+            item 2 [Base.MetalPipe],
+            item 1 [Base.SheetMetal],
+            item 1 [Base.DazedValve],
+            item 4 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedDigester,
+        }
+    }
+}
