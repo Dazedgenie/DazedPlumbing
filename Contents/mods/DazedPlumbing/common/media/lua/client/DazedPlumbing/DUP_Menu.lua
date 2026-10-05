@@ -113,7 +113,9 @@ local function addFluidMenu(context, tank, playerNum)
     local fc = tank.getFluidContainer and tank:getFluidContainer()
     if not fc then return end
     local fetch = ISWorldObjectContextMenu.fetchVars
-    for _, o in ipairs(fetch and fetch.fluidcontainer or {}) do if o == tank then return end end
+    for _, o in ipairs(fetch and fetch.fluidcontainer or {}) do
+        if o == tank or o == fc or (o.getGameEntity and o:getGameEntity() == tank) then return end
+    end
     local opt = context:addOption(getText("ContextMenu_Fluid"), nil, nil)
     opt.iconTexture = getTexture("Item_WaterDrop")
     local sub = ISContextMenu:getNew(context)
@@ -234,5 +236,19 @@ local function addTankMenu(playerNum, context, worldobjects, test)
 end
 
 Events.OnFillWorldObjectContextMenu.Add(addTankMenu)
+
+-- A long tank keeps its fluid container on its first piece only. When another piece is clicked, the game is
+-- handed the first piece too, so its full Fluid menu (drink, fill, pour in, transfer) shows on every square.
+local function addMasterToFetch(playerNum, context, worldobjects, test)
+    local tank = tankIn(worldobjects)
+    if not (tank and tank.getFluidContainer and tank:getFluidContainer()) then return end
+    local fetch = ISWorldObjectContextMenu.fetchVars
+    if not fetch or not ISWorldObjectContextMenuLogic or not ISWorldObjectContextMenuLogic.fetch then return end
+    for _, o in ipairs(fetch.fluidcontainer or {}) do
+        if o == tank or o == tank:getFluidContainer() or (o.getGameEntity and o:getGameEntity() == tank) then return end
+    end
+    pcall(ISWorldObjectContextMenuLogic.fetch, fetch, tank, playerNum, true)
+end
+if Events.OnPreFillWorldObjectContextMenu then Events.OnPreFillWorldObjectContextMenu.Add(addMasterToFetch) end
 
 -- A dedicated server's refusal notes arrive through the core (DazedCore/DC_NoteClient).
