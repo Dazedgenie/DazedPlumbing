@@ -347,7 +347,7 @@ local function addDebugSquare(playerNum, context, worldobjects, test)
         local want = K.wantedPorts(x, y, z)
         context:addDebugOption("[Plumbing] ports wanted: " .. (#want > 0 and table.concat(want, ", ") or "none"), nil, nil)
     end
-    if not rec and #objs > 0 then
+    if dev then
         context:addDebugOption("[Plumbing] redraw ports here", nil, function() K.syncPorts(x, y, z) end)
     end
     if rec then
