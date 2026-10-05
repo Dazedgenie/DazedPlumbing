@@ -338,6 +338,18 @@ local function addDebugSquare(playerNum, context, worldobjects, test)
                 .. (K.isPipe(ob) and " (pipe)" or K.isPort(ob) and " (port)" or K.isValve(ob) and " (valve)" or ""), nil, nil)
         end
     end
+    -- On a device square: what stands there and which ports the pipes beside it ask for.
+    local dev = not rec and K.deviceOn(sq)
+    if dev then
+        local a = L.adapterFor(dev)
+        context:addDebugOption("[Plumbing] device: " .. tostring(dev:getSprite() and dev:getSprite():getName())
+            .. (a and (" (line: " .. a.id .. ")") or ""), nil, nil)
+        local want = K.wantedPorts(x, y, z)
+        context:addDebugOption("[Plumbing] ports wanted: " .. (#want > 0 and table.concat(want, ", ") or "none"), nil, nil)
+    end
+    if not rec and #objs > 0 then
+        context:addDebugOption("[Plumbing] redraw ports here", nil, function() K.syncPorts(x, y, z) end)
+    end
     if rec then
         context:addDebugOption("[Plumbing] redraw this pipe", nil, function() K.redraw(N.key(x, y, z)) end)
     end

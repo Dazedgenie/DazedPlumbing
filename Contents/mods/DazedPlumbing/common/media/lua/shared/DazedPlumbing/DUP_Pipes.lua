@@ -455,6 +455,26 @@ local function deviceOn(sq)
     return nil
 end
 
+K.deviceOn = deviceOn
+
+--- The port sprites a device square should carry, as a list (for the debug menu).
+function K.wantedPorts(x, y, z)
+    local pipes, out = store().pipes, {}
+    local sq = cellSquare(x, y, z)
+    if not sq or N.isReal(pipes[N.key(x, y, z)]) then return out end
+    local dev = deviceOn(sq)
+    if not dev then return out end
+    local info = P.describe(dev)
+    local belly = info ~= nil and info.size ~= "small"
+    for _, d in ipairs(N.DIRS) do
+        local r = pipes[N.key(x + d[1], y + d[2], z)]
+        if N.isReal(r) and (r.cond or 100) > 0 and N.has(K.displayMask(N.key(x + d[1], y + d[2], z), r), d[4]) then
+            out[#out + 1] = K.portSprite(d[3], not r.outdoor, belly)
+        end
+    end
+    return out
+end
+
 --- Make a device square's port objects agree with the pipes that point into it (authority).
 function K.syncPorts(x, y, z)
     if not S.authority() then return end
