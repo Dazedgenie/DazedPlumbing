@@ -503,18 +503,17 @@ function K.syncValve(x, y, z, rec)
     local obj, sq = K.valveAt(x, y, z)
     if not sq then return end
     if not want then lift(obj, sq) return end
+    -- Same as pipes: a valve that turns or changes state is replaced, not re-sprited.
+    local cur = obj and try(obj, "getSprite")
+    if obj and (not cur or try(cur, "getName") ~= want) then
+        lift(obj, sq)
+        obj = nil
+    end
     if not obj then
         obj = IsoObject.new(getCell(), sq, want)
         sq:AddTileObject(obj)
         obj:getModData().dazedValve = true
         transmitNew(obj)
-        return
-    end
-    local spr = try(obj, "getSprite")
-    if not spr or try(spr, "getName") ~= want then
-        obj:setSprite(want)
-        if obj.setSpriteFromName then obj:setSpriteFromName(want) end
-        if obj.transmitUpdatedSpriteToClients and isServer and isServer() then obj:transmitUpdatedSpriteToClients() end
     end
 end
 
@@ -527,6 +526,13 @@ function K.syncObject(key)
     local obj, sq = K.objectAt(x, y, z)
     local name = K.sprite(K.displayMask(key, rec), rec.outdoor)
     if not sq then return false end
+    -- A pipe that changes shape is swapped for a fresh object: re-spriting one in place left it invisible in game.
+    local spr = obj and try(obj, "getSprite")
+    if obj and (not spr or try(spr, "getName") ~= name) then
+        lift(obj, sq)
+        lift(K.valveAt(x, y, z))                       -- its valve comes back on top of the new pipe
+        obj = nil
+    end
     if not obj then
         local cell = getCell and getCell()
         obj = IsoObject.new(cell, sq, name)
@@ -539,13 +545,7 @@ function K.syncObject(key)
         K.syncPortsAround(x, y, z)
         return true
     end
-    local spr = try(obj, "getSprite")
-    if not spr or try(spr, "getName") ~= name then
-        obj:setSprite(name)
-        if obj.setSpriteFromName then obj:setSpriteFromName(name) end
-    end
     K.tint(obj, rec)
-    if obj.transmitUpdatedSpriteToClients and isServer and isServer() then obj:transmitUpdatedSpriteToClients() end
     K.syncValve(x, y, z, rec)
     K.syncPortsAround(x, y, z)
     return true
