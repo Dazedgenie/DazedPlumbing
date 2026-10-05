@@ -26,9 +26,22 @@ N.DIRS = { { 0, -1, 1, 4 }, { 1, 0, 2, 8 }, { 0, 1, 4, 1 }, { -1, 0, 8, 2 } }   
 ----------------------------------------------------------- keys and masks
 function N.key(x, y, z) return x .. "," .. y .. "," .. z end
 
+-- Key string -> its three numbers; a key always parses the same way, and the minute ticks split every pipe key.
+local splitMemo, splitMemoN = {}, 0
+local SPLIT_MEMO_MAX = 20000
+
 function N.split(key)
+    local hit = splitMemo[key]
+    if hit then return hit[1], hit[2], hit[3] end
     local x, y, z = string.match(key, "^(%-?%d+),(%-?%d+),(%-?%d+)")
-    return tonumber(x), tonumber(y), tonumber(z)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    -- Only well-formed keys are kept, and the table is bounded so stray strings cannot grow it forever.
+    if x and type(key) == "string" then
+        if splitMemoN >= SPLIT_MEMO_MAX then splitMemo, splitMemoN = {}, 0 end
+        splitMemo[key] = { x, y, z }
+        splitMemoN = splitMemoN + 1
+    end
+    return x, y, z
 end
 
 function N.has(mask, bit) return math.floor((mask or 0) / bit) % 2 == 1 end

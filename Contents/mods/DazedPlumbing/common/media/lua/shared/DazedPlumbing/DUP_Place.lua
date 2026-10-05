@@ -28,6 +28,8 @@ require "DazedPlumbing/DUP_TankFluid"
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_FuelPumps"
 require "DazedPlumbing/DUP_Digesters"
+require "DazedPlumbing/DUP_DrilledWells"
+require "DazedPlumbing/DUP_Smokers"
 require "DazedCore/DC_Boot"
 DazedCore.Heavy.register("Base.DazedTank")
 
@@ -110,6 +112,19 @@ function ISMoveableSpriteProps:placeMoveableInternal(...)
         DazedPlumb.Digesters.state(obj)
         DazedPlumb.Digesters.register(obj)
     end
+    -- A drilled well starts switched on and unpiped (vanilla copies the item's data onto it; none of it is wanted).
+    if obj and square and DazedPlumb.DrilledWells.spriteInfo(spriteName) then
+        local md = obj:getModData()
+        if md.modData then md.modData = nil end
+    end
+    -- A smoker starts unlit and joins the live tick (vanilla copies the item's data onto it and builds its container from the tile).
+    if obj and square and DazedPlumb.Smokers.spriteInfo(spriteName) then
+        local md = obj:getModData()
+        if md.modData then md.modData = nil end
+        md[DazedPlumb.Smokers.KEY] = nil
+        DazedPlumb.Smokers.state(obj)
+        DazedPlumb.Smokers.register(obj)
+    end
     -- A sprinkler starts switched on and idle (vanilla copies the item's data onto it).
     local spr = DazedPlumb.Sprinklers
     if obj and square and spr.spriteInfo(spriteName) then
@@ -145,6 +160,20 @@ if origCanPlace then
             end
             return allowed
         end
+        -- A drilled well: bare natural ground in the open (the water pump's rule), one to a square.
+        if self.spriteName and DazedPlumb.DrilledWells.spriteInfo(self.spriteName) and square then
+            if not DazedPlumb.Pumps.groundOk(square) then
+                G.note(character, "IGUI_DazedPlumb_WellGround")
+                return false
+            end
+            local objs = square.getObjects and square:getObjects()
+            if objs then
+                for i = 0, objs:size() - 1 do
+                    if DazedPlumb.DrilledWells.isWell(objs:get(i)) then return false end
+                end
+            end
+            return allowed
+        end
         -- A water main: outdoors, one to a square.
         if self.spriteName and DazedPlumb.Mains.spriteInfo(self.spriteName) and square then
             if square.isOutside and not square:isOutside() then
@@ -175,6 +204,16 @@ if origCanPlace then
             if objs then
                 for i = 0, objs:size() - 1 do
                     if DazedPlumb.Digesters.isDigester(objs:get(i)) then return false end
+                end
+            end
+            return allowed
+        end
+        -- A smoker: one to a square.
+        if self.spriteName and DazedPlumb.Smokers.spriteInfo(self.spriteName) and square then
+            local objs = square.getObjects and square:getObjects()
+            if objs then
+                for i = 0, objs:size() - 1 do
+                    if DazedPlumb.Smokers.isSmoker(objs:get(i)) then return false end
                 end
             end
             return allowed

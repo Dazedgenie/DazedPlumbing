@@ -1,5 +1,5 @@
 --[[ Dazed Utilities: Plumbing -- the machines that need power, told to the core as DazedCore.Power loads.
-     The electric water pump (400 W), purifier (150 W) and electric fuel pump (200 W) are billed by a power mod; the fuel pump needs its wire, the others also run off a powered square.
+     The electric water pump (400 W), purifier (150 W), electric fuel pump (200 W) and drilled well (400 W) are billed by a power mod; the fuel pump and well need their wire.
 
      "Really working" = switched on, powered, piped to a tank with room, and (for the pump) the ground still has water. ]]
 
@@ -7,6 +7,7 @@ require "DazedCore/DC_Boot"
 require "DazedPlumbing/DUP_Pumps"
 require "DazedPlumbing/DUP_Purifiers"
 require "DazedPlumbing/DUP_FuelPumps"
+require "DazedPlumbing/DUP_DrilledWells"
 
 local U, Pu, Fp = DazedPlumb.Pumps, DazedPlumb.Purifiers, DazedPlumb.FuelPumps
 local P, L = DazedPlumb.Parts, DazedPlumb.Links
@@ -47,6 +48,15 @@ W.registerLoad({
     match = function(o) return Fp.kindOf(o) == "electric" end,
     watts = function() return Fp.WATTS end,
     working = function(o) return Fp.working(o) end,
+})
+
+-- The drilled well counts as working while it is wired, switched on and pushing into a tank with room.
+local Dw = DazedPlumb.DrilledWells
+W.registerLoad({
+    id = Dw.ID, kind = Dw.KIND, items = { Dw.ITEM },
+    match = function(o) return Dw.isWell(o) end,
+    watts = function() return Dw.WATTS end,
+    working = function(o) return Dw.working(o) end,
 })
 
 return W

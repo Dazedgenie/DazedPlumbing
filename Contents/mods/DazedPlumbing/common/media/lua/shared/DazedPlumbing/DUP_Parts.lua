@@ -75,9 +75,16 @@ end
 
 --- Decompose one of the mod's sprite names, or nil. Anything but a string is
 --  not ours (a hook handed arguments in a shifted order must fall through).
+-- The name pattern, built once per tileset name instead of on every object a scan looks at.
+local namePat, namePatFor = nil, nil
+function P.namePattern()
+    if namePatFor ~= P.TILESET then namePat, namePatFor = "^" .. P.TILESET .. "_(%d+)$", P.TILESET end
+    return namePat
+end
+
 function P.spriteInfo(name)
     if type(name) ~= "string" then return nil end
-    local idx = string.match(name, "^" .. P.TILESET .. "_(%d+)$")
+    local idx = string.match(name, P.namePattern())
     if not idx then return nil end
     idx = tonumber(idx)
     if idx >= P.TILE_COUNT then return nil end

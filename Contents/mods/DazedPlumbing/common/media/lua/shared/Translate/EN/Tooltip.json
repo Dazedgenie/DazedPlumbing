@@ -12,7 +12,7 @@
     "Tooltip_DazedPumpHand": "Draws water from the ground on bare grass or dirt. Pipe it to a water tank and work the handle, or fill containers from it. The ground can run dry, and refills slowly (faster in rain).",
     "Tooltip_DazedPurifier": "Cleans tainted water. Pipe a pump into it, then pipe it on to a water tank. Needs power. Slow without a filter cartridge.",
     "Tooltip_DazedPurifierFilter": "A filter cartridge for the water purifier. Treats about 500 litres. Its condition is how much is left.",
-    "Tooltip_DazedSprinkler": "Pipe it to a water tank and it waters the crops within 3 squares whenever they are thirsty, never more than they want. Up to 10 L a minute. Switch it off from its menu.",
+    "Tooltip_DazedSprinkler": "Pipe it to a water tank and it waters the crops within 3 squares whenever they are thirsty, never more than they want. Up to 10 L a minute. Switch it off, set its watering hours or let it skip rainy spells from its menu.",
     "Tooltip_DazedTankGas": "A steel fuel tank for petrol. Pour in from petrol cans and out again. Leaks when hurt, and the fumes catch fire.",
     "Tooltip_DazedTankPropane": "A steel propane tank. Fill it from propane cylinders and lantern bottles; take it back out the same way. Leaks and burns when hurt.",
     "Tooltip_DazedTankWater": "A steel water tank. Pour in and out by hand. Leaks when hurt.",
@@ -21,5 +21,7 @@
     "Tooltip_DazedPlumb_MainClear": "Disconnect the building this main serves.",
     "Tooltip_DazedFuelPumpHand": "Pipe it to a petrol tank, then crank it to refuel a parked vehicle within 2 squares or to fill a petrol can. Slow (2 L a minute), needs no power.",
     "Tooltip_DazedFuelPumpElectric": "Pipe it to a petrol tank and wire it to a Dazed Power controller (200 W while pumping). Refuels a parked vehicle within 2 squares or fills a petrol can at about 10 L a minute. It does not run off the grid or a generator's square.",
-    "Tooltip_DazedDigester": "Feed it rotten food and manure by hand (right-click -> Add waste). Over a day or so each unit makes about 0.05 kg of propane, which flows into a propane tank you pipe it to. Needs no power. Slows below 10 C, stops below 0 C, and holds up to 2 kg of gas when the tank is full."
+    "Tooltip_DazedDigester": "Feed it rotten food and manure by hand (right-click -> Add waste). Over a day or so each unit makes about 0.05 kg of propane, which flows into a propane tank you pipe it to. Needs no power. Slows below 10 C, stops below 0 C, and holds up to 2 kg of gas when the tank is full.",
+    "Tooltip_DazedDrilledWell": "Set it on bare ground in the open, pipe it to a water tank and wire it to a Dazed Power controller (400 W while pumping). It lifts about 15 L of clean water a minute from deep ground until the tank is full. It does not run off the grid or a generator's square.",
+    "Tooltip_DazedSmoker": "Pipe it to a propane tank, put raw meat or fish inside and light it. It burns about 0.05 kg of propane an hour; after 8 hours of smoke the meat is smoked: cooked, and keeping six times longer. It goes out when the gas runs out."
 }

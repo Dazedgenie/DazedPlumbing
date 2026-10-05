@@ -11,6 +11,8 @@
        cost       LITRES_PER_LEVEL litres per point of a crop's water level
                   (a dry bed from 0 to 70 takes 7 L), at most RATE L/min.
        switch     a player can turn it off (ModData `dazedSprinkler.off`).
+       schedule   it waters only from hour `from` to hour `to` (none = always) and,
+                  unless `rainSkip` is false, not while it rains (0.14.0).
 
      Crops live in the game's farming system on the server (SFarmingSystem),
      so watering only happens on the authority; a client's menu just reads.
@@ -38,6 +40,14 @@ Z.RATE = 10                     -- most litres a minute one sprinkler uses
 Z.LITRES_PER_LEVEL = 0.1        -- litres per point of a crop's 0..100 water level
 Z.DEFAULT_TARGET = 70           -- for a crop that does not say what it needs
 Z.SLACK = 5                     -- a crop this close under its target is left alone
+Z.RAIN_SKIP_ABOVE = 0.05        -- rain intensity (0..1) above which a "skip when raining" sprinkler waits
+-- The schedule choices in the menu: no hours means always; from > to wraps past midnight.
+Z.PRESETS = {
+    { id = "always" },
+    { id = "dawn", from = 5, to = 8 },
+    { id = "evening", from = 18, to = 21 },
+    { id = "night", from = 22, to = 4 },
+}
 
 ----------------------------------------------------------- sprites
 function Z.sprite(facing, spraying)
@@ -67,6 +77,91 @@ function Z.state(obj)
     return md[Z.KEY]
 end
 function Z.isOn(obj) return Z.state(obj).off ~= true end
+
+----------------------------------------------------------- the schedule
+--- A whole hour 0..23, or nil.
+function Z.validHour(h)
+    h = tonumber(h)
+    if h and h == math.floor(h) and h >= 0 and h <= 23 then return h end
+    return nil
+end
+
+--- Is `hour` (0..24, fractions allowed) inside the window? The start hour counts and the end hour does not.
+-- No window (or from == to) means always, and from > to wraps past midnight.
+function Z.inWindow(from, to, hour)
+    from, to = Z.validHour(from), Z.validHour(to)
+    if not from or not to or from == to then return true end
+    hour = (tonumber(hour) or 0) % 24
+    if from < to then return hour >= from and hour < to end
+    return hour >= from or hour < to
+end
+
+--- Why the schedule holds a sprinkler back: nil (it may water), "window" or "rain". Pure.
+function Z.held(from, to, rainSkip, hour, rain)
+    if not Z.inWindow(from, to, hour) then return "window" end
+    if rainSkip and (tonumber(rain) or 0) > Z.RAIN_SKIP_ABOVE then return "rain" end
+    return nil
+end
+
+--- The stored schedule: from, to (both nil = always) and whether it skips rain (default yes).
+function Z.schedule(obj)
+    local st = Z.state(obj)
+    local from, to = Z.validHour(st.from), Z.validHour(st.to)
+    if not from or not to or from == to then from, to = nil, nil end
+    return from, to, st.rainSkip ~= false
+end
+
+--- The game hour now as a fraction (GameTime:getTimeOfDay, else getHour), or 12 when the engine cannot say.
+function Z.hourNow()
+    local gt = getGameTime and getGameTime()
+    local h = gt and try(gt, "getTimeOfDay")
+    if type(h) ~= "number" then h = gt and try(gt, "getHour") end
+    return type(h) == "number" and h or 12
+end
+
+--- Rain intensity now, 0..1 (snow counts as none).
+function Z.rainNow()
+    local cm = getClimateManager and getClimateManager()
+    if not cm then return 0 end
+    if try(cm, "getPrecipitationIsSnow") == true then return 0 end
+    local r = try(cm, "getRainIntensity")
+    if type(r) ~= "number" then r = try(cm, "getPrecipitationIntensity") end
+    return type(r) == "number" and r or 0
+end
+
+--- Why this sprinkler's schedule holds it back right now: nil, "window" or "rain".
+function Z.blocked(obj)
+    local from, to, rainSkip = Z.schedule(obj)
+    return Z.held(from, to, rainSkip, Z.hourNow(), Z.rainNow())
+end
+
+--- Store a watering window (authority): two whole hours, or -1/-1 (or nil) for always. Returns true when stored.
+function Z.setWindow(obj, from, to)
+    local st = Z.state(obj)
+    if (from == nil or from == -1) and (to == nil or to == -1) then
+        st.from, st.to = nil, nil
+        return true
+    end
+    from, to = Z.validHour(from), Z.validHour(to)
+    if not from or not to then return false end
+    if from == to then st.from, st.to = nil, nil else st.from, st.to = from, to end
+    return true
+end
+
+--- Store the "skip when raining" toggle (authority); on is the default, so only off is kept.
+function Z.setRainSkip(obj, on)
+    local st = Z.state(obj)
+    if on == false then st.rainSkip = false else st.rainSkip = nil end
+    return true
+end
+
+--- The preset id a window matches ("always", "dawn"...), or nil for a window no preset has.
+function Z.presetOf(from, to)
+    for _, p in ipairs(Z.PRESETS) do
+        if p.from == from and p.to == to then return p.id end
+    end
+    return nil
+end
 
 ----------------------------------------------------------- the crops
 --- The farming system's plant on a square, or nil (server side only).
@@ -130,7 +225,7 @@ function Z.room(obj)
             and worldHours() - (Z.state(obj).fedAt or 0) > 2 / 60 then
         Z.setSpraying(obj, false)
     end
-    if not Z.isOn(obj) then return 0 end
+    if not Z.isOn(obj) or Z.blocked(obj) then return 0 end
     local need = 0
     for _, t in ipairs(Z.thirsty(obj)) do need = need + t.want * Z.LITRES_PER_LEVEL end
     return math.min(Z.RATE, need)

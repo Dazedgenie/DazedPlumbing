@@ -7,6 +7,7 @@ require "DazedPlumbing/DUP_Pumps"
 require "DazedPlumbing/DUP_Purifiers"
 require "DazedPlumbing/DUP_Fluids"
 require "DazedPlumbing/DUP_FuelPumps"
+require "DazedPlumbing/DUP_DrilledWells"
 
 local P, M, L, U, F = DazedPlumb.Parts, DazedPlumb.Model, DazedPlumb.Links, DazedPlumb.Pumps, DazedPlumb.Fluids
 
@@ -284,7 +285,7 @@ end
 DUP_PowerSwitch = ISBaseTimedAction:derive("DUP_PowerSwitch")
 function DUP_PowerSwitch:isValid()
     local o = self.obj
-    return o ~= nil and o:getObjectIndex() ~= -1 and (Pu.isPurifier(o) or U.isPump(o) or DazedPlumb.FuelPumps.isFuelPump(o))
+    return o ~= nil and o:getObjectIndex() ~= -1 and (Pu.isPurifier(o) or U.isPump(o) or DazedPlumb.FuelPumps.isFuelPump(o) or DazedPlumb.DrilledWells.isWell(o))
 end
 function DUP_PowerSwitch:waitToStart()
     self.character:faceThisObject(self.obj)
@@ -348,6 +349,39 @@ end
 function DUP_SprinklerToggle:new(character, obj, on)
     local o = ISBaseTimedAction.new(self, character)
     o.obj, o.on = obj, on
+    o.maxTime = o:getDuration()
+    return o
+end
+
+------------------------------------------------------------ the sprinkler schedule
+-- One action for both settings: `field` is "window" (from, to: hours, or -1/-1 for always) or "rain" (skip: boolean).
+DUP_SprinklerSchedule = ISBaseTimedAction:derive("DUP_SprinklerSchedule")
+DUP_SprinklerSchedule.isValid = DUP_SprinklerToggle.isValid
+DUP_SprinklerSchedule.waitToStart = DUP_SprinklerToggle.waitToStart
+DUP_SprinklerSchedule.start = DUP_SprinklerToggle.start
+DUP_SprinklerSchedule.stop = DUP_SprinklerToggle.stop
+DUP_SprinklerSchedule.perform = DUP_SprinklerToggle.perform
+function DUP_SprinklerSchedule:getDuration()
+    if self.character:isTimedActionInstant() then return 1 end
+    return 20
+end
+--- On the authority: re-check the values and store them; a held-back sprinkler stops spraying at once.
+function DUP_SprinklerSchedule:complete()
+    if not near(self.obj, self.character) then return true end
+    local stored = false
+    if self.field == "window" then
+        stored = Zs.setWindow(self.obj, tonumber(self.from), tonumber(self.to))
+    elseif self.field == "rain" and type(self.skip) == "boolean" then
+        stored = Zs.setRainSkip(self.obj, self.skip)
+    end
+    if not stored then return true end
+    if Zs.blocked(self.obj) then Zs.setSpraying(self.obj, false) end
+    self.obj:transmitModData()
+    return true
+end
+function DUP_SprinklerSchedule:new(character, obj, field, from, to, skip)
+    local o = ISBaseTimedAction.new(self, character)
+    o.obj, o.field, o.from, o.to, o.skip = obj, field, from, to, skip
     o.maxTime = o:getDuration()
     return o
 end

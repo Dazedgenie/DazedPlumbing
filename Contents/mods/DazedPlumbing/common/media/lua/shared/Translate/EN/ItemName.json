@@ -28,5 +28,7 @@
     "Base.DazedWaterMain": "Water Main",
     "Base.DazedFuelPumpHand": "Hand Fuel Pump",
     "Base.DazedFuelPumpElectric": "Electric Fuel Pump",
-    "Base.DazedDigester": "Biogas Digester"
+    "Base.DazedDigester": "Biogas Digester",
+    "Base.DazedDrilledWell": "Drilled Well",
+    "Base.DazedSmoker": "Smoker"
 }

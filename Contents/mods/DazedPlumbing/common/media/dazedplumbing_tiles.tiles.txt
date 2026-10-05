@@ -2,7 +2,7 @@ version = 1
 tileset
 {
     file = dazedplumb_01
-    size = 8,31
+    size = 8,32
     id = 1
     // dazedplumb_01_0
     tile
@@ -4371,5 +4371,189 @@ tileset
         Woffset = -1
         Noffset = 0
         solidtrans = 
+    }
+    // dazedplumb_01_248
+    tile
+    {
+        xy = 0,31
+        CustomName = Drilled Well
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDrilledWell
+        PickUpWeight = 270
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+    }
+    // dazedplumb_01_249
+    tile
+    {
+        xy = 1,31
+        CustomName = Drilled Well
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDrilledWell
+        PickUpWeight = 270
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+    }
+    // dazedplumb_01_250
+    tile
+    {
+        xy = 2,31
+        CustomName = Drilled Well
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDrilledWell
+        PickUpWeight = 270
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+    }
+    // dazedplumb_01_251
+    tile
+    {
+        xy = 3,31
+        CustomName = Drilled Well
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedDrilledWell
+        PickUpWeight = 270
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+    }
+    // dazedplumb_01_252
+    tile
+    {
+        xy = 4,31
+        CustomName = Smoker
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedSmoker
+        PickUpWeight = 260
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+        solidtrans = 
+        container = smoker
+        ContainerCapacity = 15
+    }
+    // dazedplumb_01_253
+    tile
+    {
+        xy = 5,31
+        CustomName = Smoker
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedSmoker
+        PickUpWeight = 260
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+        solidtrans = 
+        container = smoker
+        ContainerCapacity = 15
+    }
+    // dazedplumb_01_254
+    tile
+    {
+        xy = 6,31
+        CustomName = Smoker
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedSmoker
+        PickUpWeight = 260
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+        solidtrans = 
+        container = smoker
+        ContainerCapacity = 15
+    }
+    // dazedplumb_01_255
+    tile
+    {
+        xy = 7,31
+        CustomName = Smoker
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Large
+        IsMoveAble = 
+        CustomItem = Base.DazedSmoker
+        PickUpWeight = 260
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+        solidtrans = 
+        container = smoker
+        ContainerCapacity = 15
     }
 }

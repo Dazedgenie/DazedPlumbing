@@ -467,4 +467,38 @@ module Base
         RequiresEquippedBothHands = true,
         Tags                = base:heavyitem;base:hasmetal;base:showcondition,
     }
+
+    /* The drilled well (tiles 248-251, facings E S W N; the item points at its south tile, 249). */
+
+    item DazedDrilledWell
+    {
+        DisplayName         = Drilled Well,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 27.0,
+        Icon                = DazedDrilledWell,
+        WorldObjectSprite   = dazedplumb_01_249,
+        ConditionMax        = 100,
+        MetalValue          = 45.0,
+        Tooltip             = Tooltip_DazedDrilledWell,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
+
+    /* The smoker (tiles 252-255, facings E S W N; the item points at its south tile, 253). The tiles carry a "smoker" container. */
+
+    item DazedSmoker
+    {
+        DisplayName         = Smoker,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 26.0,
+        Icon                = DazedSmoker,
+        WorldObjectSprite   = dazedplumb_01_253,
+        ConditionMax        = 100,
+        MetalValue          = 40.0,
+        Tooltip             = Tooltip_DazedSmoker,
+        RequiresEquippedBothHands = true,
+        Tags                = base:heavyitem;base:hasmetal;base:showcondition,
+    }
 }

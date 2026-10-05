@@ -671,4 +671,57 @@ module Base
             item 1 Base.DazedDigester,
         }
     }
+
+    /* The drilled well: a cased borehole with a submersible pump, built from pipe and sheet metal and set with a wrench. */
+
+    craftRecipe MakeDazedDrilledWell
+    {
+        timedAction     = Welding,
+        time            = 900,
+        SkillRequired   = MetalWelding:3;Mechanics:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:20;Mechanics:10,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 [Base.Wrench;Base.PipeWrench] mode:keep,
+            item 4 [Base.MetalPipe],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.DazedValve],
+            item 6 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedDrilledWell,
+        }
+    }
+
+    /* The smoker: a metal drum on a stand with a propane burner under it, a door, racks and a flue pipe. */
+
+    craftRecipe MakeDazedSmoker
+    {
+        timedAction     = Welding,
+        time            = 700,
+        SkillRequired   = MetalWelding:2;Cooking:3,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:15;Cooking:10,
+        inputs
+        {
+            item 1 tags[base:weldingmask] mode:keep,
+            item 1 [Base.BlowTorch],
+            item 1 tags[base:screwdriver] mode:keep flags[Prop1],
+            item 1 [Base.MetalDrum],
+            item 2 [Base.SheetMetal],
+            item 1 [Base.MetalPipe],
+            item 1 [Base.DazedValve],
+            item 4 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedSmoker,
+        }
+    }
 }

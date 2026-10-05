@@ -438,7 +438,7 @@ end
 
 function K.isPort(obj)
     local spr = try(obj, "getSprite")
-    local idx = string.match(try(spr, "getName") or "", "^" .. P.TILESET .. "_(%d+)$")
+    local idx = string.match(try(spr, "getName") or "", P.namePattern())
     idx = tonumber(idx)
     return idx ~= nil and idx >= K.PORT_BASE and idx < K.PORT_BASE + K.PORT_COUNT
 end

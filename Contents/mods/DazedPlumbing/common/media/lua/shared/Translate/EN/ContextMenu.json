@@ -64,5 +64,18 @@
     "ContextMenu_DazedPlumb_DigesterAdd": "Add waste",
     "ContextMenu_DazedPlumb_DigesterAddNone": "Add waste: no rotten food or manure carried",
     "ContextMenu_DazedPlumb_DigesterAddAll": "Add everything suitable (%1 items, %2 units)",
-    "ContextMenu_DazedPlumb_DigesterAddOne": "Add one: %1 (%2 units)"
+    "ContextMenu_DazedPlumb_DigesterAddOne": "Add one: %1 (%2 units)",
+    "ContextMenu_DazedPlumb_SprinklerSchedule": "Schedule",
+    "ContextMenu_DazedPlumb_SprinklerPreset_always": "Always",
+    "ContextMenu_DazedPlumb_SprinklerPreset_dawn": "Dawn",
+    "ContextMenu_DazedPlumb_SprinklerPreset_evening": "Evening",
+    "ContextMenu_DazedPlumb_SprinklerPreset_night": "Night",
+    "ContextMenu_DazedPlumb_SprinklerRainSkipOn": "Skip when raining: turn on",
+    "ContextMenu_DazedPlumb_SprinklerRainSkipOff": "Skip when raining: turn off",
+    "ContextMenu_DazedPlumb_Well": "Drilled well",
+    "ContextMenu_DazedPlumb_WellLine": "Well line",
+    "ContextMenu_DazedPlumb_Smoker": "Smoker",
+    "ContextMenu_DazedPlumb_SmokerLine": "Smoker gas line",
+    "ContextMenu_DazedPlumb_SmokerLight": "Light",
+    "ContextMenu_DazedPlumb_SmokerExtinguish": "Extinguish"
 }

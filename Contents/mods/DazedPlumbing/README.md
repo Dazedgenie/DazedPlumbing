@@ -1,7 +1,44 @@
-# Dazed Utilities: Plumbing  (v0.13.0, Build 42)
+# Dazed Utilities: Plumbing  (v0.14.0, Build 42)
 
-Release 7: **the biogas digester**, on top of release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
+Release 8 (0.14.0): **the drilled well**, **the smoker** and **the sprinkler schedule**, on top of release 7's biogas digester, release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
 Works with *Dazed Utilities: Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
+
+## The drilled well (0.14.0)
+An electric borehole pump for clean water. Stand it on **bare natural ground in the open** (grass or dirt, the water pump's rule), one to a square, and pipe it to a water tank like a pump (*Well line -> Pipe to: <tank>*).
+- **Power:** a **400 W** Dazed Power load (LOADS label WELL, load kind `well`). Like the electric fuel pump it runs **only when wired to a powered Dazed Power controller**; the town grid or a generator's square does not count. Without Dazed Power installed it is simply unpowered. It has the same on/off switch as the electric pumps and counts as working (billed) only while it is pumping.
+- **Water:** about **15 L a minute of clean water** while powered and the tank has room. It draws from deep ground, so it does not use or dry out the square's ground water the hand and electric pumps share. When the tanks are full it waits and draws nothing.
+- The menu and its tooltip show whether it is wired, its status (pumping, tanks full, switched off, no power, not piped, line broken or paused) and its output.
+- **Build:** recipe `MakeDazedDrilledWell`, **Welding 3 and Mechanics 2**: 4 metal pipes, 2 sheet metal, a shut-off valve, 6 screws; a blowtorch, a welding mask and a wrench (or pipe wrench). **27 kg**, so one piece. Tiles 248-251, placeholder art (`tools/well_art.py`, which also grew the sheet to 8x32).
+- Dazed Power's priority table has no entry for `well` yet, so it sheds at Normal priority. The LOADS label key `IGUI_DazedPower_Load_well` lives in this mod's EN `IG_UI.json` (the game merges every mod's translations).
+
+## The smoker (0.14.0)
+A propane-fired smoke box. Pipe it to a **propane tank** like any machine (*Smoker gas line -> Pipe to: <tank>*), put **raw meat or fish** in its container (it is a container like a crate: open it in the loot window, 15 capacity), then right-click it -> **Smoker -> Light**.
+- **Gas:** it burns **0.05 kg of propane an hour** while lit (0.4 kg for a full batch), drawn from the tanks on its line, fullest first. It lights only with gas on the line, and **goes out** by itself when the gas runs out or the line is closed or paused (light it again once there is gas). **Extinguish** puts it out.
+- **Smoking:** every raw meat or fish item inside that has had **8 in-game hours** of smoke becomes smoked: marked `dazedSmoked` in its ModData, cooked, its freshness (`offAge` and `offAgeMax`) **six times longer**, and its name gains **(Smoked)**. Vanilla B42 has no smoked variants of its meats, so the item is changed in place instead of replaced.
+- **What counts:** a Food with FoodType Meat, Fish, Game, Seafood or Poultry, any Dazed Butchery cut (`Base.DB_*`) and anything that answers `isMeat`/`isFish`; not food that is already cooked, burnt, rotten or smoked. An item taken out loses its smoke so far.
+- **While you are away:** it works while its square is loaded and catches up the hours away when it loads again, **at most 48 h** (and only as long as the gas lasts).
+- The menu and its tooltip show the propane on the line, whether it is lit (smoking, lit with nothing raw, not lit, went out) and how many items are smoking and the hours to go.
+- **Build:** recipe `MakeDazedSmoker`, **Welding 2 and Cooking 3**: a metal drum, 2 sheet metal, a metal pipe, a shut-off valve, 4 screws; a blowtorch, a welding mask and a screwdriver. **26 kg**, so one piece. One to a square; like any vanilla container it can only be lifted empty. Tiles 252-255 with a `smoker` container, placeholder art (`tools/smoker_art.py`). No sandbox options: the numbers are constants at the top of `DUP_Smokers.lua`.
+- Multiplayer: the server settles and changes everything; "Light / Extinguish" sends only the smoker and on/off. A smoked item is re-sent to the clients whole (removed and added again) so its new name and freshness show.
+
+## Sprinkler schedule (0.14.0)
+Each sprinkler has a **watering window** and a **Skip when raining** toggle (right-click -> Sprinkler -> **Schedule**).
+- Window presets: **Always** (the default, as before), **Dawn** 05:00-08:00, **Evening** 18:00-21:00, **Night** 22:00-04:00. The start hour counts and the end hour does not; a window that ends before it starts runs over midnight.
+- **Skip when raining** (on by default): while the rain intensity is above 0.05 the sprinkler waits. Snow does not count as rain.
+- Outside its window, or in the rain, it asks the line for nothing and stops spraying within a minute (at once when you change the setting).
+- The menu and the Sprinkler row's tooltip show the schedule and why it is waiting. Settings live in the sprinkler's ModData (`dazedSprinkler.from`, `.to`, `.rainSkip`) and are changed only on the authority, by a timed action. Lifting a sprinkler resets its schedule to the defaults.
+
+### Patch notes 0.14.0
+- New: **drilled well** (item `Base.DazedDrilledWell`, recipe `MakeDazedDrilledWell`, sprites 248-251, files `DUP_DrilledWells.lua`, `DUP_WellMenu.lua`, `tools/well_art.py`). A new `DazedCore.Power` load kind, `well` (400 W).
+- New: **smoker** (item `Base.DazedSmoker`, recipe `MakeDazedSmoker`, sprites 252-255 with a `smoker` container, files `DUP_Smokers.lua`, `DUP_SmokerActions.lua`, `DUP_SmokerMenu.lua`, `DUP_SmokerWorld.lua`, `tools/smoker_art.py`).
+- New: **sprinkler schedule** (window presets and the rain skip; new action `DUP_SprinklerSchedule`).
+- The power switch now also works on the well; placement refuses a well off bare natural ground or outdoors.
+- Boot line is now `252/252 tiles, 32/32 items`; 32 recipes. Tile sheet grown to 8x32 (now full).
+- Tests: new `sprinkler_test.lua`, `well_test.lua` and `smoker_test.lua` in `run_all.sh`; `fuel_test.lua` and `digester_test.lua` expect the new counts. The version constant and `mod.info` still read 0.13.0 until the release bump.
+- No sandbox options, no save migration: existing sprinklers keep watering at any hour, and now skip rain by default.
+- Performance: pipe keys are parsed once (`DazedPlumb.Net.split` remembers), which the minute pipe and port ticks do
+  for every pipe; the sprite-name pattern is built once instead of on every object a scan looks at. Tests: new checks
+  in `net_test.lua`.
 
 ## The biogas digester (0.12.0)
 A drum you feed rotten food and manure; it slowly makes propane for a **propane tank** you pipe it to (*Digester gas line -> Pipe to: <tank>*, same pipes and valves as any machine). It needs no power.
@@ -83,19 +120,22 @@ Drop the `DazedPlumbing` folder into `Zomboid/Workshop/<anything>/Contents/mods/
 
 ## First-test checklist (things I could not verify outside the game)
 Console lines to look for (`Zomboid/console.txt`):
-- `DazedCore: ready -- 1.0.0, heavy parts v2, ...` then `DazedPlumbing: ready -- 244/244 tiles, 30/30 items`
+- `DazedCore: ready -- 1.0.0, heavy parts v2, ...` then `DazedPlumbing: ready -- 252/252 tiles, 32/32 items`
 - `DazedPlumbing: tank loot in N lists (...)` and `water main loot in N lists (...)`, and which lists were skipped (list names are guesses).
 - `DazedPlumbing: adding water/gas to an empty container: worked|failed` (taking out into an EMPTY bottle/can).
 Fuel-line test: link a Dazed Power propane generator to a propane tank, run it, and watch the tank drop as it burns.
 Fuel pump test (0.11.0): pipe a hand fuel pump to a petrol tank, park a car beside it with the engine off and refuel it, then fill a petrol can. Check the console for `vehicle tank set ok, read back N` and, for an empty can, `raising an empty container with gas: addFluid worked`. Wire an electric fuel pump to a Dazed Power controller: it should refuse until wired and powered, then move about 10 L a minute.
 Digester test (0.12.0): build one, pipe it to a propane tank, add a rotten food item and a manure item (the items must disappear and the menu show 3 units), and watch the tank rise by about 0.1 kg in the first day (0.15 kg in all). Check the manure and compost item names match the game (`Base.Dung_*`, `Base.CompostBag`), that the metal drum (`Base.MetalDrum`) is accepted by the recipe, and that "Add waste" works from a server client. Try it below 10 C and below 0 C, and with a full tank (the buffer should stop at 2.00 kg).
+Drilled well test (0.14.0): build one (check the recipe accepts a plain `Base.Wrench` or a pipe wrench), place it on grass outdoors (a floor or indoors should be refused), pipe it to a water tank and wire it to a Dazed Power controller: it should refuse until wired and powered, then add about 15 L a minute of clean water, show WELL at 400 W on the LOADS page and stop drawing when the tank is full.
+Smoker test (0.14.0): place one, check it opens as a container titled "Smoker" (the tile property `container = smoker` with `ContainerCapacity = 15`) and refuses to be lifted while full. Pipe it to a propane tank, put a raw steak and a raw fish in, light it, and after 8 in-game hours both should read "(Smoked)", be cooked and keep much longer; the tank should drop about 0.4 kg. Check the names and freshness also show on a server client (the item is re-sent), that it goes out when the tank is empty or its valve is shut, and that a Dazed Butchery cut is accepted.
+Sprinkler schedule test (0.14.0): set Dawn, check it waters only from 05:00 to 08:00 and the menu says it is waiting otherwise; set Night and check it waters after midnight; with the rain skip on it should stop spraying in the rain and the console should not complain about `getTimeOfDay` or `getRainIntensity`.
 Water main test: pipe a main to a full water tank, connect a house, run a sink inside: the tank should drop and the main's menu should count the fixtures it feeds.
 Try: craft a small tank, place it, pour water in from a bottle, take it back out, lift and re-place (amount kept), light a fire next to a gas tank.
 
 ## Known limitations
 - Not yet tested in multiplayer or on a dedicated server (the code keeps every change on the server, but nothing has been run there).
 - Rain that falls while a tank's area is not loaded is not counted.
-- A sprinkler only waters crops on its own floor.
+- A sprinkler only waters crops on its own floor. Its schedule follows the game clock's hour; there is no custom hour entry, only the presets.
 
 License: CC BY-NC-SA 4.0 (same as the core and Dazed Power).
 
@@ -145,7 +185,7 @@ The pipes are rendered light grey on purpose: the game tints them per fluid.
 
 `pack_tiles.py check` confirms the tile definitions, the pack and the item scripts agree (and that the `.tiles` file round-trips byte for byte). `pack_tiles.py grow --rows N` adds room for new sprites without moving any existing index. `pzformat/` holds the pack and tile readers and writers from pz-sprite-forge (MIT). Saved worlds remember sprite names, so only ever append.
 
-`fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first.
+`fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. The next sprite needs `pack_tiles.py grow --rows 33`.
 
 `pipe_art.py`, `machine_art.py` and `icon_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
 
@@ -158,12 +198,15 @@ lua plumbing_test.lua                          # links, actions, ticks, sync, ta
 lua place_test.lua                             # a large tank picked up is one item
 lua mains_test.lua                             # the water main: picking a house, reach, feeding, taps kept
 lua fuel_test.lua                              # the fuel pumps: litres per action, limits, hand vs electric, power, cans, vehicles, sprite and item counts
-./run_all.sh                                   # all five
+lua digester_test.lua                          # the biogas digester
+lua sprinkler_test.lua                         # the sprinkler schedule: windows (over midnight too), rain skip, the action, the tick
+lua well_test.lua                              # the drilled well: output per minute, power by wire only, clean water, full tanks, the load
+lua smoker_test.lua                            # the smoker: burn rate, smoking timer, 48 h catch-up, no gas or a shut line, the smoked-food change
+./run_all.sh                                   # all nine
 # each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
 ```
 
 ## Changes
-- **Unreleased.** New art style throughout, closer to the base game: all 244 world sprites (tanks, pipes, valves, pipe fittings, pumps, purifier, downspout, sprinkler, water main, fuel pumps, digester) and all 30 icons, rendered by `tools/blender/dz2.py` (`blender -b --factory-startup -P dz2.py -- <out> pl:all icons:pl`, then `tools/grade_all.py`, then `tools/pack_art.py` and `tools/make_icons.py`). The pipe sizes, heights and fitting reach are unchanged, and pipes and fittings stay light grey for the game's fluid tint. No code or save changes.
 - **0.11.0.** **Fuel pump** (see its section): hand (2 L/min) and electric (10 L/min, 200 W, Dazed Power wire only). Refuels a parked vehicle within 2 squares and fills petrol cans from the piped petrol tank. New: `DUP_FuelPumps.lua` (model, sprites, link adapter), `DUP_FuelActions.lua` (`DUP_FuelVehicle`, `DUP_FuelCan`), `DUP_FuelMenu.lua`, 2 items, 2 recipes, 8 sprites (236-243, tile sheet grown to 8x31), EN text, `fuel_test.lua` and `run_all.sh`. The electric pump is a new `DazedCore.Power` load (`fuelpump`).
   - *Patch notes:* the power switch now also works on fuel pumps; placing a fuel pump is limited to one per square; boot check counts 240 sprites and 29 items. No sandbox options, no save migration. The vehicle tank calls are untested in game (see the checklist).
 - **0.10.0.** **Needs Dazed Utilities: Core.** What both Dazed mods shared moves there: heavy parts (now v2, both engine argument orders), sync, notes, the Building Picker and the power registry. `DU_HeavyParts` and the old power shim are gone from this mod; the pump and purifier are registered as loads with `DazedCore.Power` (DUP_Power.lua), and Dazed Power bills them; original Dazed Power is no longer supported. Server notes travel through the core's command. **Water main** (see its section): item, recipe, loot, 4 sprites (232-235, placeholder art), two sandbox options, the `DazedPlumbMains` synced table. Link sinks may give a `rate` of their own. Tests take the core's Lua root as a second argument; `tools/pzformat` now lives in the core (the tools look there).
