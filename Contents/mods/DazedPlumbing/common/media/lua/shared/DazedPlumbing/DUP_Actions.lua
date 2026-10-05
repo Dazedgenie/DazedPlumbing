@@ -123,7 +123,7 @@ function DUP_TankTake:complete()
     local v = F.vessel(self.item)
     local d = P.data(self.object)
     if not v or (v.kind ~= d.type and v.kind ~= "empty") then return true end
-    local move = math.min(d.amount or 0, v.capacity - v.amount)
+    local move = math.min(M.available(d), v.capacity - v.amount)   -- nothing comes out of a frozen tank
     if move <= 0.001 then return true end
     local before = d.amount
     local tainted = (d.type == "water") and M.isTainted(d) or nil     -- read BEFORE the water leaves
@@ -184,6 +184,69 @@ function DUP_TankRepair:new(character, object, sheet, screws)
     return o
 end
 
+----------------------------------------------------- welding a crack
+--  A tank that cracked when it froze full is welded shut: a blowtorch (WELD_TORCH_USES uses), a welding mask
+--  and Welding WELD_LEVEL. It stops the crack's leak; wear from low condition is patched as before.
+DUP_WELD_LEVEL = 2
+DUP_WELD_TORCH_USES = 2
+DUP_TankWeld = tankAction("DUP_TankWeld", function() return 300 end)
+
+--- Uses left in a blowtorch, or 0.
+function DazedPlumb.torchUses(torch)
+    local P_ = DazedPlumb.Parts
+    local n = P_.try(torch, "getCurrentUses")
+    if type(n) == "number" then return n end
+    local delta = P_.try(torch, "getCurrentUsesFloat") or P_.try(torch, "getUsedDelta")
+    local per = P_.try(torch, "getUseDelta")
+    if type(delta) == "number" and type(per) == "number" and per > 0 then return math.floor(delta / per + 0.0001) end
+    return 0
+end
+
+--- Has this character the skill and a welding mask for a crack weld? Asked again on the server.
+function DazedPlumb.canWeldCrack(character)
+    local level = 0
+    pcall(function() level = character:getPerkLevel(Perks.MetalWelding) end)
+    if level < DUP_WELD_LEVEL then return false end
+    local inv = character:getInventory()
+    local mask = false
+    pcall(function() mask = inv:containsTagEval("base:weldingmask", function(it) return it ~= nil end) == true end)
+    if not mask and inv.containsTypeRecurse then mask = inv:containsTypeRecurse("WeldingMask") == true end
+    return mask
+end
+
+function DUP_TankWeld:isValid()
+    return stillApplies(self) and P.data(self.object).cracked == true and self.torch ~= nil
+        and DazedPlumb.torchUses(self.torch) >= DUP_WELD_TORCH_USES and DazedPlumb.canWeldCrack(self.character)
+end
+
+function DUP_TankWeld:start()
+    self:setActionAnim("BlowTorch")
+    self.character:reportEvent("EventLootItem")
+    DazedPlumb.Parts.startSound(self)
+end
+
+function DUP_TankWeld:complete()
+    if not stillApplies(self) or not stillCarried(self.torch) then return true end
+    local d = P.data(self.object)
+    if not d.cracked or not DazedPlumb.canWeldCrack(self.character) then return true end
+    for _ = 1, DUP_WELD_TORCH_USES do
+        for _, m in ipairs({ "UseAndSync", "Use" }) do
+            if type(self.torch[m]) == "function" and pcall(self.torch[m], self.torch) then break end
+        end
+    end
+    d.cracked = nil
+    self.object:transmitModData()
+    if addXp and Perks and Perks.MetalWelding then addXp(self.character, Perks.MetalWelding, 10) end
+    return true
+end
+
+function DUP_TankWeld:new(character, object, torch)
+    local o = ISBaseTimedAction.new(self, character)
+    o.object, o.torch = object, torch
+    o.maxTime = o:getDuration()
+    return o
+end
+
 ----------------------------------------------------- naming, and an admin fill
 --- Is this character an admin (or is it single player in debug mode)? Asked on whichever side runs the check.
 function DazedPlumb.isAdmin(character)
@@ -239,3 +302,4 @@ end
 DUP_TankFill.SOUND = waterSound
 DUP_TankTake.SOUND = waterSound
 DUP_TankRepair.SOUND = "RepairWithWrench"
+DUP_TankWeld.SOUND = "BlowTorch"

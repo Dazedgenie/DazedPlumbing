@@ -75,8 +75,28 @@ function M.normalize(d)
     return d
 end
 
---- How much room is left.
+--  ICE AND CRACKS, set by Dazed Climate: a FROZEN tank gives and takes nothing until it thaws. A CRACKED tank
+--  leaks CRACK_FRAC_PER_HOUR of its capacity an hour on top of any wear, until the crack is welded.
+M.CRACK_FRAC_PER_HOUR = 0.02
+
+--- Is ice on? Only while Dazed Climate runs its frozen pipes and tanks, so switching that off (or removing the
+--- mod) never leaves anything stuck frozen.
+function M.iceOn()
+    local Pl = DazedClimate and DazedClimate.Plumbing
+    return Pl ~= nil and type(Pl.enabled) == "function" and Pl.enabled() == true
+end
+
+function M.isFrozen(d) return d.frozen == true and M.iceOn() end
+
+--- What can be drawn right now: nothing while frozen.
+function M.available(d)
+    if M.isFrozen(d) then return 0 end
+    return max(0, d.amount or 0)
+end
+
+--- How much room is left (none while frozen).
 function M.room(d)
+    if M.isFrozen(d) then return 0 end
     return max(0, M.capacity(d.size, d.tier, d.type) - max(0, d.amount or 0))
 end
 
@@ -119,8 +139,9 @@ function M.addWater(d, amount, dirty)
     return took
 end
 
---- Take out up to `amount`; returns what was given.
+--- Take out up to `amount`; returns what was given (nothing while frozen).
 function M.take(d, amount)
+    if M.isFrozen(d) then return 0 end
     local have = max(0, d.amount or 0)
     local give = min(max(0, amount or 0), have)
     if have > 0 and (d.dirty or 0) > 0 then
@@ -173,8 +194,10 @@ end
 function M.leakRate(d)
     local spec = M.TIER_SPEC[d.tier or "crafted"] or M.TIER_SPEC.crafted
     local c = d.condition or 100
-    if c >= spec.leakBelow then return 0 end
-    return M.capacity(d.size, d.tier, d.type) * M.LEAK_FRAC_PER_HOUR * (spec.leakBelow - c) / spec.leakBelow
+    local cap = M.capacity(d.size, d.tier, d.type)
+    local crack = d.cracked and cap * M.CRACK_FRAC_PER_HOUR or 0
+    if c >= spec.leakBelow then return crack end
+    return cap * M.LEAK_FRAC_PER_HOUR * (spec.leakBelow - c) / spec.leakBelow + crack
 end
 
 --- Let `hours` pass. Mutates d.amount; returns the amount lost.
@@ -186,7 +209,7 @@ end
 
 --- Is it leaking right now?
 function M.isLeaking(d)
-    return M.leakRate(d) > 0 and (d.amount or 0) > 0
+    return M.leakRate(d) > 0 and (d.amount or 0) > 0 and not M.isFrozen(d)
 end
 
 --- The chance, over `minutes`, that a tank with flames beside it ignites.

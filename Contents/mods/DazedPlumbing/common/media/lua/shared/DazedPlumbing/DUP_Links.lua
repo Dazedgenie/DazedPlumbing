@@ -216,7 +216,7 @@ function L.wrapTarget(obj, kind)
         return {
             obj = master, key = L.devKey(master),
             room = function() return M.room(P.data(master)) end,
-            amount = function() return P.data(master).amount or 0 end,
+            amount = function() return M.available(P.data(master)) end,
             tainted = function() return M.isTainted(P.data(master)) end,
             add = function(amt, dirty)
                 local d = P.data(master)

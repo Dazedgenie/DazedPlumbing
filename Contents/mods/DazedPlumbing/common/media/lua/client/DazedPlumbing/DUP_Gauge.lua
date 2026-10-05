@@ -243,6 +243,14 @@ function DUP_Gauge:prerender()
         self:txt(getText("IGUI_DazedPlumb_Catching"), x, y, "good")
         y = y + ROW
     end
+    if M.isFrozen(d) then
+        self:txt(getText("IGUI_DazedPlumb_Frozen"), x, y, "bad")
+        y = y + ROW
+    end
+    if d.cracked then
+        self:txt(getText("IGUI_DazedPlumb_Cracked"), x, y, "bad")
+        y = y + ROW
+    end
     local tr = G.trend(self.hist)
     self:txt(getText("IGUI_DazedPlumb_GaugeTrend"), x, y, "dim")
     if tr == nil then

@@ -3,5 +3,5 @@
 cd "$(dirname "$0")" || exit 1
 ROOT=../../common/media/lua
 rc=0
-for t in net plumbing place mains fuel digester; do lua ${t}_test.lua $ROOT || rc=1; done
+for t in net plumbing place mains fuel digester freeze; do lua ${t}_test.lua $ROOT || rc=1; done
 exit $rc

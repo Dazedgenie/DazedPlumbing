@@ -62,7 +62,13 @@ function N.bitToward(ax, ay, bx, by)
 end
 
 function N.isReal(rec) return rec ~= nil and not rec.virtual end
-function N.flows(rec) return rec ~= nil and (rec.cond or 100) > 0 and rec.valve ~= "closed" end
+-- A frozen square (set by Dazed Climate) blocks flow like a closed valve until it thaws, while Climate's ice is on.
+local function frozen(rec)
+    if not rec.frozen then return false end
+    local M = DazedPlumb.Model
+    return M == nil or M.iceOn == nil or M.iceOn()
+end
+function N.flows(rec) return rec ~= nil and (rec.cond or 100) > 0 and rec.valve ~= "closed" and not frozen(rec) end
 
 ----------------------------------------------------------- ends
 function N.endString(key, role, id) return key .. "|" .. role .. "|" .. id end

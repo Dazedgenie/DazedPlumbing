@@ -21,6 +21,12 @@ local function adopt(d, fc)
     if math.abs(delta) <= EPS then return false end
     if delta < 0 then
         M.take(d, -delta)
+    elseif M.isFrozen(d) then
+        -- Water poured onto the ice stays in the tank (it freezes there too); only what will not fit is spilled.
+        local was = d.frozen
+        d.frozen = nil
+        if d.type == "water" then M.addWater(d, delta, false) else M.add(d, delta) end
+        d.frozen = was
     elseif d.type == "water" then
         local dirtyIn = math.max(0, math.min(delta, tainted - (d.fcDirty or 0)))
         M.addWater(d, delta - dirtyIn, false)
@@ -35,12 +41,13 @@ end
 local function publish(obj, d, fc)
     local amt, tainted = F.containerAmounts(fc, d.type)
     local bad = M.isTainted(d)
-    local wantTainted = bad and (d.amount or 0) or 0
+    local show = M.available(d)                                         -- a frozen tank shows empty
+    local wantTainted = bad and show or 0
     local other = (P.try(fc, "getAmount") or 0) - amt                 -- anything poured in that a tank does not hold
-    if math.abs(amt - (d.amount or 0)) > EPS or math.abs(tainted - wantTainted) > EPS or other > EPS then
+    if math.abs(amt - show) > EPS or math.abs(tainted - wantTainted) > EPS or other > EPS then
         pcall(fc.Empty, fc)
         local ft = F.fluidType(d.type, bad)
-        if ft and (d.amount or 0) > EPS then pcall(fc.addFluid, fc, ft, d.amount) end
+        if ft and show > EPS then pcall(fc.addFluid, fc, ft, show) end
         F.syncObject(obj)
         amt, tainted = F.containerAmounts(fc, d.type)
     end

@@ -1,7 +1,15 @@
-# Dazed Utilities: Plumbing  (v0.14.0, Build 42)
+# Dazed Utilities: Plumbing  (v0.15.0, Build 42)
 
-Release 8 (0.14.0): **the drilled well**, **the smoker** and **the sprinkler schedule**, on top of release 7's biogas digester, release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
+Release 9 (0.15.0): **ice** with Dazed Utilities: Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
 Works with *Dazed Utilities: Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
+
+## Ice (0.15.0)
+With **Dazed Utilities: Climate** loaded, water freezes. A frozen pipe square passes nothing, like a closed valve, until
+it thaws; a frozen water tank gives and takes nothing (its Fluid menu shows it empty). A tank that freezes while over
+80% full may **crack**: once thawed it leaks 2% of its capacity an hour until the crack is welded (*Tank -> Weld the
+crack*: a blowtorch with 2 uses, a welding mask, Welding 2). The tank menu and gauge show **FROZEN** and **CRACKED**.
+Climate decides when things freeze and handles pipe insulation; Plumbing only honours the `frozen` and `cracked`
+fields, so it needs nothing new without Climate.
 
 ## The drilled well (0.14.0)
 An electric borehole pump for clean water. Stand it on **bare natural ground in the open** (grass or dirt, the water pump's rule), one to a square, and pipe it to a water tank like a pump (*Well line -> Pipe to: <tank>*).

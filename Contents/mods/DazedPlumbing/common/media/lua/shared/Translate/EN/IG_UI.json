@@ -141,5 +141,7 @@
     "IGUI_DazedPlumb_Smoker_out": "went out: no gas on the line",
     "IGUI_DazedPlumb_Smoker_nogas": "No propane on the smoker's line.",
     "IGUI_DazedPlumb_SmokedSuffix": "(Smoked)",
-    "IGUI_ContainerTitle_smoker": "Smoker"
+    "IGUI_ContainerTitle_smoker": "Smoker",
+    "IGUI_DazedPlumb_Frozen": "FROZEN",
+    "IGUI_DazedPlumb_Cracked": "CRACKED"
 }

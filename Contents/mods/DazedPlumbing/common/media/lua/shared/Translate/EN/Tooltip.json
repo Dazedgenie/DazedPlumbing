@@ -23,5 +23,9 @@
     "Tooltip_DazedFuelPumpElectric": "Pipe it to a petrol tank and wire it to a Dazed Power controller (200 W while pumping). Refuels a parked vehicle within 2 squares or fills a petrol can at about 10 L a minute. It does not run off the grid or a generator's square.",
     "Tooltip_DazedDigester": "Feed it rotten food and manure by hand (right-click -> Add waste). Over a day or so each unit makes about 0.05 kg of propane, which flows into a propane tank you pipe it to. Needs no power. Slows below 10 C, stops below 0 C, and holds up to 2 kg of gas when the tank is full.",
     "Tooltip_DazedDrilledWell": "Set it on bare ground in the open, pipe it to a water tank and wire it to a Dazed Power controller (400 W while pumping). It lifts about 15 L of clean water a minute from deep ground until the tank is full. It does not run off the grid or a generator's square.",
-    "Tooltip_DazedSmoker": "Pipe it to a propane tank, put raw meat or fish inside and light it. It burns about 0.05 kg of propane an hour; after 8 hours of smoke the meat is smoked: cooked, and keeping six times longer. It goes out when the gas runs out."
+    "Tooltip_DazedSmoker": "Pipe it to a propane tank, put raw meat or fish inside and light it. It burns about 0.05 kg of propane an hour; after 8 hours of smoke the meat is smoked: cooked, and keeping six times longer. It goes out when the gas runs out.",
+    "Tooltip_DazedPlumb_NeedWelding": "Needs Welding level %1.",
+    "Tooltip_DazedPlumb_NeedTorch": "Needs a blowtorch with at least %1 uses left.",
+    "Tooltip_DazedPlumb_NeedMask": "Needs a welding mask.",
+    "Tooltip_DazedPlumb_Frozen": "Frozen solid. It thaws when the weather warms."
 }
