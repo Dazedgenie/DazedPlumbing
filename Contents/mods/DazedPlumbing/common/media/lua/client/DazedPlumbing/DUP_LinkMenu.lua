@@ -320,6 +320,28 @@ local function addDebugSquare(playerNum, context, worldobjects, test)
     if not sq then return end
     local clear, why = K.squareClear(sq)
     context:addDebugOption("[Plumbing] pipe here: " .. (clear and "clear" or ("blocked by " .. tostring(why))), nil, nil)
+    -- What the square holds and what the network says it should, for chasing pipes that will not draw.
+    local x, y, z = sq:getX(), sq:getY(), sq:getZ()
+    local rec = K.record(x, y, z)
+    if rec then
+        context:addDebugOption(string.format("[Plumbing] record: mask %d (drawn %d), %s, cond %d, %d end(s)",
+            rec.mask or 0, K.displayMask(N.key(x, y, z), rec), rec.outdoor and "outdoor" or "overhead",
+            rec.cond or 100, #(rec.ends or {})), nil, nil)
+    end
+    local objs = sq:getObjects()
+    for i = 0, objs:size() - 1 do
+        local ob = objs:get(i)
+        local spr = ob:getSprite()
+        local name = spr and spr:getName() or "(no sprite)"
+        if string.find(tostring(name), P.TILESET, 1, true) then
+            context:addDebugOption("[Plumbing] object " .. i .. ": " .. tostring(name)
+                .. (K.isPipe(ob) and " (pipe)" or K.isPort(ob) and " (port)" or K.isValve(ob) and " (valve)" or ""), nil, nil)
+        end
+    end
+    if rec then
+        context:addDebugOption("[Plumbing] redraw this pipe", nil, function() K.redraw(N.key(x, y, z)) end)
+    end
+    context:addDebugOption("[Plumbing] redraw every pipe", nil, function() K.redrawAll() end)
 end
 
 Events.OnFillWorldObjectContextMenu.Add(addLineMenu)

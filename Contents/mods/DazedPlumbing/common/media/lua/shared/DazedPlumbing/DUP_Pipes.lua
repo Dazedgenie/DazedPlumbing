@@ -551,6 +551,24 @@ function K.syncObject(key)
     return true
 end
 
+--- Throw away a square's pipe and valve objects and draw them fresh from the record (debug repair).
+function K.redraw(key)
+    local x, y, z = N.split(key)
+    lift(K.objectAt(x, y, z))
+    lift(K.valveAt(x, y, z))
+    return K.syncObject(key)
+end
+
+--- Redraw every loaded pipe square. Returns how many were redrawn.
+function K.redrawAll()
+    local n = 0
+    for key, rec in pairs(store().pipes) do
+        if N.isReal(rec) and K.redraw(key) then n = n + 1 end
+    end
+    print("DazedPlumbing: redrew " .. n .. " pipe squares")
+    return n
+end
+
 --- Lay a planned run (authority). devEnd / tailEnd are end strings. Returns true.
 function K.lay(plan, devEnd, tailEnd)
     K.forgetSquares()                                   -- the world is about to change under the memo
