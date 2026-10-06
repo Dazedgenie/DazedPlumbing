@@ -65,6 +65,8 @@ local function statusLine(d)
         math.floor(M.fullness(d) * 100 + 0.5), getText("IGUI_DazedPlumb_Condition"),
         math.floor(d.condition + 0.5))
     if M.isLeaking(d) then line = line .. "  " .. getText("IGUI_DazedPlumb_Leaking") end
+    if M.isFrozen(d) then line = line .. "  " .. getText("IGUI_DazedPlumb_Frozen") end
+    if d.cracked then line = line .. "  " .. getText("IGUI_DazedPlumb_Cracked") end
     if d.catching then line = line .. "  " .. getText("IGUI_DazedPlumb_Catching") end
     if d.type == "water" and (d.amount or 0) > 0 then
         line = line .. "  [" .. getText(M.isTainted(d) and "IGUI_DazedPlumb_Tainted" or "IGUI_DazedPlumb_Clean") .. "]"
@@ -90,6 +92,23 @@ local function onTake(worldobjects, tank, playerObj, item, units)
     if not approach(playerObj, tank) then return end
     ISTimedActionQueue.add(DUP_TankTake:new(playerObj, tank, item, units))
 end
+local function onWeld(worldobjects, tank, playerObj, torch)
+    if not torch then return end
+    if not approach(playerObj, tank) then return end
+    ISTimedActionQueue.add(DUP_TankWeld:new(playerObj, tank, torch))
+end
+
+--- A blowtorch with enough left for a crack weld, and whether a welding mask is carried.
+local function weldKit(inv)
+    local torch = inv:getFirstEvalRecurse(function(i)
+        return i ~= nil and i:getFullType() == "Base.BlowTorch" and DazedPlumb.torchUses(i) >= DUP_WELD_TORCH_USES
+    end)
+    local mask = false
+    pcall(function() mask = inv:containsTagEval("base:weldingmask", function(it) return it ~= nil end) == true end)
+    if not mask and inv.containsTypeRecurse then mask = inv:containsTypeRecurse("WeldingMask") == true end
+    return torch, mask
+end
+
 local function onRepair(worldobjects, tank, playerObj, sheet, screws)
     if not (sheet and screws) then return end
     if not approach(playerObj, tank) then return end
@@ -113,7 +132,9 @@ local function addFluidMenu(context, tank, playerNum)
     local fc = tank.getFluidContainer and tank:getFluidContainer()
     if not fc then return end
     local fetch = ISWorldObjectContextMenu.fetchVars
-    for _, o in ipairs(fetch and fetch.fluidcontainer or {}) do if o == tank then return end end
+    for _, o in ipairs(fetch and fetch.fluidcontainer or {}) do
+        if o == tank or o == fc or (o.getGameEntity and o:getGameEntity() == tank) then return end
+    end
     local opt = context:addOption(getText("ContextMenu_Fluid"), nil, nil)
     opt.iconTexture = getTexture("Item_WaterDrop")
     local sub = ISContextMenu:getNew(context)
@@ -177,7 +198,10 @@ local function addTankMenu(playerNum, context, worldobjects, test)
             local move = math.min(v.amount, M.room(d))
             local opt = sub:addOption(getText("ContextMenu_DazedPlumb_PourIn") .. ": " .. vesselLabel(it, v),
                                       worldobjects, onFill, tank, playerObj, it, move)
-            if M.room(d) <= 0.001 then
+            if M.isFrozen(d) then
+                opt.notAvailable = true
+                opt.toolTip = tip(getText("Tooltip_DazedPlumb_Frozen"))
+            elseif M.room(d) <= 0.001 then
                 opt.notAvailable = true
                 opt.toolTip = tip(getText("Tooltip_DazedPlumb_Full"))
             end
@@ -197,10 +221,13 @@ local function addTankMenu(playerNum, context, worldobjects, test)
             or (v.tainted == true) == M.isTainted(d)
         if v and (v.kind == d.type or (v.kind == "empty" and F.accepts(it, d.type))) and v.capacity - v.amount > 0.001 and sameQuality then
             anyOut = true
-            local move = math.min(d.amount or 0, v.capacity - v.amount)
+            local move = math.min(M.available(d), v.capacity - v.amount)
             local opt = sub:addOption(getText("ContextMenu_DazedPlumb_TakeOut") .. ": " .. vesselLabel(it, v, d.type),
                                       worldobjects, onTake, tank, playerObj, it, move)
-            if (d.amount or 0) <= 0.001 then
+            if M.isFrozen(d) then
+                opt.notAvailable = true
+                opt.toolTip = tip(getText("Tooltip_DazedPlumb_Frozen"))
+            elseif (d.amount or 0) <= 0.001 then
                 opt.notAvailable = true
                 opt.toolTip = tip(getText("Tooltip_DazedPlumb_Empty"))
             end
@@ -215,6 +242,18 @@ local function addTankMenu(playerNum, context, worldobjects, test)
     if DazedPlumb.isAdmin(playerObj) then
         sub:addOption(getText("ContextMenu_DazedPlumb_AdminFill"), worldobjects,
             function(_, t, pl) ISTimedActionQueue.add(DUP_TankAdminFill:new(pl, t)) end, tank, playerObj)
+    end
+
+    -- Weld a crack left by ice.
+    if d.cracked then
+        local torch, mask = weldKit(inv)
+        local opt = sub:addOption(getText("ContextMenu_DazedPlumb_WeldCrack"), worldobjects, onWeld, tank, playerObj, torch)
+        local level = playerObj.getPerkLevel and Perks and Perks.MetalWelding and playerObj:getPerkLevel(Perks.MetalWelding) or 0
+        local why = nil
+        if level < DUP_WELD_LEVEL then why = getText("Tooltip_DazedPlumb_NeedWelding", DUP_WELD_LEVEL)
+        elseif not torch then why = getText("Tooltip_DazedPlumb_NeedTorch", DUP_WELD_TORCH_USES)
+        elseif not mask then why = getText("Tooltip_DazedPlumb_NeedMask") end
+        if why then opt.notAvailable = true opt.toolTip = tip(why) end
     end
 
     -- Patch it.
@@ -234,5 +273,19 @@ local function addTankMenu(playerNum, context, worldobjects, test)
 end
 
 Events.OnFillWorldObjectContextMenu.Add(addTankMenu)
+
+-- A long tank keeps its fluid container on its first piece only. When another piece is clicked, the game is
+-- handed the first piece too, so its full Fluid menu (drink, fill, pour in, transfer) shows on every square.
+local function addMasterToFetch(playerNum, context, worldobjects, test)
+    local tank = tankIn(worldobjects)
+    if not (tank and tank.getFluidContainer and tank:getFluidContainer()) then return end
+    local fetch = ISWorldObjectContextMenu.fetchVars
+    if not fetch or not ISWorldObjectContextMenuLogic or not ISWorldObjectContextMenuLogic.fetch then return end
+    for _, o in ipairs(fetch.fluidcontainer or {}) do
+        if o == tank or o == tank:getFluidContainer() or (o.getGameEntity and o:getGameEntity() == tank) then return end
+    end
+    pcall(ISWorldObjectContextMenuLogic.fetch, fetch, tank, playerNum, true)
+end
+if Events.OnPreFillWorldObjectContextMenu then Events.OnPreFillWorldObjectContextMenu.Add(addMasterToFetch) end
 
 -- A dedicated server's refusal notes arrive through the core (DazedCore/DC_NoteClient).

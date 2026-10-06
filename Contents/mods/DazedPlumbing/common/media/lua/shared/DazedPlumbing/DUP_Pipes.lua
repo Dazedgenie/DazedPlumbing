@@ -455,6 +455,26 @@ local function deviceOn(sq)
     return nil
 end
 
+K.deviceOn = deviceOn
+
+--- The port sprites a device square should carry, as a list (for the debug menu).
+function K.wantedPorts(x, y, z)
+    local pipes, out = store().pipes, {}
+    local sq = cellSquare(x, y, z)
+    if not sq or N.isReal(pipes[N.key(x, y, z)]) then return out end
+    local dev = deviceOn(sq)
+    if not dev then return out end
+    local info = P.describe(dev)
+    local belly = info ~= nil and info.size ~= "small"
+    for _, d in ipairs(N.DIRS) do
+        local r = pipes[N.key(x + d[1], y + d[2], z)]
+        if N.isReal(r) and (r.cond or 100) > 0 and N.has(K.displayMask(N.key(x + d[1], y + d[2], z), r), d[4]) then
+            out[#out + 1] = K.portSprite(d[3], not r.outdoor, belly)
+        end
+    end
+    return out
+end
+
 --- Make a device square's port objects agree with the pipes that point into it (authority).
 function K.syncPorts(x, y, z)
     if not S.authority() then return end
@@ -503,18 +523,17 @@ function K.syncValve(x, y, z, rec)
     local obj, sq = K.valveAt(x, y, z)
     if not sq then return end
     if not want then lift(obj, sq) return end
+    -- Same as pipes: a valve that turns or changes state is replaced, not re-sprited.
+    local cur = obj and try(obj, "getSprite")
+    if obj and (not cur or try(cur, "getName") ~= want) then
+        lift(obj, sq)
+        obj = nil
+    end
     if not obj then
         obj = IsoObject.new(getCell(), sq, want)
         sq:AddTileObject(obj)
         obj:getModData().dazedValve = true
         transmitNew(obj)
-        return
-    end
-    local spr = try(obj, "getSprite")
-    if not spr or try(spr, "getName") ~= want then
-        obj:setSprite(want)
-        if obj.setSpriteFromName then obj:setSpriteFromName(want) end
-        if obj.transmitUpdatedSpriteToClients and isServer and isServer() then obj:transmitUpdatedSpriteToClients() end
     end
 end
 
@@ -527,6 +546,13 @@ function K.syncObject(key)
     local obj, sq = K.objectAt(x, y, z)
     local name = K.sprite(K.displayMask(key, rec), rec.outdoor)
     if not sq then return false end
+    -- A pipe that changes shape is swapped for a fresh object: re-spriting one in place left it invisible in game.
+    local spr = obj and try(obj, "getSprite")
+    if obj and (not spr or try(spr, "getName") ~= name) then
+        lift(obj, sq)
+        lift(K.valveAt(x, y, z))                       -- its valve comes back on top of the new pipe
+        obj = nil
+    end
     if not obj then
         local cell = getCell and getCell()
         obj = IsoObject.new(cell, sq, name)
@@ -539,16 +565,28 @@ function K.syncObject(key)
         K.syncPortsAround(x, y, z)
         return true
     end
-    local spr = try(obj, "getSprite")
-    if not spr or try(spr, "getName") ~= name then
-        obj:setSprite(name)
-        if obj.setSpriteFromName then obj:setSpriteFromName(name) end
-    end
     K.tint(obj, rec)
-    if obj.transmitUpdatedSpriteToClients and isServer and isServer() then obj:transmitUpdatedSpriteToClients() end
     K.syncValve(x, y, z, rec)
     K.syncPortsAround(x, y, z)
     return true
+end
+
+--- Throw away a square's pipe and valve objects and draw them fresh from the record (debug repair).
+function K.redraw(key)
+    local x, y, z = N.split(key)
+    lift(K.objectAt(x, y, z))
+    lift(K.valveAt(x, y, z))
+    return K.syncObject(key)
+end
+
+--- Redraw every loaded pipe square. Returns how many were redrawn.
+function K.redrawAll()
+    local n = 0
+    for key, rec in pairs(store().pipes) do
+        if N.isReal(rec) and K.redraw(key) then n = n + 1 end
+    end
+    print("DazedPlumbing: redrew " .. n .. " pipe squares")
+    return n
 end
 
 --- Lay a planned run (authority). devEnd / tailEnd are end strings. Returns true.

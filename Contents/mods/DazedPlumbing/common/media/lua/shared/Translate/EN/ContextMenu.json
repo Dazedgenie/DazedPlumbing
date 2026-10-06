@@ -77,5 +77,6 @@
     "ContextMenu_DazedPlumb_Smoker": "Smoker",
     "ContextMenu_DazedPlumb_SmokerLine": "Smoker gas line",
     "ContextMenu_DazedPlumb_SmokerLight": "Light",
-    "ContextMenu_DazedPlumb_SmokerExtinguish": "Extinguish"
+    "ContextMenu_DazedPlumb_SmokerExtinguish": "Extinguish",
+    "ContextMenu_DazedPlumb_WeldCrack": "Weld the crack"
 }
