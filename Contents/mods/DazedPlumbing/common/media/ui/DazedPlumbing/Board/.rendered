@@ -1,0 +1,10 @@
+Blender renders packed by tools/pack_panel_renders.py on 2026-10-09 14:08; tools/panel_art.py will not overwrite them without --force.
+board knob.png
+board tank_column.png
+board wheel_open.png
+board wheel_turned.png
+icon Item_DazedWaterPanel.png
+sprite 256 E
+sprite 257 S
+sprite 258 W
+sprite 259 N

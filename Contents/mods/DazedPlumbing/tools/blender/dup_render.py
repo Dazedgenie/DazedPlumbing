@@ -603,7 +603,16 @@ WALLPANEL_BASE = 256                                     # DUP_WallPanels.BASE: 
 def wallpanel(icon=False):
     """The wall water panel: a grey steel box (0.5 wide, 0.7 tall, 0.12 deep) on the front wall at head height, with a
     round gauge, two lamps and a red handwheel; like the downspout it hangs on the -Y wall and faces into the square.
-    `icon` builds it centred on the ground with no conduit, for the inventory icon."""
+    `icon` builds it centred on the ground with no conduit and turned so its face meets the camera, for the icon."""
+    if icon:
+        with group(rot=(0, 0, math.pi)):
+            _wallpanel_parts(True)
+    else:
+        _wallpanel_parts(False)
+
+
+def _wallpanel_parts(icon):
+    """The panel's parts, built facing +Y (into the square)."""
     steel = mat("#8c949a", 0.5, wear=0.08)
     door = mat("#98a0a6", 0.45, wear=0.06)
     red = mat("#c0271f", 0.45)
