@@ -40,8 +40,7 @@ end
 
 --- {facing} for a digester sprite name, or nil.
 function Dg.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < Dg.BASE or idx >= Dg.BASE + Dg.COUNT then return nil end
     return { facing = Dg.FACINGS[idx - Dg.BASE + 1] }
 end

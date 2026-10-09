@@ -600,6 +600,9 @@ do
     ok(#L.resolveCached(comp, "water").tanks == 2, "and putting it back is seen too")
 end
 
+ok(P.indexOf("dazedplumb_01_212") == 212 and P.indexOf("dazedpower_01_212") == nil and P.indexOf("dazedplumb_01_2x") == nil, "tile numbers come only from our sprite names")
+ok(K.spriteInfo(K.sprite(5, true)) == true and select(2, K.spriteInfo(K.sprite(5, true))) == 5 and K.spriteInfo("x_01_150") == nil, "pipe sprites still decode to outdoor and mask")
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)

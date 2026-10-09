@@ -118,6 +118,15 @@ local function spriteInfoRaw(name)
              piece = piece, pieces = n, gx = gx, gy = gy, master = (piece == 1) }
 end
 
+-- The tile number in one of this mod's sprite names ("dazedplumb_01_212" -> 212), or nil; kept per name.
+local indexMemo = DazedCore.Util.memo1(function(name) return tonumber(string.match(name, P.namePattern())) end, 512)
+
+--- The tile number of a sprite name of ours, or nil (anything else stops at the prefix test).
+function P.indexOf(name)
+    if not P.ours(name) then return nil end
+    return indexMemo(name)
+end
+
 -- A sprite's answer never changes, so it is kept per name; callers share the table and must only read it.
 local spriteInfoMemo = DazedCore.Util.memo1(spriteInfoRaw, 512)
 
@@ -310,7 +319,21 @@ end
 --- Every object on the squares of a right-click's objects, ours first.
 --  The game hands menus only the object it picked under the mouse (often the floor or a counter),
 --  so small or surface-mounted things like a sprinkler or an industrial sink are found this way.
+-- Every menu of the mod asks about the same right-click: the answer is kept for that worldobjects table, briefly.
+local around = { wo = nil, at = -1, list = nil }
+P.AROUND_MS = 500
+
 function P.objectsAround(worldobjects)
+    local now = getTimestampMs and getTimestampMs() or nil
+    if now and worldobjects ~= nil and around.wo == worldobjects and now >= around.at and now - around.at <= P.AROUND_MS then
+        return around.list
+    end
+    local list = P.objectsAroundUncached(worldobjects)
+    if now and worldobjects ~= nil then around = { wo = worldobjects, at = now, list = list } end
+    return list
+end
+
+function P.objectsAroundUncached(worldobjects)
     local ours, rest, seenSq, seenObj = {}, {}, {}, {}
     local prefix = P.TILESET .. "_"
     local function add(o)

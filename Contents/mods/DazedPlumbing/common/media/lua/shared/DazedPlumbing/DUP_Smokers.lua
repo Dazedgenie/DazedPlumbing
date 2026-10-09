@@ -39,8 +39,7 @@ end
 
 --- {facing} for a smoker sprite name, or nil.
 function Sm.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < Sm.BASE or idx >= Sm.BASE + Sm.COUNT then return nil end
     return { facing = Sm.FACINGS[idx - Sm.BASE + 1] }
 end

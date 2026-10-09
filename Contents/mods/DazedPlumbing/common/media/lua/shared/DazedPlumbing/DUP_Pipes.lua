@@ -58,8 +58,7 @@ end
 
 --- Is this one of our pipe sprites?  Returns outdoor?, mask or nil.
 function K.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < K.BASE or idx >= K.BASE + K.COUNT then return nil end
     local n = idx - K.BASE
     return n >= 16, n % 16
@@ -97,8 +96,7 @@ end
 function K.isValve(obj)
     local spr = try(obj, "getSprite")
     local name = spr and try(spr, "getName")
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     return idx ~= nil and idx >= K.VALVE_BASE and idx < K.VALVE_BASE + K.VALVE_COUNT
 end
 
@@ -450,8 +448,7 @@ end
 
 function K.isPort(obj)
     local spr = try(obj, "getSprite")
-    local idx = string.match(try(spr, "getName") or "", P.namePattern())
-    idx = tonumber(idx)
+    local idx = P.indexOf(try(spr, "getName"))
     return idx ~= nil and idx >= K.PORT_BASE and idx < K.PORT_BASE + K.PORT_COUNT
 end
 

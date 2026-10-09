@@ -51,8 +51,7 @@ function W.sprite(facing)
 end
 
 function W.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < W.BASE or idx >= W.BASE + W.COUNT then return nil end
     return { facing = W.FACINGS[idx - W.BASE + 1] }
 end

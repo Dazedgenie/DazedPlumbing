@@ -33,8 +33,7 @@ end
 
 --- {facing} for a drilled well sprite name, or nil.
 function Dw.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < Dw.BASE or idx >= Dw.BASE + Dw.COUNT then return nil end
     return { facing = Dw.FACINGS[idx - Dw.BASE + 1] }
 end

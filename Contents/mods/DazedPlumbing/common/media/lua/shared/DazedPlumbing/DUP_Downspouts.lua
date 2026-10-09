@@ -34,8 +34,7 @@ function D.sprite(facing)
 end
 
 function D.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < D.BASE or idx >= D.BASE + D.COUNT then return nil end
     return { facing = D.FACINGS[idx - D.BASE + 1] }
 end

@@ -142,6 +142,7 @@ if origCanPlace then
     function ISMoveableSpriteProps:canPlaceMoveableInternal(character, square, item, forceTypeObject, ...)
         local allowed = origCanPlace(self, character, square, item, forceTypeObject, ...)
         if not allowed then return allowed end
+        if not P.ours(self.spriteName) then return allowed end     -- every rule below is for this mod's tiles
         -- A water pump: bare natural ground in the open, one to a square.
         local pump = self.spriteName and DazedPlumb.Pumps and DazedPlumb.Pumps.spriteInfo(self.spriteName)
         if pump and square then

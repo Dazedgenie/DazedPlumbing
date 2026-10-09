@@ -44,8 +44,7 @@ end
 
 --- {kind, facing} for a fuel pump sprite name, or nil.
 function Fp.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < Fp.BASE or idx >= Fp.BASE + Fp.COUNT then return nil end
     local n = idx - Fp.BASE
     return { kind = Fp.KINDS[math.floor(n / 4) + 1], facing = Fp.FACINGS[n % 4 + 1] }

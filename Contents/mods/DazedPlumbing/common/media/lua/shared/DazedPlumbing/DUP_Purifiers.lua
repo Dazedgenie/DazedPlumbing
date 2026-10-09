@@ -52,8 +52,7 @@ function R.sprite(facing)
 end
 
 function R.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < R.BASE or idx >= R.BASE + R.COUNT then return nil end
     return { facing = R.FACINGS[idx - R.BASE + 1] }
 end

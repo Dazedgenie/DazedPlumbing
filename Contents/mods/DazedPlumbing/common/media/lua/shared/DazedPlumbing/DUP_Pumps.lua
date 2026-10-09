@@ -72,8 +72,7 @@ end
 
 --- {kind, facing} for a pump sprite name (`stroke` when the handle is down), or nil.
 function U.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if idx and idx >= U.STROKE_BASE and idx < U.STROKE_BASE + 4 then
         return { kind = "hand", facing = U.FACINGS[idx - U.STROKE_BASE + 1], stroke = true }
     end

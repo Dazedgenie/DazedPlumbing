@@ -57,8 +57,7 @@ function Z.sprite(facing, spraying)
 end
 
 function Z.spriteInfo(name)
-    local idx = type(name) == "string" and string.match(name, "^" .. P.TILESET .. "_(%d+)$")
-    idx = idx and tonumber(idx)
+    local idx = P.indexOf(name)
     if not idx or idx < Z.BASE or idx >= Z.BASE + Z.COUNT then return nil end
     local n = idx - Z.BASE
     return { facing = Z.FACINGS[n % 4 + 1], spraying = n >= 4 }
