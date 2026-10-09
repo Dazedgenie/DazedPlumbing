@@ -213,10 +213,7 @@ end
 
 ----------------------------------------------------------- the sink
 --- Litres it would use this minute.
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 function Z.room(obj)
     -- the network asks every minute: a sprinkler that has not been fed for a while stops spraying

@@ -125,11 +125,7 @@ function Sm.smoke(item)
 end
 
 ----------------------------------------------------------- state
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    local h = gt and try(gt, "getWorldAgeHours")
-    return tonumber(h) or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 --- The smoker's state table, defaulted. A new one starts unlit, settled now.
 function Sm.state(obj)
@@ -302,10 +298,7 @@ function Sm.register(obj)
     if obj then Sm.live[obj] = true end
 end
 
-local function alive(o)
-    local ix = try(o, "getObjectIndex")
-    return type(ix) == "number" and ix >= 0
-end
+local alive = P.alive
 
 --- Settle every loaded smoker (authority only). A lifted one drops out.
 function Sm.tick()

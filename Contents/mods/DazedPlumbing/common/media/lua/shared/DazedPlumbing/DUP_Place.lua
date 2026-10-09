@@ -45,10 +45,7 @@ local try = P.try
 --- Tell a player why a placement was refused: the core's rate-limited note (the cursor asks every frame).
 function G.note(character, key) DazedCore.Note.limited(character, key) end
 
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 --- Copy an item's carried state onto a freshly placed tank.
 function G.seed(obj, item)

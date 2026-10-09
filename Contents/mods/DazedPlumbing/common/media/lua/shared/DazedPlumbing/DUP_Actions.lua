@@ -20,10 +20,7 @@ local P = DazedPlumb.Parts
 local M = DazedPlumb.Model
 local F = DazedPlumb.Fluids
 
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 --- Is the tank still standing, still a tank, and within two tiles of the actor?
 local function stillApplies(action)

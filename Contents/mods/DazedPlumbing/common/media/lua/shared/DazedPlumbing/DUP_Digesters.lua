@@ -87,11 +87,7 @@ end
 function Dg.room(waste) return max(0, Dg.SLURRY_CAP - max(0, waste or 0)) end
 
 ----------------------------------------------------------- state
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    local h = gt and try(gt, "getWorldAgeHours")
-    return tonumber(h) or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 --- The digester's state table, defaulted and kept in range. A new one starts empty, settled now.
 function Dg.state(obj)
@@ -157,10 +153,7 @@ function Dg.register(obj)
     if obj then Dg.live[obj] = true end
 end
 
-local function alive(o)
-    local ix = try(o, "getObjectIndex")
-    return type(ix) == "number" and ix >= 0
-end
+local alive = P.alive
 
 --- Settle every loaded digester (authority only). A lifted or broken one drops out.
 function Dg.tick()

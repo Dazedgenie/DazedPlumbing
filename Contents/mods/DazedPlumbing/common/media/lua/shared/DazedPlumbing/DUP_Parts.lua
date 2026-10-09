@@ -126,13 +126,23 @@ function P.spriteInfo(name)
     return spriteInfoMemo(name)
 end
 
-local function try(obj, method, ...)
-    if obj == nil or type(obj[method]) ~= "function" then return nil end
-    local ok, v = pcall(obj[method], obj, ...)
-    if ok then return v end
-    return nil
-end
+local Util = DazedCore.Util
+local try = Util.try
 P.try = try
+
+--- Is a world object still standing on a square? A lifted or destroyed one answers false.
+function P.alive(o)
+    local ix = try(o, "getObjectIndex")
+    return type(ix) == "number" and ix >= 0
+end
+
+-- Console lines said once per session, by key, so a failing engine path is one line in a report.
+local said = {}
+function P.once(key, text)
+    if said[key] then return end
+    said[key] = true
+    print("DazedPlumbing: " .. text)
+end
 
 --- Start a timed action's sound (its class SOUND: a game sound name, or a function of the action).
 function P.startSound(action)
@@ -151,29 +161,11 @@ function P.stopSound(action)
     action.sound = nil
 end
 
---- A tile property's value, or nil. Build 42 names the calls get/has; older builds Val/Is.
-function P.prop(obj, key)
-    for _, holder in ipairs({ try(obj, "getProperties"), try(try(obj, "getSprite"), "getProperties") }) do
-        if holder then
-            local v = try(holder, "get", key)
-            if v == nil then v = try(holder, "Val", key) end
-            if v ~= nil then return v end
-        end
-    end
-    return nil
-end
+--- A tile property's value, or nil; the core's helper, kept under Plumbing's old name.
+P.prop = Util.prop
 
---- Does the tile carry this flag property?
-function P.propIs(obj, key)
-    for _, holder in ipairs({ try(obj, "getProperties"), try(try(obj, "getSprite"), "getProperties") }) do
-        if holder then
-            for _, m in ipairs({ "has", "Is", "is" }) do
-                if try(holder, m, key) == true then return true end
-            end
-        end
-    end
-    return false
-end
+--- Does the tile carry this flag property? The core's helper, kept under Plumbing's old name.
+P.propIs = Util.propIs
 
 --- Everything the mod knows about an object, or nil if it is not a tank.
 function P.describe(obj)

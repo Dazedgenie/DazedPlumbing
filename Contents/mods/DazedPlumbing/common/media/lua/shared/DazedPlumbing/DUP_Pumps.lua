@@ -109,10 +109,7 @@ local function wells()
     return t
 end
 
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 --- Is open water within a dozen squares? Looks for water floor tiles.
 function U.waterNear(square)

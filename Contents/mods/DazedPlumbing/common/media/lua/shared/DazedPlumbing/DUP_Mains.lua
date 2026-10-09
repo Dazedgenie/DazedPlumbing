@@ -86,7 +86,7 @@ end
 function W.keyOf(obj)
     local sq = try(obj, "getSquare")
     if not sq then return nil end
-    return sq:getX() .. "," .. sq:getY() .. "," .. sq:getZ()
+    return DazedPlumb.Net.key(sq:getX(), sq:getY(), sq:getZ())
 end
 
 --- The building a main serves, or nil.
@@ -117,8 +117,10 @@ end
 
 --- The square the main stands on, from a registry key.
 local function split(key)
-    local x, y, z = string.match(key or "", "^(-?%d+),(-?%d+),(-?%d+)$")
-    return tonumber(x), tonumber(y), tonumber(z)
+    if type(key) ~= "string" then return nil end
+    local x, y, z = DazedPlumb.Net.split(key)
+    if x and DazedPlumb.Net.key(x, y, z) == key then return x, y, z end   -- whole keys only, as before
+    return nil
 end
 
 --- The main at a registry key, or nil and "gone" (square loaded, nothing there) / "unloaded".

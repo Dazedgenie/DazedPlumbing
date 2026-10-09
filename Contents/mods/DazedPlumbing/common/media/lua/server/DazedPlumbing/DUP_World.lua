@@ -28,15 +28,9 @@ W.MAX_CATCHUP_HOURS = 72
 W.tanks = W.tanks or setmetatable({}, { __mode = "k" })
 W.spouts = W.spouts or setmetatable({}, { __mode = "k" })
 
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
-local function alive(o)
-    local ix = try(o, "getObjectIndex")
-    return type(ix) == "number" and ix >= 0
-end
+local alive = P.alive
 
 function W.register(obj)
     if obj then W.tanks[obj] = true end

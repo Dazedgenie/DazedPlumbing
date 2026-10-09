@@ -17,12 +17,7 @@ X.NAMES = { sink = 20, bath = 100, shower = 60, toilet = 15, ["washing machine"]
             dishwasher = 20, urinal = 10, ["water dispenser"] = 20, ["water cooler"] = 20, fountain = 50 }
 X.DEFAULT_CAP = 20
 
-local said = {}
-local function once(key, text)
-    if said[key] then return end
-    said[key] = true
-    print("DazedPlumbing: " .. text)
-end
+local once = P.once
 
 local function customName(obj)
     local v = P.prop(obj, "CustomName")

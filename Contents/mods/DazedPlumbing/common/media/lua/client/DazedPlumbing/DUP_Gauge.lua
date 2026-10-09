@@ -40,10 +40,7 @@ local FLUID = { water = { 0.30, 0.60, 1.00 }, gas = { 0.88, 0.18, 0.18 }, propan
 
 local function f1(v) return string.format("%.1f", v or 0) end
 local function f0(v) return string.format("%d", math.floor((v or 0) + 0.5)) end
-local function worldHours()
-    local gt = getGameTime and getGameTime()
-    return gt and gt:getWorldAgeHours() or 0
-end
+local worldHours = DazedCore.Util.worldHours
 
 ----------------------------------------------------------- reading the world
 --- A device's name as the player knows it: its tile's moveable name, else the item's.

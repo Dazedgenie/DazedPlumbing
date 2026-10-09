@@ -20,25 +20,14 @@
      All functions answer for ONE item; none touches a tank.
 ]]
 
-require "DazedPlumbing/DUP_Model"
+require "DazedPlumbing/DUP_Parts"
 
 DazedPlumb.Fluids = DazedPlumb.Fluids or {}
 local F = DazedPlumb.Fluids
 local M = DazedPlumb.Model
 
-local function try(obj, method, ...)
-    if obj == nil or type(obj[method]) ~= "function" then return nil end
-    local ok, v = pcall(obj[method], obj, ...)
-    if ok then return v end
-    return nil
-end
-
-local said = {}
-local function once(key, text)
-    if said[key] then return end
-    said[key] = true
-    print("DazedPlumbing: " .. text)
-end
+local try = DazedCore.Util.try
+local once = DazedPlumb.Parts.once
 
 --- What a fluid container holds, as one of our types ("water", "gas") or nil.
 local function fluidKind(fc, item)

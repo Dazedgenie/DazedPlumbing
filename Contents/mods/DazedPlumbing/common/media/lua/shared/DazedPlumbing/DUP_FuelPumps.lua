@@ -191,12 +191,7 @@ function Fp.tankOf(vehicle)
     return { part = part, amount = cur, capacity = cap, room = math.max(0, cap - cur) }
 end
 
-local said = {}
-local function once(key, text)
-    if said[key] then return end
-    said[key] = true
-    print("DazedPlumbing: " .. text)
-end
+local once = P.once
 
 --- Set the tank's contents and tell the clients; returns what it holds afterwards, read back.
 function Fp.setVehicleFuel(vehicle, part, amount)

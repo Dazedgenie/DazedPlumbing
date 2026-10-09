@@ -19,12 +19,7 @@ local try = P.try
 
 R.ID = "dazed_rainbarrel"
 
-local said = {}
-local function once(key, text)
-    if said[key] then return end
-    said[key] = true
-    print("DazedPlumbing: " .. text)
-end
+local once = P.once
 
 --- Is this a vanilla rain collector barrel? Looks at the tile's own name.
 function R.isBarrel(obj)
