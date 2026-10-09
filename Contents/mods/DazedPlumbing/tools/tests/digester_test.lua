@@ -59,7 +59,7 @@ for _, h in ipairs(Events.OnGameStart.handlers) do h() end
 local boot
 for _, line in ipairs(E.printed) do if line:find("DazedPlumbing: ready") or line:find("INCOMPLETE") then boot = line end end
 ok(boot and boot:find("252/252 tiles, 32/32 items", 1, true), "boot check counts the digester: " .. tostring(boot))
-ok(DazedPlumb.VERSION == "0.16.0" and slurp(media .. "/../../42/mod.info"):find("modversion=0.16.0", 1, true) ~= nil, "version 0.16.0 in the Lua and in mod.info")
+ok(DazedPlumb.VERSION == "0.17.0" and slurp(media .. "/../../42/mod.info"):find("modversion=0.17.0", 1, true) ~= nil, "version 0.17.0 in the Lua and in mod.info")
 
 local w = tonumber(itemsTxt:match("item DazedDigester%s*{.-Weight%s*=%s*([%d%.]+)"))
 ok(w and w < DazedCore.Heavy.LIMIT and DazedCore.Heavy.count(w) == 1, "the digester is one piece under the heavy limit, " .. tostring(w) .. " kg")

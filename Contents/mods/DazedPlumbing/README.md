@@ -1,7 +1,22 @@
-# Dazed Utilities: Plumbing  (v0.16.0, Build 42)
+# Dazed Utilities: Plumbing  (v0.17.0, Build 42)
 
 Release 9 (0.15.0): **ice** with Dazed Utilities: Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
 Works with *Dazed Utilities: Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
+
+## Main water panel (0.17.0)
+A connected water main gets a **Water panel** (right-click the main -> Water main -> *Water panel*, the first row once a building is connected). It is one board, like Dazed Power's charge board: drag it by its body, close it with the X.
+- **SUPPLY** and **DEMAND** dials (0-40 L/min, or up to the line rate when that is higher): what reached the house last minute and what its open fixtures want. The red arc on SUPPLY starts at the house's own rate.
+- **LINE RATE**: click the left half of the strip for 1 L/min less, the right half for 1 L/min more (1 up to *Water main line rate*). The house never draws more than this.
+- **Water tower**: every tank on the main's line together, with its percentage and litres (pale when frozen, olive when tainted). **TANKS ON LINE** lists up to three, the one feeding marked.
+- **SOURCES ON LINE**: every pump, purifier, drilled well, downspout and rain barrel pushing into those tanks (and the pumps feeding a purifier), with its state and flow. The toggle switches an electric pump, purifier or well on or off; clicking the flow figure steps an electric pump or purifier through 25/50/75/100%.
+- Lamps: **SUPPLY** (water on the line), **TAINTED**, **DRY**, **RATIONED** (the house wants more than its rate or the tanks hold), **PAUSED**.
+- **FIXTURES**, in fill order: room, kind, level, litres, a **valve** toggle (a closed fixture gets nothing from the main) and up/down arrows that move it in the **fill order** (the first in line is filled first when water is short). Six rows show; the header arrows or the wheel scroll the rest. Fixtures with a tap of their own are listed last, without controls.
+- **TODAY**: litres delivered since midnight on number wheels, with a bar for every hour.
+- **CONNECT BUILDING** opens the Building Picker, as the menu does. **DRAIN FIXTURES ON SHUT-OFF**: when the main is shut off, every fixture it feeds is emptied once.
+- **MAIN SHUT-OFF**: click the wheel, then click again within two seconds. It reads OPEN or PAUSED. It is the same switch as the main line's pause in the pipe menu: either one turns both.
+- Who can use it: a player within the main's reach plus two squares, as for the picker. Every switch is a command the server checks (range, the fixture or machine still on this main) and limits to four a second; the window never writes anything itself. Works on a dedicated server and in hosted games.
+- Art: the board reuses Dazed Power's board textures when that mod is loaded and draws plain shapes without it. The tank column, knob and shut-off wheel are drawn in code for now; Blender renders are a follow-up.
+- Saves: nothing to migrate. A main nobody opens the panel on behaves exactly as before; the new fields (`rate`, `shut`, `drain`, `valves`, `prio`, figures) are added only when used. A main whose line was paused before 0.17.0 reads as shut.
 
 ## Ice (0.15.0)
 With **Dazed Utilities: Climate** loaded, water freezes. A frozen pipe square passes nothing, like a closed valve, until
@@ -205,16 +220,25 @@ lua net_test.lua                               # the pure network code
 lua plumbing_test.lua                          # links, actions, ticks, sync, taps, valves, flow
 lua place_test.lua                             # a large tank picked up is one item
 lua mains_test.lua                             # the water main: picking a house, reach, feeding, taps kept
+lua panel_test.lua                             # the main water panel: fill order, valves, throttle, shut-off, drain, figures, commands, the window
+lua board_test.lua                             # the panel's face: controls, scrolling, scaling, drawn stand-ins without textures
 lua fuel_test.lua                              # the fuel pumps: litres per action, limits, hand vs electric, power, cans, vehicles, sprite and item counts
 lua digester_test.lua                          # the biogas digester
 lua sprinkler_test.lua                         # the sprinkler schedule: windows (over midnight too), rain skip, the action, the tick
 lua well_test.lua                              # the drilled well: output per minute, power by wire only, clean water, full tanks, the load
 lua smoker_test.lua                            # the smoker: burn rate, smoking timer, 48 h catch-up, no gas or a shut line, the smoked-food change
-./run_all.sh                                   # all nine
+./run_all.sh                                   # every test above that run_all.sh lists
 # each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
 ```
 
 ## Changes
+- **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain. No save migration.
+  - *Patch notes:*
+    - New files: `DUP_MainPanel.lua` (server commands `mainValve`, `mainPrio`, `mainRate`, `mainShut`, `mainDrain`, `mainMachine`, `mainInfo` through `DazedCore.Net`, 250 ms / 500 ms limits), `DUP_BoardLayout.lua` (the face as draw ops), `DUP_Board.lua` (the window); tests `panel_test.lua` and `board_test.lua`.
+    - Water main: optional entry fields `rate`, `shut`, `drain`, `drained`, `valves`, `prio`, `lpm`, `today`, `hist`, `histDay`, `used`. `W.put` fills in priority order and skips closed valves; the minute tick runs `W.beforeFlow` / `W.afterFlow` around the link tick for the figures, use detection and the drain. Figures alone are synced at most every 5 game minutes.
+    - The main line's pause and the panel's shut-off are one switch (new optional adapter hook `onSource` in `L.setSource`).
+    - The main's fixture list is no longer rescanned when the mains table changes, only when the pipes or the footprint do.
+    - Fixtures: `X.kindOf`, `X.amount`, `X.tainted`, `X.selfFed`, `X.empty`.
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
     - **Gauge on a digester-fed tank (MP):** opening the gauge on a client no longer settles the digester there (it advanced the clock, digested waste and sent ModData from the client). A client's `available()` returns `Dg.preview`, the same figure worked out without writing; `settle`/`publish`/`refresh` on digesters and smokers are authority-only.

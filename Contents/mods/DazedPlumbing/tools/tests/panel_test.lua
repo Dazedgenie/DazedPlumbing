@@ -233,6 +233,19 @@ E.hours = 125 + 1 / 60
 minute()
 ok(near(e.today, 10) and near(e.hist[125 % 24 + 1], 10), "and counts again from zero: " .. tostring(e.today))
 
+-- figures alone do not resend the mains table every minute: a full house moves nothing and sends nothing
+sink.fc.amount, bath.fc.amount, upstairs.fc.amount = sink.fc.cap, bath.fc.cap, upstairs.fc.cap
+E.hours = 125 + 2 / 60
+minute()
+local v0 = S.versionOf(W.TAG)
+E.hours = 125 + 3 / 60
+minute()
+ok(S.versionOf(W.TAG) == v0, "an idle minute does not touch the synced table")
+sink.fc.amount = 15
+E.hours = 125 + 4 / 60                          -- minute 7504 is not a multiple of 5, but lpm going from nothing to something is sent
+minute()
+ok(S.versionOf(W.TAG) > v0, "water starting to flow is sent at once")
+
 -- 11. status lamps
 local st = W.status(main)
 ok(st.piped and not st.dry and not st.tainted and not st.paused and not st.frozen, "a healthy main: piped, wet, clean, open")
