@@ -41,6 +41,7 @@ L.RATE = { propane = 1.0, gas = 2.0, water = 20.0 }   -- most one device moves p
 L.KEY = "dazedplumbLinks"
 
 L.adapters, L.order = {}, {}
+L.epoch = 0                                -- bumped whenever an adapter or node is registered
 
 --- Register (or replace, by id) a machine adapter (a sink, a source, or both ways round).
 function L.register(a)
@@ -51,6 +52,7 @@ function L.register(a)
     if not L.adapters[a.id] then L.order[#L.order + 1] = a.id end
     L.adapters[a.id] = a
     L.forgetAdapters()
+    L.epoch = L.epoch + 1                  -- resolved networks hold adapter tables: look again
     return true
 end
 
@@ -91,6 +93,7 @@ function L.registerNode(n)
     if not (n and n.id and n.kind and n.match and n.room and n.add) then return false end
     if not L.nodes[n.id] then L.nodeOrder[#L.nodeOrder + 1] = n.id end
     L.nodes[n.id] = n
+    L.epoch = L.epoch + 1
     return true
 end
 
@@ -305,18 +308,26 @@ function L.tanksNear(machine, supplies, range, withNodes)
 end
 
 ----------------------------------------------------------- reading a network
---- Resolve a network's ends into live handles.
---  Returns { tanks, nodes, sinks, sources } (each a list), skipping ends whose
---  square is not loaded or whose device is gone.
-function L.resolve(comp, fluid)
+-- Resolve a network's ends, also noting what to look at later to tell the answer still holds:
+-- each end square (loaded or not, and its object count) and each device found (still standing, still matching).
+local function resolveNoting(comp, fluid)
     local out = { tanks = {}, nodes = {}, sinks = {}, sources = {} }
     local seen = {}
+    local squares, sqSeen, found = {}, {}, {}
     for _, e in ipairs(comp.ends or {}) do
+        local sk = e.key
+        if sk and not sqSeen[sk] then
+            sqSeen[sk] = true
+            local sq = squareAt(e.x, e.y, e.z)
+            local objs = sq and try(sq, "getObjects")
+            squares[#squares + 1] = { x = e.x, y = e.y, z = e.z, loaded = sq ~= nil, n = objs and objs:size() or 0 }
+        end
         if e.role == "tank" then
             local tank = L.tankAt(e.x, e.y, e.z, fluid)
             if tank and not seen[tank] then
                 seen[tank] = true
                 out.tanks[#out.tanks + 1] = L.wrapTarget(tank, fluid)
+                found[#found + 1] = { obj = tank, tankOf = fluid }
             end
         elseif e.role == "node" then
             local n = L.nodes[e.id]
@@ -329,6 +340,7 @@ function L.resolve(comp, fluid)
                     if ok and yes and not seen[o] then
                         seen[o] = true
                         out.nodes[#out.nodes + 1] = L.wrapTarget(o, fluid)
+                        found[#found + 1] = { obj = o, match = n.match }
                     end
                 end
             end
@@ -342,12 +354,56 @@ function L.resolve(comp, fluid)
                         seen[m][e.role] = true
                         local list = (e.role == "sink") and out.sinks or out.sources
                         list[#list + 1] = { obj = m, adapter = a, key = e.key }
+                        found[#found + 1] = { obj = m, match = a.match }
                     end
                 end
             end
         end
     end
-    return out
+    return out, { epoch = L.epoch, squares = squares, found = found }
+end
+
+--- Resolve a network's ends into live handles.
+--  Returns { tanks, nodes, sinks, sources } (each a list), skipping ends whose
+--  square is not loaded or whose device is gone.
+function L.resolve(comp, fluid)
+    return (resolveNoting(comp, fluid))
+end
+
+-- Does an earlier resolve still describe the world? Same squares loaded with the same object counts,
+-- every device found still standing and still matching, and no adapter registered since.
+local function stillHolds(check)
+    if check.epoch ~= L.epoch then return false end
+    for _, c in ipairs(check.squares) do
+        local sq = squareAt(c.x, c.y, c.z)
+        if (sq ~= nil) ~= c.loaded then return false end
+        if sq then
+            local objs = try(sq, "getObjects")
+            if (objs and objs:size() or 0) ~= c.n then return false end
+        end
+    end
+    for _, f in ipairs(check.found) do
+        if not P.alive(f.obj) then return false end
+        if f.tankOf then
+            local info = P.describe(f.obj)
+            if not (info and info.type == f.tankOf) then return false end
+        else
+            local ok, yes = pcall(f.match, f.obj)
+            if not (ok and yes) then return false end
+        end
+    end
+    return true
+end
+
+--- L.resolve, kept on the component (which lives until the pipes change) while a cheap check says it still holds.
+--  The handles are reused from minute to minute: callers read them and never change them.
+function L.resolveCached(comp, fluid)
+    comp.resolved = comp.resolved or {}
+    local hit = comp.resolved[fluid]
+    if hit and stillHolds(hit.check) then return hit.r end
+    local r, check = resolveNoting(comp, fluid)
+    comp.resolved[fluid] = { r = r, check = check }
+    return r
 end
 
 --- What a machine is joined to right now, for a menu or a check:
@@ -361,7 +417,7 @@ function L.status(machine, adapter)
     local fluid = L.kindOf(adapter)
     for _, comp in ipairs(K.componentsOf(endStr)) do
         st.working = true
-        local r = L.resolve(comp, fluid)
+        local r = L.resolveCached(comp, fluid)
         for _, t in ipairs(r.tanks) do st.tanks[#st.tanks + 1] = t st.receivers[#st.receivers + 1] = t end
         for _, n in ipairs(r.nodes) do st.receivers[#st.receivers + 1] = n end
     end
@@ -405,10 +461,22 @@ local function components(pipes)
     return netCache.list
 end
 
+-- How a group tells its members apart, and adding a resolved list to a group without repeats.
+local function tankKey(t) return "t" .. tostring(t.key) end
+local function nodeKey(t) return "n" .. tostring(t.obj) end
+local function sinkKey(d) return "s" .. d.key .. "|" .. d.adapter.id end
+local function sourceKey(d) return "o" .. d.key .. "|" .. d.adapter.id end
+local function addTo(g, list, items, keyOf)
+    for _, it in ipairs(items) do
+        local k = keyOf(it)
+        if not g.seen[k] then g.seen[k] = true list[#list + 1] = it end
+    end
+end
+
 local function groups(pipes)
     local comps, parent = {}, {}
     for i, comp in ipairs(components(pipes)) do
-        comps[i] = { comp = comp, r = L.resolve(comp, comp.fluid) }
+        comps[i] = { comp = comp, r = L.resolveCached(comp, comp.fluid) }
         parent[i] = i
     end
     local function find(i) while parent[i] ~= i do parent[i] = parent[parent[i]] i = parent[i] end return i end
@@ -427,16 +495,10 @@ local function groups(pipes)
             order[#order + 1] = byRoot[root]
         end
         local g = byRoot[root]
-        local function add(list, items, keyOf)
-            for _, it in ipairs(items) do
-                local k = keyOf(it)
-                if not g.seen[k] then g.seen[k] = true list[#list + 1] = it end
-            end
-        end
-        add(g.tanks, c.r.tanks, function(t) return "t" .. tostring(t.key) end)
-        add(g.nodes, c.r.nodes, function(t) return "n" .. tostring(t.obj) end)
-        add(g.sinks, c.r.sinks, function(d) return "s" .. d.key .. "|" .. d.adapter.id end)
-        add(g.sources, c.r.sources, function(d) return "o" .. d.key .. "|" .. d.adapter.id end)
+        addTo(g, g.tanks, c.r.tanks, tankKey)
+        addTo(g, g.nodes, c.r.nodes, nodeKey)
+        addTo(g, g.sinks, c.r.sinks, sinkKey)
+        addTo(g, g.sources, c.r.sources, sourceKey)
     end
     return order
 end
@@ -449,6 +511,27 @@ function L.sourceDirty(adapter, obj)
         return ok and v == true
     end
     return t == true
+end
+
+-- A resolved machine's handle for N.run, made once and kept with the resolve (rate and dirty are set each minute).
+local function sinkHandle(s)
+    if not s.handle then
+        s.handle = {
+            room = function() return s.adapter.room(s.obj) end,
+            put = function(amt, dirty) return s.adapter.put(s.obj, amt, dirty) end,
+        }
+    end
+    return s.handle
+end
+
+local function sourceHandle(s)
+    if not s.handle then
+        s.handle = {
+            available = function() return s.adapter.available(s.obj) end,
+            take = function(amt) return s.adapter.take(s.obj, amt) end,
+        }
+    end
+    return s.handle
 end
 
 --- Move what every working network moves this minute (authority only).
@@ -476,11 +559,9 @@ function L.tickNow()
                 end
                 served[id] = true
                 if s.adapter.engage then pcall(s.adapter.engage, s.obj, link) end
-                sinks[#sinks + 1] = {
-                    room = function() return s.adapter.room(s.obj) end,
-                    put = function(amt, dirty) return s.adapter.put(s.obj, amt, dirty) end,
-                    rate = s.adapter.rate and s.adapter.rate(s.obj) or nil,
-                }
+                local h = sinkHandle(s)
+                h.rate = s.adapter.rate and s.adapter.rate(s.obj) or nil
+                sinks[#sinks + 1] = h
             end
         end
         for _, s in ipairs(r.sources) do
@@ -488,11 +569,9 @@ function L.tickNow()
             if not link and L.attach(s.obj, s.adapter) then link = L.linkOf(s.obj, s.adapter.id) end
             if link and link.source == "tank" then
                 served[s.key .. "|" .. s.adapter.id] = true
-                sources[#sources + 1] = {
-                    available = function() return s.adapter.available(s.obj) end,
-                    take = function(amt) return s.adapter.take(s.obj, amt) end,
-                    dirty = L.sourceDirty(s.adapter, s.obj),
-                }
+                local h = sourceHandle(s)
+                h.dirty = L.sourceDirty(s.adapter, s.obj)
+                sources[#sources + 1] = h
             end
         end
         local ok, err = pcall(N.run, L.RATE[fluid] or 1, r.tanks, r.nodes, sources, sinks)

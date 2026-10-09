@@ -584,6 +584,22 @@ do
     for _, t in ipairs({ ta, tb }) do t.transmitModData = nil end
 end
 
+-- a network's resolved handles are kept while the world under them holds
+do
+    local comp
+    for _, c in ipairs(N.components(K.pipes())) do
+        for _, e in ipairs(c.ends) do if e.role == "tank" and e.x == 30 and e.y == 34 then comp = c end end
+    end
+    local r1 = comp and L.resolveCached(comp, "water")
+    ok(r1 and #r1.tanks == 2 and L.resolveCached(comp, "water") == r1, "a second ask reuses the resolved network")
+    local sq = tb:getSquare()
+    sq:RemoveTileObject(tb)
+    local r2 = L.resolveCached(comp, "water")
+    ok(r2 ~= r1 and #r2.tanks == 1, "a lifted tank makes it resolve afresh")
+    sq:AddTileObject(tb)
+    ok(#L.resolveCached(comp, "water").tanks == 2, "and putting it back is seen too")
+end
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)
