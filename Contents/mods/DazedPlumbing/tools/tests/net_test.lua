@@ -99,5 +99,26 @@ local T4, T5 = tank(0, 3), tank(0, 100)
 local src = { available = function() return 20 end, take = function(x) return x end, dirty = true }
 N.run(20, { T4.handle, T5.handle }, {}, { src }, {})
 ok(near(T4.amount, 3) and near(T5.amount, 17), "source split by room")
+-- pruning from the squares that lost an end matches pruning the whole table
+local function layout()
+    local q = {}
+    local e1, e2 = N.endString("0,0,0", "sink", "a"), N.endString("6,0,0", "tank", "tank")
+    N.layPath(q, "water", 0, { x = 0, y = 0 }, { { x = 1, y = 0 }, { x = 2, y = 0 }, { x = 3, y = 0 }, { x = 4, y = 0 }, { x = 5, y = 0 } }, { x = 6, y = 0, kind = "dev" }, e1, e2)
+    N.layPath(q, "water", 0, { x = 3, y = 3 }, { { x = 3, y = 2 }, { x = 3, y = 1 } }, { x = 3, y = 0, kind = "pipe" }, N.endString("3,3,0", "sink", "b"), nil)
+    return q, e1
+end
+local full, e1 = layout()
+local seeded = layout()
+N.prune(full, N.dropEnd(full, e1))
+local holders = N.index(seeded)[e1]
+N.prune(seeded, N.dropEnd(seeded, e1, holders))
+local same = true
+for k, r in pairs(full) do if not seeded[k] or seeded[k].mask ~= r.mask then same = false end end
+for k in pairs(seeded) do if not full[k] then same = false end end
+ok(same and full["1,0,0"] == nil and full["3,0,0"] ~= nil, "seeded prune leaves the same pipes and arms as a full prune")
+for i = 1, 40000 do N.split(i .. ",2,3") end
+local sx, sy, sz = N.split("7,-8,9")
+ok(sx == 7 and sy == -8 and sz == 9 and select(1, N.split("1,2,3")) == 1, "the split memo keeps working past its size")
+
 print(string.format("net_test: %d checks, %d failed", n, fails))
 os.exit(fails == 0 and 0 or 1)

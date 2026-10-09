@@ -27,21 +27,26 @@ N.DIRS = { { 0, -1, 1, 4 }, { 1, 0, 2, 8 }, { 0, 1, 4, 1 }, { -1, 0, 8, 2 } }   
 function N.key(x, y, z) return x .. "," .. y .. "," .. z end
 
 -- Key string -> its three numbers; a key always parses the same way, and the minute ticks split every pipe key.
-local splitMemo, splitMemoN = {}, 0
-local SPLIT_MEMO_MAX = 20000
+-- Two generations: when the new one fills, the old one is dropped, so keys still in use survive the turnover.
+local splitNew, splitOld, splitNewN = {}, {}, 0
+N.SPLIT_MEMO_MAX = 32768
 
 function N.split(key)
-    local hit = splitMemo[key]
-    if hit then return hit[1], hit[2], hit[3] end
-    local x, y, z = string.match(key, "^(%-?%d+),(%-?%d+),(%-?%d+)")
-    x, y, z = tonumber(x), tonumber(y), tonumber(z)
-    -- Only well-formed keys are kept, and the table is bounded so stray strings cannot grow it forever.
-    if x and type(key) == "string" then
-        if splitMemoN >= SPLIT_MEMO_MAX then splitMemo, splitMemoN = {}, 0 end
-        splitMemo[key] = { x, y, z }
-        splitMemoN = splitMemoN + 1
+    local hit = splitNew[key]
+    if not hit then
+        hit = splitOld[key]
+        if not hit then
+            local x, y, z = string.match(key, "^(%-?%d+),(%-?%d+),(%-?%d+)")
+            x, y, z = tonumber(x), tonumber(y), tonumber(z)
+            -- Only well-formed keys are kept, and the table is bounded so stray strings cannot grow it forever.
+            if not (x and type(key) == "string") then return x, y, z end
+            hit = { x, y, z }
+        end
+        if splitNewN >= N.SPLIT_MEMO_MAX then splitOld, splitNew, splitNewN = splitNew, {}, 0 end
+        splitNew[key] = hit
+        splitNewN = splitNewN + 1
     end
-    return x, y, z
+    return hit[1], hit[2], hit[3]
 end
 
 function N.has(mask, bit) return math.floor((mask or 0) / bit) % 2 == 1 end
@@ -138,11 +143,20 @@ function N.endsOf(pipes, comp)
     return out
 end
 
+-- Sort a list of strings in place; the core's merge sort when it is loaded (Kahlua's table.sort overflows on thousands).
+local function lessStr(a, b) return a < b end
+local function sortKeys(keys)
+    local R = DazedCore and DazedCore.Reach
+    if R and R.sort then R.sort(keys, lessStr) else table.sort(keys) end
+    return keys
+end
+N.sortKeys = sortKeys
+
 --- Every WORKING component, in a stable order, each with its `ends`.
 function N.components(pipes)
     local keys = {}
     for k in pairs(pipes) do keys[#keys + 1] = k end
-    table.sort(keys)
+    sortKeys(keys)
     local seen, out = {}, {}
     for _, k in ipairs(keys) do
         if not seen[k] then
@@ -226,48 +240,84 @@ function N.layPath(pipes, f, z, from, path, tail, devEnd, tailEnd, outdoor)
 end
 
 ----------------------------------------------------------- taking pipe away
+-- Drop end `s` from one record; true when it held it.
+local function dropFrom(pipes, k, s, changed, dead)
+    local rec = pipes[k]
+    local ends = rec and rec.ends
+    if not ends then return end
+    local keep = {}
+    for _, e in ipairs(ends) do if e ~= s then keep[#keep + 1] = e end end
+    if #keep ~= #ends then
+        rec.ends = keep
+        if rec.virtual then dead[#dead + 1] = k else changed[#changed + 1] = k end
+    end
+end
+
 --- Remove every end equal to `s`; delete virtual joints left with fewer than
---  two ends. Returns the real keys that lost an end.
-function N.dropEnd(pipes, s)
+--  two ends. Returns the real keys that lost an end. `holders` (optional) lists
+--  the keys known to hold `s` (an index entry), so the whole table is not walked.
+function N.dropEnd(pipes, s, holders)
     local changed, dead = {}, {}
-    for k, rec in pairs(pipes) do
-        local ends = rec.ends
-        if ends then
-            local keep = {}
-            for _, e in ipairs(ends) do if e ~= s then keep[#keep + 1] = e end end
-            if #keep ~= #ends then
-                rec.ends = keep
-                if rec.virtual then dead[#dead + 1] = k else changed[#changed + 1] = k end
-            end
+    if holders then
+        local seen = {}
+        for _, k in ipairs(holders) do
+            if not seen[k] then seen[k] = true dropFrom(pipes, k, s, changed, dead) end
         end
+    else
+        for k in pairs(pipes) do dropFrom(pipes, k, s, changed, dead) end
     end
     for _, k in ipairs(dead) do pipes[k] = nil end
     return changed
 end
 
+-- Is a real square a dead end: one join or fewer, and at most one end?
+local function deadEnd(pipes, k)
+    local rec = pipes[k]
+    return N.isReal(rec) and #N.joined(pipes, k, true) + #(rec.ends or {}) <= 1
+end
+
+-- Take one dead-end square away; its joined neighbours lose the arm and are handed to `onNeighbour`.
+local function removeDead(pipes, k, removed, touched, onNeighbour)
+    local rec = pipes[k]
+    local nbs = N.joined(pipes, k, true)
+    pipes[k] = nil
+    removed[#removed + 1] = { key = k, rec = rec }
+    local x, y = N.split(k)
+    for _, nk in ipairs(nbs) do
+        local nr = pipes[nk]
+        local nx, ny = N.split(nk)
+        local b = N.bitToward(nx, ny, x, y)
+        if nr and b then nr.mask = N.subBit(nr.mask, b); touched[#touched + 1] = nk end
+        if onNeighbour then onNeighbour(nk) end
+    end
+end
+
 --- Delete dead-end real squares (one join or fewer, and at most one end),
 --  over and over. Returns removed = { {key, rec}... } and touched neighbours.
-function N.prune(pipes)
+--  With `seeds` (keys that just lost an end) only they and the squares their removal
+--  exposes are looked at; the table holds no other dead end after every earlier prune.
+function N.prune(pipes, seeds)
     local removed, touched = {}, {}
+    if seeds then
+        local work, head = {}, 1
+        for _, k in ipairs(seeds) do work[#work + 1] = k end
+        local function push(nk) work[#work + 1] = nk end
+        while head <= #work do
+            local k = work[head]
+            head = head + 1
+            if deadEnd(pipes, k) then removeDead(pipes, k, removed, touched, push) end
+        end
+        return removed, touched
+    end
     local again = true
     while again do
         again = false
         local keys = {}
         for k, rec in pairs(pipes) do if N.isReal(rec) then keys[#keys + 1] = k end end
-        table.sort(keys)
+        sortKeys(keys)
         for _, k in ipairs(keys) do
-            local rec = pipes[k]
-            if rec and #N.joined(pipes, k, true) + #(rec.ends or {}) <= 1 then
-                local nbs = N.joined(pipes, k, true)
-                pipes[k] = nil
-                removed[#removed + 1] = { key = k, rec = rec }
-                for _, nk in ipairs(nbs) do
-                    local nr = pipes[nk]
-                    local x, y = N.split(k)
-                    local nx, ny = N.split(nk)
-                    local b = N.bitToward(nx, ny, x, y)
-                    if nr and b then nr.mask = N.subBit(nr.mask, b); touched[#touched + 1] = nk end
-                end
+            if deadEnd(pipes, k) then
+                removeDead(pipes, k, removed, touched)
                 again = true
             end
         end

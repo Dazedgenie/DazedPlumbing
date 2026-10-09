@@ -618,8 +618,8 @@ end
 --  Returns the number of undamaged squares removed (the caller refunds them).
 function K.disconnect(endStr)
     local pipes = store().pipes
-    local changed = N.dropEnd(pipes, endStr)
-    local removed, touched = N.prune(pipes)
+    local changed = N.dropEnd(pipes, endStr, K.index()[endStr] or {})
+    local removed, touched = N.prune(pipes, changed)
     local sound = 0
     for _, r in ipairs(removed) do
         local x, y, z = N.split(r.key)
