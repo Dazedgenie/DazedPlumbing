@@ -19,8 +19,18 @@ A connected water main gets a **Water panel** (right-click the main -> Water mai
 - **The wall panel** (item `Base.DazedWaterPanel`, recipe `MakeDazedWaterPanel`: Welding 2, 2 small sheet metal, a shut-off valve, 4 screws and a screwdriver; 4 kg). Hang it **inside a building, against a wall** on the side it faces (one to a square). It binds by itself to the water main that serves that building, at once when placed or when a main connects, and within a minute otherwise; a panel in a house no main serves can still be hung, and its menu says *No water main serves this building* until one does. Right-click it -> **Water panel** opens the main's board from indoors, worked through the panel (you stand within 2 squares of it). CONNECT BUILDING is greyed there (that stays at the main). If the main's square is not loaded on the server, the board says *Main out of range* and shows the last figures; the rate, shut-off, drain and valves still work, the machine switches wait. Lifting a panel changes nothing on the main; disconnecting or lifting the main leaves its panels unbound. Tiles 256-259 (sheet grown to 8x33), placeholder art from `tools/panel_art.py`.
 - **With Dazed Climate**, a frozen square on the main's own pipe run or a frozen feeding tank lights FROZEN and the PAUSED lamp, and the shut-off card reads *frozen: waits for the thaw*. **With Dazed Power**, a running source shows its watts; an electric pump, purifier or drilled well without power reads *no power*.
 - The guide (Dazed guide -> Plumbing) has a *Water panel* page.
-- Art: the board reuses Dazed Power's board textures when that mod is loaded and draws plain shapes without it.
-- **Blender renders still to do:** the board's tank column (60x170 case and gauge glass), the LINE RATE knob (36 px), the MAIN SHUT-OFF wheel (92 px, open and turned), and the wall panel's four world sprites (256-259, E S W N; it faces the wall it hangs on, like the downspout) plus its 32 px icon. All four are code-drawn placeholders today.
+- Art: the board looks for each part in `media/ui/DazedPlumbing/Board/` first (its own tank column, LINE RATE knob and MAIN SHUT-OFF wheel), then in Dazed Power's board folder (gauge faces, needles, lamps, toggles, number wheels, card corners) when that mod is loaded, and draws plain shapes for anything neither has. The tank column's sight glass is the rect x 9, y 19, 42x140 of its 60x170 case (`Board.TANK_WINDOW`); the water is drawn into it.
+- **Blender renders** (Blender 4.2+, on the PC; `ART` is the folder holding `dup_render.py` and `pz_sprite_forge.py`, `MOD` this mod's folder). From Blender's Python console:
+  ```
+  ART = r"C:\Users\<you>\Zomboid\dup_art"; FAMILIES = ["wallpanel", "icons:DazedWaterPanel"]; exec(open(ART + r"\dup_render.py").read())
+  BOARD_OUT = ART + r"\out\board"; exec(open(r"<MOD>\tools\blender\board_render.py").read())
+  ```
+  or headless:
+  ```
+  blender -b -P "%ART%\dup_render.py" -- "%ART%" wallpanel icons:DazedWaterPanel
+  blender -b -P "%MOD%\tools\blender\board_render.py" -- "%ART%\out\board"
+  ```
+  Then pack (from `%MOD%`): `python tools\pack_panel_renders.py --renders "%ART%\out"` (add `--dry-run` to see what it would do). It copies the board parts to `media/ui/DazedPlumbing/Board/`, packs sprites 256-259 (E S W N; the panel faces the wall it hangs on, like the downspout) and the 32 px icon, re-checks the tile sheet, and writes `media/ui/DazedPlumbing/Board/.rendered`, after which `panel_art.py` will not overwrite the renders without `--force`.
 - Saves: nothing to migrate. A main nobody opens the panel on behaves exactly as before; the new fields (`rate`, `shut`, `drain`, `valves`, `prio`, figures) are added only when used. A main whose line was paused before 0.17.0 reads as shut.
 
 ## Ice (0.15.0)
@@ -203,7 +213,7 @@ License: CC BY-NC-SA 4.0 (same as the core and Dazed Power).
 ## Art and tile tools (`tools/`)
 All world sprites and inventory icons are Blender renders (0.9.4), made with the pz-sprite-forge camera and light rig (`tools/blender/`, MIT):
 
-1. In Blender 4.2+, run `tools/blender/dup_render.py` from the Python console with `ART` set to a folder holding it and `pz_sprite_forge.py`, and `FAMILIES` set to any of `tanks` (or `tanks:water` and so on), `pipes`, `pumps`, `purifier`, `downspout`, `icons`. The cells land in `ART/out/<family>/<sprite index>.png` at 2x.
+1. In Blender 4.2+, run `tools/blender/dup_render.py` from the Python console with `ART` set to a folder holding it and `pz_sprite_forge.py`, and `FAMILIES` set to any of `tanks` (or `tanks:water` and so on), `pipes`, `pumps`, `purifier`, `downspout`, `wallpanel`, `icons` (or `icons:DazedWaterPanel` and so on). The cells land in `ART/out/<family>/<sprite index>.png` at 2x.
 2. Large and XL tanks span 2 or 3 squares. Each piece is rendered with its own square under the camera, plus an `<index>_m.png` mask of what stands on that square.
 3. `python3 tools/pack_art.py <out dirs...>` cuts the pieces with their masks, shrinks the cells to 128x256, sharpens them and repacks `dazedplumbing.pack`.
 4. `python3 tools/make_icons.py <out>/icons` writes the 32x32 icons.
@@ -213,7 +223,7 @@ The pipes are rendered light grey on purpose: the game tints them per fluid.
 
 `pack_tiles.py check` confirms the tile definitions, the pack and the item scripts agree (and that the `.tiles` file round-trips byte for byte). `pack_tiles.py grow --rows N` adds room for new sprites without moving any existing index. `pzformat/` holds the pack and tile readers and writers from pz-sprite-forge (MIT). Saved worlds remember sprite names, so only ever append.
 
-`panel_art.py` draws the wall water panel (sprites 256-259 and its icon), grows the sheet to 33 rows and gives the tiles their properties. `fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. Row 33 holds the panel and has 4 free tiles (260-263); after them the next sprite needs `pack_tiles.py grow --rows 34`.
+`panel_art.py` draws the wall water panel's placeholders (sprites 256-259 and its icon), grows the sheet to 33 rows and gives the tiles their properties; once `pack_panel_renders.py` has packed the Blender renders it refuses to run without `--force`. `blender/board_render.py` renders the panel board's own parts (see *Blender renders* under the Main Water Panel). `fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. Row 33 holds the panel and has 4 free tiles (260-263); after them the next sprite needs `pack_tiles.py grow --rows 34`.
 
 `pipe_art.py`, `machine_art.py` and `icon_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
 

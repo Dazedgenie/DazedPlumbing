@@ -1,9 +1,10 @@
 """Placeholder sprites for the wall water panel (dazedplumb_01_256..259, facings E S W N) and its icon.
 
-Usage:  python3 tools/panel_art.py [--preview out.png]
+Usage:  python3 tools/panel_art.py [--preview out.png] [--force]
 Needs Pillow and the core's pzformat (tools/pack_tiles.py finds it). Grows the sheet to 8x33 if needed, gives the
 four tiles their properties and packs a grey cabinet with two gauges, hung on the wall on its facing side (like the
-downspout, the sprite faces the wall it is fixed to). Blender renders replace these later.
+downspout, the sprite faces the wall it is fixed to). Blender renders replace these (tools/pack_panel_renders.py),
+which leaves the marker media/ui/DazedPlumbing/Board/.rendered: then this refuses to run unless given --force.
 """
 import sys, argparse
 from pathlib import Path
@@ -20,6 +21,7 @@ FACINGS = ("E", "S", "W", "N")
 BODY = (120, 132, 138)
 FACE = (226, 222, 204)
 RED = (184, 44, 34)
+MARKER = HERE.parent / "common/media/ui/DazedPlumbing/Board/.rendered"     # written by tools/pack_panel_renders.py
 
 
 def panel(facing, outline=1.2):
@@ -63,7 +65,10 @@ def tiles():
         ])
 
 
-def build(pack_path=PACK):
+def build(pack_path=PACK, force=False):
+    if MARKER.exists() and not force:
+        sys.exit("panel_art: the panel already has Blender renders (%s); not overwriting them with placeholders."
+                 " Re-run tools/pack_panel_renders.py, or pass --force to go back to the placeholders." % MARKER)
     tiles()
     icon().save(HERE.parent / "common/media/textures/Item_DazedWaterPanel.png")
     return repack(pack_path, {BASE + i: panel(f) for i, f in enumerate(FACINGS)})
@@ -79,6 +84,7 @@ def preview(out):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--preview")
+    ap.add_argument("--force", action="store_true", help="overwrite the Blender renders with the placeholders")
     a = ap.parse_args()
-    print("page", build())
+    print("page", build(force=a.force))
     if a.preview: preview(a.preview)

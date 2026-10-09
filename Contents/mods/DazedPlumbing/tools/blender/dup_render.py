@@ -3,7 +3,8 @@
 Run inside Blender (4.2+) from the Python console:
     ART = r"C:\\Users\\<you>\\Zomboid\\dup_art"; FAMILIES = ["pumps"]; exec(open(ART + r"\\dup_render.py").read())
 or headless:  blender -b -P dup_render.py -- <ART folder> [family ...]
-Families: tanks, pipes, valves, pumps, purifier, downspout, sprinkler, icons (or a tank subset such as tanks:water).
+Families: tanks, pipes, valves, pumps, purifier, downspout, sprinkler, wallpanel, icons (or a subset such as tanks:water
+or icons:DazedWaterPanel).
 Cells go to ART/out/<family>/<sprite index>.png (2x, 256x512). A tank piece also writes <index>_m.png,
 the mask of what stands on its own square; tools/pack_art.py cuts the piece out with it.
 """
@@ -596,6 +597,45 @@ def downspout():
     cyl(0.04, 0.06, (0, y + 0.42, 0.10), mat(STEEL, 0.45), axis="Y")       # pipe connector at the end
 
 
+WALLPANEL_BASE = 256                                     # DUP_WallPanels.BASE: 256-259 = facings E, S, W, N
+
+
+def wallpanel(icon=False):
+    """The wall water panel: a grey steel box (0.5 wide, 0.7 tall, 0.12 deep) on the front wall at head height, with a
+    round gauge, two lamps and a red handwheel; like the downspout it hangs on the -Y wall and faces into the square.
+    `icon` builds it centred on the ground with no conduit, for the inventory icon."""
+    steel = mat("#8c949a", 0.5, wear=0.08)
+    door = mat("#98a0a6", 0.45, wear=0.06)
+    red = mat("#c0271f", 0.45)
+    W, H, D = 0.50, 0.70, 0.12
+    y0, z0 = (-D / 2, 0.02) if icon else (-0.47, 1.05)        # back face on the wall; the bottom edge
+    yf = y0 + D                                               # the front face
+    box((W, D, H), (0, y0 + D / 2, z0 + H / 2), steel, bevel=0.015)
+    box((W - 0.06, 0.012, H - 0.06), (0, yf + 0.004, z0 + H / 2), door, bevel=0.006)   # the door, a little proud
+    for x in (-0.19, 0.19):
+        box((0.05, 0.03, 0.02), (x, yf + 0.012, z0 + H - 0.06), mat(STEEL, 0.4), bevel=0.004)  # hinges
+    box((0.02, 0.025, 0.06), (0.21, yf + 0.016, z0 + 0.36), mat(DARK, 0.4), bevel=0.004)      # the latch
+    zg = z0 + 0.50                                            # the gauge: a cream face in a dark bezel
+    torus(0.09, 0.012, (0, yf + 0.018, zg), mat(BLACK, 0.4), axis="Y")
+    cyl(0.088, 0.016, (0, yf + 0.014, zg), mat("#ede6d0", 0.6, emit=0.3), axis="Y")
+    box((0.010, 0.004, 0.07), (0.018, yf + 0.024, zg + 0.024), red, rot=(0, math.radians(35), 0), bevel=0.0)
+    cyl(0.012, 0.01, (0, yf + 0.026, zg), mat(BLACK, 0.4), axis="Y")
+    for x, colour in ((-0.09, "#5cc854"), (0.09, "#f0aa32")):   # the lamps: supply green, paused amber
+        torus(0.026, 0.006, (x, yf + 0.012, z0 + 0.32), mat("#c8c8c4", 0.3), axis="Y")
+        ball(0.022, (x, yf + 0.012, z0 + 0.32), mat(colour, 0.25, emit=2.0), scale=(1, 0.6, 1))
+    zw, yw = z0 + 0.16, yf + 0.06                             # the handwheel on its stem
+    cyl(0.018, 0.06, (0, yf + 0.03, zw), mat(STEEL, 0.4), axis="Y")
+    torus(0.075, 0.011, (0, yw, zw), red, axis="Y")
+    for k in range(4):
+        a = math.pi / 4 + k * math.pi / 2
+        tube((0, yw, zw), (0.075 * math.cos(a), yw, zw + 0.075 * math.sin(a)), 0.007, red, segs=8)
+    cyl(0.02, 0.02, (0, yw, zw), red, axis="Y")
+    if not icon:
+        tube((0.16, y0 + 0.02, z0 + H), (0.16, y0 + 0.02, CEILING_Z), 0.014, mat("#a3a8ad", 0.4))  # conduit up the wall
+        for z in (z0 + H + 0.25, z0 + H + 0.6):
+            box((0.04, 0.03, 0.015), (0.16, y0 + 0.02, z), mat(STEEL, 0.4), bevel=0.003)          # its straps
+
+
 SPRINKLER_BASE = 204                                     # +4 spraying
 
 
@@ -806,6 +846,10 @@ def render_machines(fams):
         clear_model(); downspout()
         facings(downspout, os.path.join(ART, "out", "downspout"), lambda c: SPOUT_BASE + c)
         done += 4
+    if "wallpanel" in fams:
+        clear_model(); wallpanel()
+        facings(wallpanel, os.path.join(ART, "out", "wallpanel"), lambda c: WALLPANEL_BASE + c)
+        done += 4
     return done
 
 
@@ -819,7 +863,7 @@ def icon_list():
     out += [("DazedPumpHand", hand_pump, 1.4), ("DazedPumpElectric", electric_pump, 1.3), ("DazedPurifier", purifier, 1.1),
             ("DazedDownspout", downspout, 0.55), ("DazedPurifierFilter", filter_cartridge, 2.2),
             ("DazedPipeSection", pipe_section, 1.1), ("DazedValve", valve, 2.0),
-            ("DazedSprinkler", lambda: sprinkler(False), 1.4)]
+            ("DazedSprinkler", lambda: sprinkler(False), 1.4), ("DazedWaterPanel", lambda: wallpanel(icon=True), 1.6)]
     return out
 
 

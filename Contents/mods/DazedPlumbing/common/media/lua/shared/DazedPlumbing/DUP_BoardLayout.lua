@@ -1,6 +1,6 @@
 --[[ Dazed Utilities: Plumbing -- the Main Water Panel's face as draw operations plus click regions, so it tests headlessly.
-     DUP_Board draws the ops (Dazed Power's kinds: rect, card, tex, quad, line, text); Board.tex finds Dazed Power's
-     board art by path, and answers nil without it so the face falls back to drawn rectangles and lines.
+     DUP_Board draws the ops (Dazed Power's kinds: rect, card, tex, quad, line, text); Board.tex looks for each part in
+     Plumbing's own board art, then Dazed Power's, and answers nil when neither has it so the face draws a stand-in.
 
      THE SNAPSHOT (what build() reads; DUP_Board makes it from the synced main entry and the last mainInfo reply):
        connected   bool                      waiting   bool, no mainInfo reply yet
@@ -21,7 +21,13 @@ DazedPlumb.BoardLayout = Board
 
 -- The face in base pixels; build() scales everything by S, the ratio of the loaded fonts to the base set.
 Board.W, Board.H = 760, 560
-Board.TEX = "media/ui/DazedPower/Board/"
+-- Where Board.tex looks, in order: Plumbing's own parts (tools/blender/board_render.py), then Dazed Power's.
+Board.TEX_DIRS = { "media/ui/DazedPlumbing/Board/", "media/ui/DazedPower/Board/" }
+Board.TEX = Board.TEX_DIRS[1]
+-- The tank column (tank_column.png, 60x170) and its sight glass, in base px from the case's top left. The render's
+-- glass window matches this rect, and the water fill is drawn into it.
+Board.TANK_W, Board.TANK_H = 60, 170
+Board.TANK_WINDOW = { x = 9, y = 19, w = 42, h = 140 }
 Board.DIAL_MIN = 40               -- the dials read 0-40 L/min, or up to the line rate when that is higher
 Board.SRC_ROWS, Board.FIX_ROWS = 8, 6
 
@@ -40,12 +46,15 @@ Board.COLORS = C
 local function clamp(v, lo, hi) return math.max(lo, math.min(hi, v)) end
 Board.clamp = clamp
 
---- The texture at Board.TEX .. name when the window says it can be loaded, else nil (the face then draws a stand-in).
---  The window sets Board.resolver(path) -> bool; with none (tests, no Dazed Power) every texture is missing.
+--- The first path in Board.TEX_DIRS whose texture the window can load, else nil (the face then draws a stand-in).
+--  The window sets Board.resolver(path) -> bool; with none (tests) every texture is missing.
 function Board.tex(name)
-    local path = Board.TEX .. name
     local r = Board.resolver
-    if r and r(path) then return path end
+    if not r then return nil end
+    for _, dir in ipairs(Board.TEX_DIRS) do
+        local path = dir .. name
+        if r(path) then return path end
+    end
     return nil
 end
 
@@ -77,6 +86,21 @@ function Board.needleQuad(x, y, d, f, S)
     for _, uv in ipairs({ { -14, -8 }, { 82, -8 }, { 82, 8 }, { -14, 8 } }) do
         q[#q + 1] = (cx + (uv[1] * dx + uv[2] * px) * k) * S
         q[#q + 1] = (cy + (uv[1] * dy + uv[2] * py) * k) * S
+    end
+    return q
+end
+
+--- The LINE RATE knob (knob.png, its pointer drawn pointing right) turned to angle `ang` (radians, anticlockwise on
+--  screen) about the centre of its d x d square at x, y: four corners (top left, top right, bottom right, bottom left) times S.
+function Board.knobQuad(x, y, d, ang, S)
+    S = S or 1
+    local cx, cy, h = x + d / 2, y + d / 2, d / 2
+    local dx, dy = math.cos(ang), -math.sin(ang)
+    local px, py = -dy, dx
+    local q = {}
+    for _, uv in ipairs({ { -h, -h }, { h, -h }, { h, h }, { -h, h } }) do
+        q[#q + 1] = (cx + uv[1] * dx + uv[2] * px) * S
+        q[#q + 1] = (cy + uv[1] * dy + uv[2] * py) * S
     end
     return q
 end
@@ -259,8 +283,9 @@ function Board.build(s, o)
         end
         text(T("IGUI_DazedPlumb_BoardLpm"), cx, cy + d * 0.2, C.muted, "Small", "center")
         text(T(titleKey), cx, y + d + 2, C.ink, "Medium", "center")
-        if Board.tex("needle.png") then
-            ops[#ops + 1] = { k = "quad", name = Board.TEX .. "needle.png", pts = Board.needleQuad(x, y, d, f, 1), a = 1 }
+        local npath = Board.tex("needle.png")
+        if npath then
+            ops[#ops + 1] = { k = "quad", name = npath, pts = Board.needleQuad(x, y, d, f, 1), a = 1 }
         else
             local x1, y1, x2, y2 = Board.needleLine(x, y, d, f, 1)
             ops[#ops + 1] = { k = "line", x = x1, y = y1, x2 = x2, y2 = y2, th = 3, c = C.red, a = 1 }
@@ -277,10 +302,15 @@ function Board.build(s, o)
         local y = 240
         text(T("IGUI_DazedPlumb_BoardLineRate"), 22, y + 22 - fh("Medium") / 2, C.ink, "Medium")
         local kx, ky, kd = 150, y + 4, 36
-        disc(kx + kd / 2, ky + kd / 2, kd / 2, C.dark)
-        disc(kx + kd / 2, ky + kd / 2, kd / 2 - 4, C.steel)
         local a = math.rad(225 - 270 * (flow > 0 and rate / flow or 0))
-        line(kx + kd / 2, ky + kd / 2, kx + kd / 2 + (kd / 2 - 5) * math.cos(a), ky + kd / 2 - (kd / 2 - 5) * math.sin(a), 3, C.cream)
+        local kpath = Board.tex("knob.png")
+        if kpath then
+            ops[#ops + 1] = { k = "quad", name = kpath, pts = Board.knobQuad(kx, ky, kd, a, 1), a = 1 }
+        else
+            disc(kx + kd / 2, ky + kd / 2, kd / 2, C.dark)
+            disc(kx + kd / 2, ky + kd / 2, kd / 2 - 4, C.steel)
+            line(kx + kd / 2, ky + kd / 2, kx + kd / 2 + (kd / 2 - 5) * math.cos(a), ky + kd / 2 - (kd / 2 - 5) * math.sin(a), 3, C.cream)
+        end
         local str = string.format(flow >= 100 and "%03d" or "%02d", math.floor(rate + 0.5))
         local ww, gap = 22, 4
         local wx = 210
@@ -307,14 +337,19 @@ function Board.build(s, o)
             if t.frozen then frozen = true end
         end
         local frac = cap > 0 and clamp(amt / cap, 0, 1) or 0
-        card(bx, by, 60, 170, C.dark, C.dark)
-        local ix, iy, iw, ih = bx + 9, by + 19, 42, 140
-        rect(ix, iy, iw, ih, C.segOff)
+        -- The rendered case carries its own dark glass; the water is drawn into the window either way.
+        local cased = tex("tank_column.png", bx, by, Board.TANK_W, Board.TANK_H)
+        local win = Board.TANK_WINDOW
+        local ix, iy, iw, ih = bx + win.x, by + win.y, win.w, win.h
+        if not cased then
+            card(bx, by, Board.TANK_W, Board.TANK_H, C.dark, C.dark)
+            rect(ix, iy, iw, ih, C.segOff)
+        end
         local col = frozen and C.ice or (tainted and C.taint or C.water)
         local fhh = ih * frac
-        if fhh > 0.5 then rect(ix, iy + ih - fhh, iw, fhh, col) end
+        if fhh > 0.5 then rect(ix, iy + ih - fhh, iw, fhh, col, cased and 0.9 or 1) end
         for i = 1, 3 do rect(ix, iy + ih * i / 4, 8, 1.5, C.cream, 0.8) end
-        rect(bx + 22, by + 4, 16, 10, C.steel)
+        if not cased then rect(bx + 22, by + 4, 16, 10, C.steel) end
         text(cap > 0 and string.format("%d%%", math.floor(frac * 100 + 0.5)) or "--", bx + 30, by + 176, C.ink, "Medium", "center")
         text(Board.fmtL(amt) .. " / " .. Board.fmtL(cap) .. " L", bx + 30, by + 176 + fh("Medium"), C.muted, "Small", "center")
         if frozen then text(T("IGUI_DazedPlumb_Frozen"), bx + 30, by + 176 + fh("Medium") + fh("Small"), C.water, "NewSmall", "center") end
@@ -525,14 +560,17 @@ function Board.build(s, o)
         card(x, y, w, h, C.dark, C.dark)
         text(fit(T("IGUI_DazedPlumb_BoardShutOff"), "NewSmall", w - 12), x + w / 2, y + 6, C.cream, "NewSmall", "center", a)
         local cx, cy, r = x + w / 2, y + 74, 46
-        ring(cx, cy, r, 7, shut and C.red or (paused and C.ice or C.segOn), a)
-        local turn = shut and math.rad(36) or 0
-        for i = 0, 4 do
-            local ang = turn + 2 * math.pi * i / 5
-            line(cx, cy, cx + (r - 3) * math.cos(ang), cy + (r - 3) * math.sin(ang), 4, C.steel, a)
+        -- The rendered handwheel (92 px): turned when shut; a frozen line keeps the open wheel and says why below.
+        if not tex(shut and "wheel_turned.png" or "wheel_open.png", cx - r, cy - r, 2 * r, 2 * r, a) then
+            ring(cx, cy, r, 7, shut and C.red or (paused and C.ice or C.segOn), a)
+            local turn = shut and math.rad(36) or 0
+            for i = 0, 4 do
+                local ang = turn + 2 * math.pi * i / 5
+                line(cx, cy, cx + (r - 3) * math.cos(ang), cy + (r - 3) * math.sin(ang), 4, C.steel, a)
+            end
+            disc(cx, cy, 10, C.steel, a)
+            disc(cx, cy, 5, C.dark, a)
         end
-        disc(cx, cy, 10, C.steel, a)
-        disc(cx, cy, 5, C.dark, a)
         local label = paused and T("IGUI_DazedPlumb_BoardPaused") or T("IGUI_DazedPlumb_BoardOpen")
         text(label, cx, y + 128, paused and C.segLow or C.segOn, "Medium", "center", a)
         if o.shutArmed then

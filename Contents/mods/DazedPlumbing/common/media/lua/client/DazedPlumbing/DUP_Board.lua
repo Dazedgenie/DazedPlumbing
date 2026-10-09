@@ -48,7 +48,7 @@ local function measure(name, str)
     return w
 end
 
--- Textures by path, missing ones remembered as false; Dazed Power's board art is only there when that mod is on.
+-- Textures by path, missing ones remembered as false; Board.tex tries Plumbing's board art, then Dazed Power's.
 local TEXCACHE = {}
 local function tex(name)
     local t = TEXCACHE[name]
@@ -352,23 +352,25 @@ function DUP_Board:prerender()
 end
 
 local RAD = 8
---- A rounded card from Dazed Power's corner textures; square corners when they are missing.
+--- A rounded card from the board's corner textures (Board.tex); square corners when they are missing.
 function DUP_Board:card(x, y, w, h, f, b, a)
     local r = math.min(RAD * S, w / 2, h / 2)
     self:drawRect(x + r, y, w - 2 * r, h, a, f[1], f[2], f[3])
     self:drawRect(x, y + r, r, h - 2 * r, a, f[1], f[2], f[3])
     self:drawRect(x + w - r, y + r, r, h - 2 * r, a, f[1], f[2], f[3])
     for _, c in ipairs({ { "tl", x, y }, { "tr", x + w - r, y }, { "bl", x, y + h - r }, { "br", x + w - r, y + h - r } }) do
-        local t = tex(Board.TEX .. "cardfill_" .. c[1] .. ".png")
+        local fp = Board.tex("cardfill_" .. c[1] .. ".png")
+        local t = fp and tex(fp)
         if t then self:drawTextureScaled(t, c[2], c[3], r, r, a, f[1], f[2], f[3])
         else self:drawRect(c[2], c[3], r, r, a, f[1], f[2], f[3]) end
         if b then
-            local tl = tex(Board.TEX .. "cardline_" .. c[1] .. ".png")
+            local lp = Board.tex("cardline_" .. c[1] .. ".png")
+            local tl = lp and tex(lp)
             if tl then self:drawTextureScaled(tl, c[2], c[3], r, r, a, b[1], b[2], b[3]) end
         end
     end
     if b then
-        local inset = tex(Board.TEX .. "cardline_tl.png") and r or 0
+        local inset = Board.tex("cardline_tl.png") and r or 0
         self:drawRect(x + inset, y, w - 2 * inset, 1, a, b[1], b[2], b[3])
         self:drawRect(x + inset, y + h - 1, w - 2 * inset, 1, a, b[1], b[2], b[3])
         self:drawRect(x, y + inset, 1, h - 2 * inset, a, b[1], b[2], b[3])
