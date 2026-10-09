@@ -522,7 +522,14 @@ local swap = machineAt(25, 30, "b2")
 K.markPortSquare(E.square(25, 30))
 K.tick()
 ok(#portsOn(25, 30) == 1 and portsOn(25, 30)[1].sprite == K.portSprite(4, not K.record(25, 31, 0).outdoor, false), "an object event re-syncs the port for the machine")
-E.square(25, 30):RemoveTileObject(swap)
+-- swapped back for the tank in one go with no event: the sprite names show the change
+local at = nil
+for i, o in ipairs(E.square(25, 30).objs) do if o == swap then at = i end end
+E.square(25, 30).objs[at] = lg
+lg.square, swap.square = E.square(25, 30), nil
+K.tick()
+ok(#portsOn(25, 30) == 1 and portsOn(25, 30)[1].sprite == K.portSprite(4, not K.record(25, 31, 0).outdoor, true), "a silent swap is caught by the sprite names")
+E.square(25, 30):RemoveTileObject(lg)
 K.tick()
 
 

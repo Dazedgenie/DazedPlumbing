@@ -677,7 +677,7 @@ function K.cost(plan) return plan and #plan.path or 0 end
 
 ----------------------------------------------------------- port squares
 -- The squares a working pipe points into (where a port may stand), rebuilt when the pipe table changes.
--- Each minute a square is synced only when it is new to the list, its object count moved, or an event marked it.
+-- Each minute a square is synced only when it is new to the list, its objects (count or sprites) changed, or an event marked it.
 local ports = { v = -1, map = {}, list = {} }
 local pendingPorts = {}
 
@@ -714,7 +714,29 @@ function K.markPortSquare(sq)
     if ports.map[k] then pendingPorts[k] = true end         -- the list as last built: never touches ModData mid-load
 end
 
+local function spriteNameOf(o)
+    local spr = o and try(o, "getSprite")
+    return spr and try(spr, "getName") or false
+end
+
+-- Does the square still hold the objects the entry last saw (count and sprite names, in order)? Allocates nothing.
+local function sameObjects(e, objs, n)
+    if e.n ~= n or not e.names then return false end
+    for i = 0, n - 1 do
+        if e.names[i + 1] ~= spriteNameOf(objs:get(i)) then return false end
+    end
+    return true
+end
+
+local function remember(e, objs)
+    local n = objs and objs:size() or 0
+    local names = {}
+    for i = 0, n - 1 do names[i + 1] = spriteNameOf(objs:get(i)) end
+    e.n, e.names = n, names
+end
+
 --- Sync the port squares that may have changed since the last minute (authority).
+-- A device swapped for another with no event firing is caught by its sprite name.
 function K.checkPorts()
     local pending = pendingPorts
     pendingPorts = {}
@@ -723,13 +745,12 @@ function K.checkPorts()
         if sq then
             local objs = try(sq, "getObjects")
             local n = objs and objs:size() or 0
-            if pending[e.k] or e.n ~= n then
+            if pending[e.k] or not sameObjects(e, objs, n) then
                 K.syncPorts(e.x, e.y, e.z)
-                objs = try(sq, "getObjects")
-                e.n = objs and objs:size() or 0
+                remember(e, try(sq, "getObjects"))
             end
         else
-            e.n = nil                                     -- unloaded: synced again once it loads
+            e.n, e.names = nil, nil                       -- unloaded: synced again once it loads
         end
     end
 end
