@@ -52,14 +52,14 @@ local itemsTxt = slurp(media .. "/scripts/dup_items.txt")
 local defined = {}
 for name in itemsTxt:gmatch("\n%s+item%s+(%w+)") do defined[name] = true end
 local itemCount = 0 for _ in pairs(defined) do itemCount = itemCount + 1 end
-ok(itemCount == 30 and defined.DazedDigester, "30 items, DazedDigester among them, found " .. itemCount)
+ok(itemCount == 32 and defined.DazedDigester, "32 items, DazedDigester among them, found " .. itemCount)
 getScriptManager = function() return { getItem = function(_, ft) return defined[ft:match("%.(.+)$")] and {} or nil end } end
-getSprite = function(name) local i = tonumber(name:match("_(%d+)$")) return (i and i < 248) and {} or nil end
+getSprite = function(name) local i = tonumber(name:match("_(%d+)$")) return (i and i < 256) and {} or nil end
 for _, h in ipairs(Events.OnGameStart.handlers) do h() end
 local boot
 for _, line in ipairs(E.printed) do if line:find("DazedPlumbing: ready") or line:find("INCOMPLETE") then boot = line end end
-ok(boot and boot:find("244/244 tiles, 30/30 items", 1, true), "boot check counts the digester: " .. tostring(boot))
-ok(DazedPlumb.VERSION == "0.13.0" and slurp(media .. "/../../42/mod.info"):find("modversion=0.13.0", 1, true) ~= nil, "version 0.13.0 in the Lua and in mod.info")
+ok(boot and boot:find("252/252 tiles, 32/32 items", 1, true), "boot check counts the digester: " .. tostring(boot))
+ok(DazedPlumb.VERSION == "0.16.0" and slurp(media .. "/../../42/mod.info"):find("modversion=0.16.0", 1, true) ~= nil, "version 0.16.0 in the Lua and in mod.info")
 
 local w = tonumber(itemsTxt:match("item DazedDigester%s*{.-Weight%s*=%s*([%d%.]+)"))
 ok(w and w < DazedCore.Heavy.LIMIT and DazedCore.Heavy.count(w) == 1, "the digester is one piece under the heavy limit, " .. tostring(w) .. " kg")
@@ -71,7 +71,7 @@ ok(slurp(media .. "/textures/Item_DazedDigester.png"):sub(2, 4) == "PNG", "the i
 
 local recipes = slurp(media .. "/scripts/dup_recipes.txt")
 local _, recipeCount = recipes:gsub("craftRecipe ", "")
-ok(recipeCount == 30, "30 recipes, found " .. recipeCount)
+ok(recipeCount == 32, "32 recipes, found " .. recipeCount)
 local r = recipes:match("craftRecipe MakeDazedDigester(.-)\n    }\n")
 ok(r ~= nil, "the digester recipe exists")
 r = r or ""

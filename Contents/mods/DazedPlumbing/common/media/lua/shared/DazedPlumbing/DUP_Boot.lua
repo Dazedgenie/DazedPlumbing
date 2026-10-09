@@ -24,7 +24,7 @@ require "DazedPlumbing/DUP_DrilledWells"
 require "DazedPlumbing/DUP_Smokers"
 
 local P = DazedPlumb.Parts
-DazedPlumb.VERSION = "0.15.0"
+DazedPlumb.VERSION = "0.16.0"
 DazedCore.Boot.register("DazedPlumbing", DazedPlumb.VERSION)
 
 local function check()
