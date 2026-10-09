@@ -1,9 +1,6 @@
---[[ Dazed Utilities: Plumbing -- the Main Water Panel's commands (authority).
-
-     The board (client DUP_Board) never writes ModData: every switch is a DazedCore.Net command run here, re-checked,
-     applied to the DazedPlumbMains entry (or the machine's own ModData) and synced. A player works the panel standing
-     within the main's reach (plus two) of the main, or within 2 squares of a wall panel that names this main
-     (`args.via` = its square; the panel object's ModData `dazedPanelMain` = "x,y,z" of the main, phase 3).
+--[[ Dazed Utilities: Plumbing -- the Main Water Panel's commands, run on the authority and synced; the board never writes ModData.
+     A player must stand within the main's reach (plus two) of it, or within 2 squares of a wall panel whose ModData
+     `dazedPanelMain` names this main ("x,y,z"; its square comes as `args.via`, phase 3).
 
        mainValve   { fx, fy, fz, closed }        close or open one fixture square
        mainPrio    { fx, fy, fz, dir }           move a fixture "up", "down" or to the "top" of the fill order

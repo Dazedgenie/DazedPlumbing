@@ -328,5 +328,72 @@ got = nil
 W.send(far2, "mainInfo", args())
 ok(got == nil, "mainInfo is refused out of range")
 
+
+-- 15. the board window on a stub UI: opens, reads the entry and the reply, draws, and sends commands for clicks
+UIFont = { Small = 1, Medium = 2, Large = 3, Code = 4, CodeSmall = 5, CodeMedium = 6, CodeLarge = 7, NewSmall = 8 }
+getTextManager = function() return { getFontHeight = function() return 16 end, MeasureStringX = function(_, _, s) return #s * 7 end } end
+getTexture = function() return nil end
+getPlayerScreenLeft, getPlayerScreenTop = function() return 0 end, function() return 0 end
+local drawn = 0
+package.preload["ISUI/ISPanel"] = function()
+    ISPanel = { derive = function(self, name) local c = { name = name } c.__index = c setmetatable(c, { __index = self }) return c end,
+        new = function(self, x, y, w, h) return setmetatable({ x = x, y = y, width = w, height = h }, self) end,
+        initialise = function() end, addToUIManager = function() end, removeFromUIManager = function(self) self.removed = true end,
+        update = function() end, onMouseDown = function() end, onMouseUp = function() end,
+        drawRect = function() drawn = drawn + 1 end, drawText = function() drawn = drawn + 1 end, drawTextRight = function() drawn = drawn + 1 end,
+        drawTextCentre = function() drawn = drawn + 1 end, drawLine = function() drawn = drawn + 1 end, drawTextureScaled = function() end,
+        drawTextureAllPoint = function() end, isMouseOver = function() return false end, getAbsoluteX = function() return 0 end, getAbsoluteY = function() return 0 end }
+    return ISPanel
+end
+package.preload["DazedCore/DC_Picker"] = function() DazedCore.Picker = DazedCore.Picker or { open = function(pl, part, spec) DazedCore.Picker.opened = spec end } return DazedCore.Picker end
+require "DazedPlumbing/DUP_Board"
+player.x, player.y = 21, 15
+local win = DUP_Board.open(player, main)
+ok(win and DazedPlumb.Board.current == win and win.mx == 22 and win.key == "22,15,0", "the board opens on the main")
+ok(DazedPlumb.Board.info["22,15,0"] ~= nil, "opening asks for mainInfo (answered at once in single player)")
+win:refresh()
+win:prerender()
+ok(drawn > 100 and win.snap.connected and #win.snap.fixtures == 3 and win.snap.fixtures[1].x == 15, "it reads and draws the main: " .. drawn)
+local hitIds = {}
+for _, hh in ipairs(win.model.hits) do hitIds[hh.id] = true end
+ok(hitIds["rate:-"] and hitIds["valve:1"] and hitIds.shut, "its face has the controls")
+local r0 = e.rate
+win:onHit("rate:-")
+ok(e.rate == 29, "rate:- sends mainRate one lower: " .. tostring(e.rate))
+win:onHit("shut")
+ok(not e.shut and win.shutArmedAt ~= nil, "the first click on the wheel only arms it")
+win:onHit("shut")
+ok(e.shut == true, "the second click within two seconds shuts the main")
+win:refresh()
+ok(win.snap.shut and win.snap.status.paused, "the board reads PAUSED from the entry")
+win:onHit("shut") win:onHit("shut")
+ok(not e.shut, "and opens it again")
+W.send(player, "mainValve", args({ fx = 14, fy = 14, fz = 1, closed = false }))
+win:refresh()
+win:onHit("valve:2")
+local second = win.snap.fixtures[2]
+ok(W.squares(e.valves)[1] == second.x .. "," .. second.y .. "," .. second.z, "valve:2 closes the second row's fixture")
+win:refresh()
+ok(win.snap.fixtures[2].closed == true, "the row shows closed as soon as the entry has it")
+win:onHit("prio:down:1")
+win:refresh()
+ok(win.snap.fixtures[2].x == 15, "prio:down:1 moves the first fixture down")
+win:onHit("connect")
+ok(DazedCore.Picker.opened == W.PICKER or W.PICKER == nil, "CONNECT BUILDING opens the picker")
+win:onHit("src:off:1")
+local srow = win.snap.sources[1]
+local sobj = srow and E.square(srow.x, srow.y, srow.z).objs[1]
+ok(sobj and (sobj.md.dazedOff == true or srow.canOff ~= true), "a source's toggle switches it")
+local ro = DUP_Board.open(player, main, { readOnly = true })
+ok(DazedPlumb.Board.current == ro and win.removed, "one board at a time")
+ro:refresh() ro:prerender()
+local rr = e.rate
+ro:onHit("rate:+")
+ok(e.rate == rr, "a read-only board sends nothing")
+E.square(22, 15, 0):RemoveTileObject(main)
+ro:update()
+ok(ro.removed and DazedPlumb.Board.current == nil, "the board closes when the main is gone")
+E.square(22, 15, 0):AddTileObject(main)
+
 print(string.format("panel_test: %d checks, %d failed", n, fails))
 os.exit(fails == 0 and 0 or 1)
