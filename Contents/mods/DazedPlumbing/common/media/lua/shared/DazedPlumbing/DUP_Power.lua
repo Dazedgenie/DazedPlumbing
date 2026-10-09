@@ -13,6 +13,8 @@ local U, Pu, Fp = DazedPlumb.Pumps, DazedPlumb.Purifiers, DazedPlumb.FuelPumps
 local P, L = DazedPlumb.Parts, DazedPlumb.Links
 local try = P.try
 local W = DazedCore.Power
+-- Every load below is told apart by its sprite name alone, so the core may skip foreign sprites and remember verdicts per name.
+local PREFIX = P.TILESET .. "_"
 
 --- Is this electric pump working right now? (No side effects.)
 function U.working(obj)
@@ -31,12 +33,14 @@ end
 
 W.registerLoad({
     id = "dazed_pump", kind = "waterpump", items = { U.ITEM.electric },
+    prefix = PREFIX, byName = true,
     match = function(o) local i = U.describe(o) return i ~= nil and i.kind == "electric" end,
     watts = function(o) return U.watts(o) end,
     working = function(o) return U.working(o) end,
 })
 W.registerLoad({
     id = "dazed_purifier", kind = "purifier", items = { Pu.ITEM },
+    prefix = PREFIX, byName = true,
     match = function(o) return Pu.isPurifier(o) end,
     watts = function(o) return Pu.watts(o) end,
     working = function(o) return Pu.working(o) end,
@@ -45,6 +49,7 @@ W.registerLoad({
 -- The electric fuel pump counts as working only while it is moving fuel (Fp.markBusy).
 W.registerLoad({
     id = "dazed_fuelpump", kind = "fuelpump", items = { Fp.ITEM.electric },
+    prefix = PREFIX, byName = true,
     match = function(o) return Fp.kindOf(o) == "electric" end,
     watts = function() return Fp.WATTS end,
     working = function(o) return Fp.working(o) end,
@@ -54,6 +59,7 @@ W.registerLoad({
 local Dw = DazedPlumb.DrilledWells
 W.registerLoad({
     id = Dw.ID, kind = Dw.KIND, items = { Dw.ITEM },
+    prefix = PREFIX, byName = true,
     match = function(o) return Dw.isWell(o) end,
     watts = function() return Dw.WATTS end,
     working = function(o) return Dw.working(o) end,
