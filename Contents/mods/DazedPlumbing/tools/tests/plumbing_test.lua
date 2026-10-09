@@ -481,6 +481,17 @@ E.square(25, 30).objs = { lg }                        -- the tank is lifted ... 
 for i = #E.square(25, 30).objs, 1, -1 do table.remove(E.square(25, 30).objs, i) end
 K.tick()
 ok(#portsOn(25, 30) == 0, "a lifted tank's port goes within a minute")
+E.square(25, 30):AddTileObject(lg)
+K.tick()
+ok(#portsOn(25, 30) == 1 and portsOn(25, 30)[1].sprite == K.portSprite(4, not K.record(25, 31, 0).outdoor, true), "put back, its port returns within a minute")
+-- swapped for a machine in one go (same object count): the object event marks the square
+E.square(25, 30):RemoveTileObject(lg)
+local swap = machineAt(25, 30, "b2")
+K.markPortSquare(E.square(25, 30))
+K.tick()
+ok(#portsOn(25, 30) == 1 and portsOn(25, 30)[1].sprite == K.portSprite(4, not K.record(25, 31, 0).outdoor, false), "an object event re-syncs the port for the machine")
+E.square(25, 30):RemoveTileObject(swap)
+K.tick()
 
 
 -- two water tanks piped together even out, a little each minute

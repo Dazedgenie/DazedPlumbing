@@ -678,6 +678,73 @@ end
 --- Sound sections in a run, for a cost preview.
 function K.cost(plan) return plan and #plan.path or 0 end
 
+----------------------------------------------------------- port squares
+-- The squares a working pipe points into (where a port may stand), rebuilt when the pipe table changes.
+-- Each minute a square is synced only when it is new to the list, its object count moved, or an event marked it.
+local ports = { v = -1, map = {}, list = {} }
+local pendingPorts = {}
+
+function K.portSquares()
+    local pipes = store().pipes
+    if ports.v == K.version() and ports.pipes == pipes then return ports end
+    local map, list = {}, {}
+    for key, r in pairs(pipes) do
+        if N.isReal(r) and (r.cond or 100) > 0 then
+            local x, y, z = N.split(key)
+            local m = K.displayMask(key, r)
+            for _, d in ipairs(N.DIRS) do
+                if N.has(m, d[3]) then
+                    local nk = N.key(x + d[1], y + d[2], z)
+                    if not map[nk] and not N.isReal(pipes[nk]) then
+                        local e = { k = nk, x = x + d[1], y = y + d[2], z = z }
+                        map[nk] = e
+                        list[#list + 1] = e
+                    end
+                end
+            end
+        end
+    end
+    ports = { v = K.version(), pipes = pipes, map = map, list = list }
+    return ports
+end
+
+--- Mark a square's port to be synced at the next minute, if a pipe points into it.
+function K.markPortSquare(sq)
+    if not sq or not S.authority() then return end
+    local x, y, z = try(sq, "getX"), try(sq, "getY"), try(sq, "getZ")
+    if not (x and y and z) then return end
+    local k = N.key(x, y, z)
+    if ports.map[k] then pendingPorts[k] = true end         -- the list as last built: never touches ModData mid-load
+end
+
+--- Sync the port squares that may have changed since the last minute (authority).
+function K.checkPorts()
+    local pending = pendingPorts
+    pendingPorts = {}
+    for _, e in ipairs(K.portSquares().list) do
+        local sq = cellSquare(e.x, e.y, e.z)
+        if sq then
+            local objs = try(sq, "getObjects")
+            local n = objs and objs:size() or 0
+            if pending[e.k] or e.n ~= n then
+                K.syncPorts(e.x, e.y, e.z)
+                objs = try(sq, "getObjects")
+                e.n = objs and objs:size() or 0
+            end
+        else
+            e.n = nil                                     -- unloaded: synced again once it loads
+        end
+    end
+end
+
+-- A device set down on, or lifted from, a square a pipe points into; or that square streaming in.
+local function onObjectChange(obj) K.markPortSquare(try(obj, "getSquare")) end
+if Events then
+    if Events.OnObjectAdded then Events.OnObjectAdded.Add(onObjectChange) end
+    if Events.OnObjectAboutToBeRemoved then Events.OnObjectAboutToBeRemoved.Add(onObjectChange) end
+    if Events.LoadGridsquare then Events.LoadGridsquare.Add(function(sq) K.markPortSquare(sq) end) end
+end
+
 --- Wear from what stands on outdoor pipes. Once a minute, authority only.
 local wearTicks = 0
 function K.tick()
@@ -705,16 +772,7 @@ function K.tick()
         end
     end
     -- a device placed beside a pipe end, or lifted from it: its port follows within a minute
-    for key, r in pairs(pipes) do
-        if N.isReal(r) and (r.cond or 100) > 0 then
-            local x, y, z = N.split(key)
-            for _, d in ipairs(N.DIRS) do
-                if N.has(K.displayMask(key, r), d[3]) and not N.isReal(pipes[N.key(x + d[1], y + d[2], z)]) and cellSquare(x + d[1], y + d[2], z) then
-                    K.syncPorts(x + d[1], y + d[2], z)
-                end
-            end
-        end
-    end
+    K.checkPorts()
     if worn then
         wearTicks = wearTicks + 1
         if wearTicks >= 5 and not broke then wearTicks = 0 K.touch() end     -- condition reaches clients now and then
