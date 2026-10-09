@@ -14,11 +14,11 @@ local P, M, F = DazedPlumb.Parts, DazedPlumb.Model, DazedPlumb.Fluids
 T.KINDS = { water = true, gas = true }          -- propane is not a fluid the game knows
 local EPS = 0.001
 
---- Apply what the game did to the container since we last wrote it.
+--- Apply what the game did to the container since we last wrote it. Also returns the amounts it read.
 local function adopt(d, fc)
     local amt, tainted = F.containerAmounts(fc, d.type)
     local delta = amt - (d.fcAmt or amt)
-    if math.abs(delta) <= EPS then return false end
+    if math.abs(delta) <= EPS then return false, amt, tainted end
     if delta < 0 then
         M.take(d, -delta)
     elseif M.isFrozen(d) then
@@ -34,12 +34,13 @@ local function adopt(d, fc)
     else
         d.amount = M.clamp((d.amount or 0) + delta, 0, M.capacity(d.size, d.tier, d.type))
     end
-    return true
+    return true, amt, tainted
 end
 
 --- Rewrite the container from the record, all clean or all tainted (the game mixes the two into tainted anyway).
-local function publish(obj, d, fc)
-    local amt, tainted = F.containerAmounts(fc, d.type)
+--  `amt`/`tainted` are the container's amounts as adopt() just read them (the container has not changed since).
+local function publish(obj, d, fc, amt, tainted)
+    if amt == nil then amt, tainted = F.containerAmounts(fc, d.type) end
     local bad = M.isTainted(d)
     local show = M.available(d)                                         -- a frozen tank shows empty
     local wantTainted = bad and show or 0
@@ -63,9 +64,9 @@ function T.reconcile(obj)
     local fc, made = F.ensureContainer(master, M.capacity(d.size, d.tier, d.type))
     if not fc then return false end
     if made then d.fcAmt, d.fcDirty = nil, nil end                 -- a new container is empty, not emptied by a player
-    local changed = adopt(d, fc)
+    local changed, amt, tainted = adopt(d, fc)
     if changed then M.normalize(d) end
-    publish(master, d, fc)
+    publish(master, d, fc, amt, tainted)
     if changed then P.transmit(master) end
     return changed
 end

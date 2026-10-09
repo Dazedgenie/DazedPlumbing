@@ -164,6 +164,8 @@ function Z.presetOf(from, to)
 end
 
 ----------------------------------------------------------- the crops
+local worldHours = DazedCore.Util.worldHours
+
 --- The farming system's plant on a square, or nil (server side only).
 local function plantAt(x, y, z)
     -- a client (a menu) reads the synced copy; the authority has the real system
@@ -191,21 +193,38 @@ local function growing(plant)
     return tonumber(plant.waterLvl) ~= nil
 end
 
---- Every thirsty crop in reach as { plant, want = water level points short }.
-function Z.thirsty(obj)
-    local sq = obj and try(obj, "getSquare")
-    if not sq then return {} end
+-- The growing crops in a sprinkler's reach, looked up once per sprinkler per game minute (room, put and the
+-- menu all ask); how thirsty each is stays a live reading, since one sprinkler's watering changes it for the next.
+local cropMemo, cropMemoAt = {}, nil
+
+local function cropsInReach(obj, sq)
+    local minute = math.floor(worldHours() * 60)
+    if cropMemoAt ~= minute then cropMemo, cropMemoAt = {}, minute end
+    local hit = cropMemo[obj]
+    if hit then return hit end
     local cx, cy, cz = sq:getX(), sq:getY(), sq:getZ()
     local out, r = {}, Z.RADIUS
     for dx = -r, r do
         for dy = -r, r do
             if dx * dx + dy * dy <= r * r + 0.5 then
                 local plant = plantAt(cx + dx, cy + dy, cz)
-                if growing(plant) then
-                    local short = Z.target(plant) - plant.waterLvl
-                    if short > Z.SLACK then out[#out + 1] = { plant = plant, want = short } end
-                end
+                if growing(plant) then out[#out + 1] = plant end
             end
+        end
+    end
+    cropMemo[obj] = out
+    return out
+end
+
+--- Every thirsty crop in reach as { plant, want = water level points short }.
+function Z.thirsty(obj)
+    local sq = obj and try(obj, "getSquare")
+    if not sq then return {} end
+    local out = {}
+    for _, plant in ipairs(cropsInReach(obj, sq)) do
+        if growing(plant) then
+            local short = Z.target(plant) - plant.waterLvl
+            if short > Z.SLACK then out[#out + 1] = { plant = plant, want = short } end
         end
     end
     return out
@@ -213,7 +232,6 @@ end
 
 ----------------------------------------------------------- the sink
 --- Litres it would use this minute.
-local worldHours = DazedCore.Util.worldHours
 
 function Z.room(obj)
     -- the network asks every minute: a sprinkler that has not been fed for a while stops spraying
@@ -233,12 +251,9 @@ end
 function Z.survey(obj)
     local sq = obj and try(obj, "getSquare")
     if not sq then return 0, 0 end
-    local cx, cy, cz = sq:getX(), sq:getY(), sq:getZ()
-    local crops, r = 0, Z.RADIUS
-    for dx = -r, r do
-        for dy = -r, r do
-            if dx * dx + dy * dy <= r * r + 0.5 and growing(plantAt(cx + dx, cy + dy, cz)) then crops = crops + 1 end
-        end
+    local crops = 0
+    for _, plant in ipairs(cropsInReach(obj, sq)) do
+        if growing(plant) then crops = crops + 1 end
     end
     return crops, #Z.thirsty(obj)
 end

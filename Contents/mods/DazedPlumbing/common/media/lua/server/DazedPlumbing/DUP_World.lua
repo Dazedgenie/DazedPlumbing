@@ -24,6 +24,7 @@ local P, M, D = DazedPlumb.Parts, DazedPlumb.Model, DazedPlumb.Downspouts
 local try = P.try
 
 W.SETTLE_HOURS = 1 / 6                 -- ten game minutes
+W.FIRE_EVERY = 5                       -- game minutes between looks for flames beside a tank
 W.MAX_CATCHUP_HOURS = 72
 W.tanks = W.tanks or setmetatable({}, { __mode = "k" })
 W.spouts = W.spouts or setmetatable({}, { __mode = "k" })
@@ -92,8 +93,25 @@ local function explode(obj, sq)
     end
 end
 
---- Settle one tank. `live` is false for a load-time catch-up (no fire).
-local function settle(obj, now, live, rain)
+-- A tank's squares, found once per tank within one world tick (the tick sets `tickSquares`).
+local tickSquares = nil
+local function squaresOf(obj)
+    if not tickSquares then return P.squares(obj) end
+    local q = tickSquares[obj]
+    if not q then q = P.squares(obj) tickSquares[obj] = q end
+    return q
+end
+
+-- The chance of going up over FIRE_EVERY minutes of flames, from the chance in one.
+local function fireChanceOverLook(d)
+    local keep = 1 - M.fireChance(d, 1)
+    local all = 1
+    for _ = 1, W.FIRE_EVERY do all = all * keep end
+    return 1 - all
+end
+
+--- Settle one tank. `live` is false for a load-time catch-up (no fire). `fireLook` says flames are looked for this minute.
+local function settle(obj, now, live, rain, fireLook)
     if not alive(obj) then return false end
     local sq = try(obj, "getSquare")
     if not sq then return false end
@@ -110,8 +128,8 @@ local function settle(obj, now, live, rain)
     elseif d.lastHour == nil then
         d.lastHour = now
     end
-    if live and (d.amount or 0) > 0 and M.FLAMMABLE[d.type] and fireNear(P.squares(obj)) then
-        if roll(M.fireChance(d, 1)) then
+    if live and fireLook and (d.amount or 0) > 0 and M.FLAMMABLE[d.type] and fireNear(squaresOf(obj)) then
+        if roll(fireChanceOverLook(d)) then
             explode(obj, sq)
             return false
         end
@@ -122,7 +140,7 @@ local function settle(obj, now, live, rain)
         local catching = nil
         if rain and rain.intensity > 0.05 then
             local gain, open = 0, 0
-            for _, q in ipairs(P.squares(obj)) do
+            for _, q in ipairs(squaresOf(obj)) do
                 if try(q, "isOutside") == true then open = open + 1 end
             end
             if open > 0 then
@@ -166,7 +184,7 @@ end
 function W.findRoof(obj)
     local cell = getCell and getCell()
     if not cell then return nil end
-    for _, q in ipairs(P.squares(obj)) do
+    for _, q in ipairs(squaresOf(obj)) do
         if try(q, "isOutside") == true and not try(q, "getBuilding") then
             for dx = -1, 1 do
                 for dy = -1, 1 do
@@ -214,7 +232,15 @@ function W.tick()
 end
 
 function W.tickNow()
+    tickSquares = {}
+    local ok, err = pcall(W.tickWorld)
+    tickSquares = nil
+    if not ok then error(err, 0) end
+end
+
+function W.tickWorld()
     local now = worldHours()
+    local fireLook = math.floor(now * 60 + 0.5) % W.FIRE_EVERY == 0
     local rain = { intensity = rainNow(), roofs = {} }
     if rain.intensity > 0.05 then
         -- tanks beside the same building share its roof
@@ -246,7 +272,7 @@ function W.tickNow()
         if not ok or not keep then W.spouts[obj] = nil end
     end
     for obj in pairs(W.tanks) do
-        local ok, keep = pcall(settle, obj, now, true, rain)
+        local ok, keep = pcall(settle, obj, now, true, rain, fireLook)
         if not ok then print("DazedPlumbing: tank tick failed: " .. tostring(keep)) end
         if not ok or not keep then W.tanks[obj] = nil end
     end

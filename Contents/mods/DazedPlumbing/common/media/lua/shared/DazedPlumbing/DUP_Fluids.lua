@@ -221,16 +221,19 @@ function F.ensureContainer(obj, capacity)
 end
 
 --- Litres of `kind` in a world container, and how many of them are tainted.
+-- Litres of one fluid in a world container; 0 when anything is missing or the engine refuses.
+local function specificAmount(fc, name)
+    if not (fc and fc.getSpecificFluidAmount and Fluid) then return 0 end
+    local ok, v = pcall(fc.getSpecificFluidAmount, fc, Fluid[name])
+    return ok and type(v) == "number" and v or 0
+end
+
 function F.containerAmounts(fc, kind)
-    local function amt(name)
-        local ok, v = pcall(function() return fc:getSpecificFluidAmount(Fluid[name]) end)
-        return ok and type(v) == "number" and v or 0
-    end
     if kind == "water" then
-        local tainted = amt("TaintedWater")
-        return amt("Water") + tainted, tainted
+        local tainted = specificAmount(fc, "TaintedWater")
+        return specificAmount(fc, "Water") + tainted, tainted
     end
-    return amt("Petrol"), 0
+    return specificAmount(fc, "Petrol"), 0
 end
 
 --- Send a world object's container to the clients (a server only; single player has nothing to send).
