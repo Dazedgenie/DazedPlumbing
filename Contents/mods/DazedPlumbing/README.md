@@ -210,7 +210,7 @@ lua digester_test.lua                          # the biogas digester
 lua sprinkler_test.lua                         # the sprinkler schedule: windows (over midnight too), rain skip, the action, the tick
 lua well_test.lua                              # the drilled well: output per minute, power by wire only, clean water, full tanks, the load
 lua smoker_test.lua                            # the smoker: burn rate, smoking timer, 48 h catch-up, no gas or a shut line, the smoked-food change
-./run_all.sh                                   # all nine
+lua run_all.lua [<core lua root>]              # the whole set (was run_all.sh; the Workshop refuses .sh files)
 # each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
 ```
 
@@ -220,7 +220,7 @@ Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Co
 between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
-- **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged. Now licensed CC BY-NC-SA 4.0 (`LICENSE`). README brought in line with the code: tank sizes, the valve's look, what cutting a water main's pipe does, the well's load priority and the art note.
+- **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged. Now licensed CC BY-NC-SA 4.0 (`LICENSE`). The test runner is now `tools/tests/run_all.lua`, since the Steam Workshop refuses `.sh` files in an upload. README brought in line with the code: tank sizes, the valve's look, what cutting a water main's pipe does, the well's load priority and the art note.
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
     - **Gauge on a digester-fed tank (MP):** opening the gauge on a client no longer settles the digester there (it advanced the clock, digested waste and sent ModData from the client). A client's `available()` returns `Dg.preview`, the same figure worked out without writing; `settle`/`publish`/`refresh` on digesters and smokers are authority-only.
