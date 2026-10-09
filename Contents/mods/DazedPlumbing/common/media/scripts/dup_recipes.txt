@@ -598,6 +598,29 @@ module Base
         }
     }
 
+    /* The wall water panel: a small sheet-metal cabinet with two pressure gauges and a valve handle, no electronics. */
+
+    craftRecipe MakeDazedWaterPanel
+    {
+        timedAction     = Making,
+        time            = 300,
+        SkillRequired   = MetalWelding:2,
+        Tags            = AnySurfaceCraft,
+        category        = Welding,
+        xpAward         = MetalWelding:10,
+        inputs
+        {
+            item 1 [Base.Screwdriver] mode:keep,
+            item 2 [Base.SmallSheetMetal],
+            item 1 [Base.DazedValve],
+            item 4 [Base.Screws],
+        }
+        outputs
+        {
+            item 1 Base.DazedWaterPanel,
+        }
+    }
+
     /* The fuel pumps. A hand fuel pump is pipe, sheet metal and a shut-off valve; the electric one is built on a hand
      * fuel pump with a motor's worth of parts. Not learn-gated, like the water pumps. */
 
