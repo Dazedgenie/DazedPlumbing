@@ -214,8 +214,13 @@ lua smoker_test.lua                            # the smoker: burn rate, smoking 
 # each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
 ```
 
+## Licence
+
+Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Core and Dazed Power, so code can move
+between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
+
 ## Changes
-- **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged.
+- **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged. Now licensed CC BY-NC-SA 4.0 (`LICENSE`).
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
     - **Gauge on a digester-fed tank (MP):** opening the gauge on a client no longer settles the digester there (it advanced the clock, digested waste and sent ModData from the client). A client's `available()` returns `Dg.preview`, the same figure worked out without writing; `settle`/`publish`/`refresh` on digesters and smokers are authority-only.
