@@ -310,6 +310,8 @@ end
 --    sources  { available(), take(n) -> n, dirty = bool }
 --    sinks    { room(), put(n, dirty) -> n }
 --  `rate` caps what one device moves in a minute.
+local function byAmount(a, b) return a.amt > b.amt end
+
 function N.run(rate, tanks, nodes, sources, sinks)
     local receivers = {}
     for _, t in ipairs(tanks) do receivers[#receivers + 1] = t end
@@ -337,21 +339,22 @@ function N.run(rate, tanks, nodes, sources, sinks)
     local alloc = N.share(supply, demands)
     for i, s in ipairs(sinks) do
         if alloc[i] > N.EPS then
+            -- each tank's amount is read once for the sort and the taint check; nothing moves until put()
             local order = {}
-            for _, t in ipairs(tanks) do order[#order + 1] = t end
-            table.sort(order, function(a, b) return a.amount() > b.amount() end)
+            for _, t in ipairs(tanks) do order[#order + 1] = { t = t, amt = t.amount() } end
+            table.sort(order, byAmount)
             local dirty, left = false, alloc[i]
-            for _, t in ipairs(order) do
-                if left > N.EPS and t.amount() > N.EPS then
-                    if t.tainted() then dirty = true end
-                    left = left - math.min(left, t.amount())
+            for _, o in ipairs(order) do
+                if left > N.EPS and o.amt > N.EPS then
+                    if o.t.tainted() then dirty = true end
+                    left = left - math.min(left, o.amt)
                 end
             end
             local took = s.put(alloc[i], dirty) or 0
             left = took
-            for _, t in ipairs(order) do
+            for _, o in ipairs(order) do
                 if left > N.EPS then
-                    local got = t.take(math.min(left, t.amount())) or 0
+                    local got = o.t.take(math.min(left, o.t.amount())) or 0
                     left = left - got
                 end
             end

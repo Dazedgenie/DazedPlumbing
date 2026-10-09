@@ -19,6 +19,7 @@
      (flat fields: see DUP_Model).
 ]]
 
+require "DazedCore/DC_Util"
 require "DazedPlumbing/DUP_Model"
 
 DazedPlumb.Parts = DazedPlumb.Parts or {}
@@ -76,14 +77,26 @@ end
 --- Decompose one of the mod's sprite names, or nil. Anything but a string is
 --  not ours (a hook handed arguments in a shifted order must fall through).
 -- The name pattern, built once per tileset name instead of on every object a scan looks at.
-local namePat, namePatFor = nil, nil
+local namePat, namePrefix, namePatFor = nil, nil, nil
 function P.namePattern()
-    if namePatFor ~= P.TILESET then namePat, namePatFor = "^" .. P.TILESET .. "_(%d+)$", P.TILESET end
+    if namePatFor ~= P.TILESET then namePat, namePrefix, namePatFor = "^" .. P.TILESET .. "_(%d+)$", P.TILESET .. "_", P.TILESET end
     return namePat
 end
 
-function P.spriteInfo(name)
-    if type(name) ~= "string" then return nil end
+--- "dazedplumb_01_": every sprite this mod draws starts with it.
+function P.prefix()
+    if namePatFor ~= P.TILESET then P.namePattern() end
+    return namePrefix
+end
+
+--- Does a sprite name belong to this mod? One cheap test before any pattern match.
+function P.ours(name)
+    if type(name) ~= "string" then return false end
+    local prefix = P.prefix()
+    return string.sub(name, 1, #prefix) == prefix
+end
+
+local function spriteInfoRaw(name)
     local idx = string.match(name, P.namePattern())
     if not idx then return nil end
     idx = tonumber(idx)
@@ -103,6 +116,14 @@ function P.spriteInfo(name)
     if facing == "E" or facing == "W" then gy = piece - 1 else gx = piece - 1 end
     return { size = size, type = r.type, tier = r.tier, facing = facing, index = idx,
              piece = piece, pieces = n, gx = gx, gy = gy, master = (piece == 1) }
+end
+
+-- A sprite's answer never changes, so it is kept per name; callers share the table and must only read it.
+local spriteInfoMemo = DazedCore.Util.memo1(spriteInfoRaw, 512)
+
+function P.spriteInfo(name)
+    if not P.ours(name) then return nil end
+    return spriteInfoMemo(name)
 end
 
 local function try(obj, method, ...)

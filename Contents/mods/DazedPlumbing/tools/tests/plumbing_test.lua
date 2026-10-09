@@ -525,6 +525,11 @@ DazedClimate = { Plumbing = { enabled = function() return true end } }
 ok(K.flowStamp() ~= stampOff, "Climate's ice switching on changes the flow stamp")
 DazedClimate = nil
 
+-- a sprite's description is remembered per name; foreign names stop at the prefix
+local nm = P.sprite("large", "water", "crafted", "E", 2)
+ok(P.spriteInfo(nm) == P.spriteInfo(nm) and P.spriteInfo(nm).piece == 2, "a tank sprite's info is one shared table")
+ok(P.spriteInfo("carpentry_01_0") == nil and P.spriteInfo(nil) == nil and P.spriteInfo("dazedplumb_01_x") == nil, "foreign names are not tanks")
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)
