@@ -190,36 +190,51 @@ local function tapped(obj)
     return link ~= nil and link.source == "tank" and link.tx ~= nil
 end
 
--- The loaded fixtures of a main's footprint, found once a minute per main.
+-- The fixtures in a main's footprint are looked for again when the pipes or the mains change, else every
+-- FIXTURE_REFRESH_MINUTES; between looks each minute only checks the found ones still stand and have no tap.
+W.FIXTURE_REFRESH_MINUTES = 10
 local found = {}
-function W.fixtures(obj)
-    local key = W.keyOf(obj)
-    local e = key and W.store().mains[key]
-    if not e then return {}, 0 end
-    local stamp = math.floor(U.worldHours() * 60) .. "|" .. S.versionOf(DazedPlumb.Pipes.KEY) .. "|" .. S.versionOf(W.TAG)
-    local c = found[key]
-    if c and c.stamp == stamp then return c.list, c.total end
-    local fp = W.footprint(e)
-    local list, total = {}, 0
-    if fp then
-        for z, set in pairs(fp.levels) do
-            for sk in pairs(set) do
-                local x, y = R.sqXY(sk)
-                local sq = U.squareAt(x, y, z)
-                if sq then
-                    local objs = sq:getObjects()
-                    for i = 0, objs:size() - 1 do
-                        local o = objs:get(i)
-                        if X.isFixture(o) then
-                            total = total + 1
-                            if not tapped(o) then list[#list + 1] = o end
-                        end
-                    end
+
+-- Every loaded fixture standing in a footprint.
+local function scanFootprint(fp)
+    local all = {}
+    for z, set in pairs(fp.levels) do
+        for sk in pairs(set) do
+            local x, y = R.sqXY(sk)
+            local sq = U.squareAt(x, y, z)
+            if sq then
+                local objs = sq:getObjects()
+                for i = 0, objs:size() - 1 do
+                    local o = objs:get(i)
+                    if X.isFixture(o) then all[#all + 1] = o end
                 end
             end
         end
     end
-    found[key] = { stamp = stamp, list = list, total = total }
+    return all
+end
+
+function W.fixtures(obj)
+    local key = W.keyOf(obj)
+    local e = key and W.store().mains[key]
+    if not e then return {}, 0 end
+    local minute = math.floor(U.worldHours() * 60)
+    local v = S.versionOf(DazedPlumb.Pipes.KEY) .. "|" .. S.versionOf(W.TAG) .. "|" .. tostring(e.rects)
+    local c = found[key]
+    if c and c.v == v and c.minute == minute then return c.list, c.total end
+    if not c or c.v ~= v or minute < c.at or minute - c.at >= W.FIXTURE_REFRESH_MINUTES then
+        local fp = W.footprint(e)
+        c = { v = v, at = minute, all = fp and scanFootprint(fp) or {} }
+        found[key] = c
+    end
+    local list, total = {}, 0
+    for _, o in ipairs(c.all) do
+        if P.alive(o) then
+            total = total + 1
+            if not tapped(o) then list[#list + 1] = o end
+        end
+    end
+    c.minute, c.list, c.total = minute, list, total
     return list, total
 end
 

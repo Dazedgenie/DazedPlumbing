@@ -138,8 +138,17 @@ L.attach(tapped, L.adapters[X.ID])
 local tl = L.linkOf(tapped, X.ID)
 tl.source, tl.tx, tl.ty, tl.tz = "tank", 24, 15, 0
 E.hours = 101 + 1 / 60
+local l1, t1 = W.fixtures(main)
+ok(#l1 == 3 and t1 == 3, "a fixture added since the last look waits for the next one: " .. #l1 .. "/" .. t1)
+E.hours = 101 + 10 / 60
 local l2, t2 = W.fixtures(main)
 ok(#l2 == 3 and t2 == 4, "the tapped sink is counted but not fed by the main: " .. #l2 .. "/" .. t2)
+-- a fixture lifted between looks drops out at once
+E.square(15, 17, 0):RemoveTileObject(bath)
+E.hours = 101 + 11 / 60
+local l3, t3 = W.fixtures(main)
+ok(#l3 == 2 and t3 == 3, "a lifted bath leaves the list the next minute: " .. #l3 .. "/" .. t3)
+E.square(15, 17, 0):AddTileObject(bath)
 
 -- clicking the house again disconnects; clicking the shed from the main switches to it (it is 18 away: refused)
 W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 12, sy = 12, sz = 0 })

@@ -24,14 +24,37 @@ local function customName(obj)
     return type(v) == "string" and string.lower(v) or ""
 end
 
+-- What the tile alone says: "tank" (never a fixture), "yes" (plumbing flag or a fixture's name) or "maybe".
+local function byTile(obj)
+    if P.describe(obj) then return "tank" end
+    if P.propIs(obj, "waterPiped") then return "yes" end
+    local flag = IsoFlagType and IsoFlagType.waterPiped
+    if flag and P.propIs(obj, flag) then return "yes" end
+    if X.NAMES[customName(obj)] then return "yes" end
+    return "maybe"
+end
+
+-- The tile verdict is the same for every object wearing a sprite, so it is kept per sprite name.
+local tileMemo, tileMemoN = {}, 0
+X.TILE_MEMO_MAX = 2048
+
 --- Is this object a water fixture? The engine's plumbing flag, or a fixture's own tile name.
 function X.isFixture(obj)
-    if not obj or P.describe(obj) then return false end
-    if P.propIs(obj, "waterPiped") then return true end
-    local flag = IsoFlagType and IsoFlagType.waterPiped
-    if flag and P.propIs(obj, flag) then return true end
-    if X.NAMES[customName(obj)] then return true end
-    -- a sink set into a counter: a fixtures tile that holds water of its own
+    if not obj then return false end
+    local name = try(try(obj, "getSprite"), "getName")
+    local v
+    if type(name) == "string" then
+        v = tileMemo[name]
+        if v == nil then
+            v = byTile(obj)
+            if tileMemoN >= X.TILE_MEMO_MAX then tileMemo, tileMemoN = {}, 0 end
+            tileMemo[name], tileMemoN = v, tileMemoN + 1
+        end
+    else
+        v = byTile(obj)
+    end
+    if v ~= "maybe" then return v == "yes" end
+    -- a sink set into a counter: a fixtures tile that holds water of its own (the container is asked every time)
     local spr = try(obj, "getSpriteName")
     if type(spr) == "string" and string.find(string.lower(spr), "fixtures", 1, true)
             and try(obj, "getFluidContainer") ~= nil then

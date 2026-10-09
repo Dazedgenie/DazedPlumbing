@@ -25,7 +25,7 @@ function Square:isSolidTrans() return false end
 function Square:isBlockedTo(o) return self.walls and self.walls[o.x .. "," .. o.y] or false end
 function Square:isOutside() return self.outside ~= false end
 function Square:AddTileObject(o) self.objs[#self.objs + 1] = o; o.square = self end
-function Square:RemoveTileObject(o) for i, v in ipairs(self.objs) do if v == o then table.remove(self.objs, i) return end end end
+function Square:RemoveTileObject(o) for i, v in ipairs(self.objs) do if v == o then table.remove(self.objs, i) o.square = nil return end end end
 function Square:transmitRemoveItemFromSquare(o) end
 function Square:getMovingObjects() return list(self.movers or {}) end
 function Square:getVehicleContainer() return nil end
