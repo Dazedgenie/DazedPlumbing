@@ -556,6 +556,23 @@ do
     for _, k in ipairs(hit) do local x, y, z = N.split(k) K.repairAt(x, y, z) end
 end
 
+-- a tank changed by the minute tick is sent to clients once, after the tick
+do
+    local sent = {}
+    for _, t in ipairs({ ta, tb }) do t.transmitModData = function(self) sent[self] = (sent[self] or 0) + 1 end end
+    ta.md.dazedplumb.amount, tb.md.dazedplumb.amount = 150, 20
+    L.tick()
+    ok(sent[ta] == 1 and sent[tb] == 1, "balancing sends each tank once: " .. tostring(sent[ta]) .. "/" .. tostring(sent[tb]))
+    P.transmit(ta)
+    ok(sent[ta] == 2, "outside a tick a send goes out at once")
+    P.batch(function() P.transmit(ta) P.transmit(ta) P.transmit(tb) P.transmit(ta) end)
+    ok(sent[ta] == 3 and sent[tb] == 2, "inside a batch three sends of one tank become one")
+    ok(not pcall(P.batch, function() error("boom") end), "a failing batch still raises its error")
+    P.transmit(ta)
+    ok(sent[ta] == 4, "and the batch after an error is closed")
+    for _, t in ipairs({ ta, tb }) do t.transmitModData = nil end
+end
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)

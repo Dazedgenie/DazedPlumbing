@@ -145,7 +145,7 @@ local function settle(obj, now, live, rain)
         local okF, err = pcall(DazedPlumb.TankFluid.reconcile, obj)
         if not okF then print("DazedPlumbing: tank fluid sync failed: " .. tostring(err)) end
     end
-    if changed then obj:transmitModData() end
+    if changed then P.transmit(obj) end
     return true
 end
 
@@ -210,6 +210,10 @@ end
 
 function W.tick()
     if isClient and isClient() then return end            -- only the authority changes tanks
+    P.batch(W.tickNow)                                     -- each changed tank is sent once, at the end
+end
+
+function W.tickNow()
     local now = worldHours()
     local rain = { intensity = rainNow(), roofs = {} }
     if rain.intensity > 0.05 then

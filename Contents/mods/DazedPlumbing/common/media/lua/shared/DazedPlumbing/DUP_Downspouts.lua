@@ -83,7 +83,7 @@ function D.fill(obj, litres)
     local took = math.min(math.max(0, litres or 0), M.DOWNSPOUT_BUFFER - (st.water or 0))
     if took > 0 then
         st.water = (st.water or 0) + took
-        if obj.transmitModData then obj:transmitModData() end
+        P.transmit(obj)
     end
     return math.max(0, took)
 end
@@ -93,7 +93,7 @@ function D.take(obj, amount)
     local give = math.min(math.max(0, amount or 0), st.water or 0)
     if give > 0 then
         st.water = st.water - give
-        if obj.transmitModData then obj:transmitModData() end
+        P.transmit(obj)
     end
     return give
 end

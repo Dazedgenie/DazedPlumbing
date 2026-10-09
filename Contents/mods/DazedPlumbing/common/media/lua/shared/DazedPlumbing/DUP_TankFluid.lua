@@ -66,7 +66,7 @@ function T.reconcile(obj)
     local changed = adopt(d, fc)
     if changed then M.normalize(d) end
     publish(master, d, fc)
-    if changed and master.transmitModData then master:transmitModData() end
+    if changed then P.transmit(master) end
     return changed
 end
 

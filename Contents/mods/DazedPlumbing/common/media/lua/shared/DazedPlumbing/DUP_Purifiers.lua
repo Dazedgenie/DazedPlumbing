@@ -111,7 +111,7 @@ function R.register()
             local st = R.state(o)
             local took = math.min(math.max(0, amt or 0), R.BUF_CAP - (st.buf or 0))
             st.buf = (st.buf or 0) + took
-            if took > 0 and o.transmitModData then o:transmitModData() end
+            if took > 0 then P.transmit(o) end
             return took
         end,
     })
@@ -133,7 +133,7 @@ function R.register()
                 st.filter = st.filter - give * 100 / R.FILTER_LITRES
                 if st.filter <= 0 then st.filter = nil end     -- spent
             end
-            if o.transmitModData then o:transmitModData() end
+            P.transmit(o)
             return give
         end,
     })

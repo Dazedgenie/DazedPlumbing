@@ -136,6 +136,32 @@ function P.alive(o)
     return type(ix) == "number" and ix >= 0
 end
 
+-- Objects whose ModData changed inside a batch (a minute tick), sent once when the batch ends.
+local batchDepth, batchDirty = 0, {}
+
+--- Send an object's ModData to the clients: now, or once at the end of the running batch.
+function P.transmit(obj)
+    if not obj then return end
+    if batchDepth > 0 then batchDirty[obj] = true return end
+    if obj.transmitModData then obj:transmitModData() end
+end
+
+--- Run fn(...) holding back P.transmit sends, then send each changed object once. Errors still reach the caller.
+function P.batch(fn, ...)
+    batchDepth = batchDepth + 1
+    local ok, err = pcall(fn, ...)
+    batchDepth = batchDepth - 1
+    if batchDepth == 0 then
+        local list = {}
+        for o in pairs(batchDirty) do list[#list + 1] = o end
+        batchDirty = {}
+        for _, o in ipairs(list) do
+            if o.transmitModData then pcall(o.transmitModData, o) end
+        end
+    end
+    if not ok then error(err, 0) end
+end
+
 -- Console lines said once per session, by key, so a failing engine path is one line in a report.
 local said = {}
 function P.once(key, text)

@@ -221,12 +221,12 @@ function L.wrapTarget(obj, kind)
             add = function(amt, dirty)
                 local d = P.data(master)
                 local took = (kind == "water") and M.addWater(d, amt, dirty) or M.add(d, amt)
-                if took > 0 then master:transmitModData() end
+                if took > 0 then P.transmit(master) end
                 return took
             end,
             take = function(amt)
                 local got = M.take(P.data(master), amt)
-                if got > 0 then master:transmitModData() end
+                if got > 0 then P.transmit(master) end
                 return got
             end,
             squares = function() return P.squares(master) end,
@@ -452,8 +452,13 @@ function L.sourceDirty(adapter, obj)
 end
 
 --- Move what every working network moves this minute (authority only).
+-- Tanks and buffers changed during the minute are sent to clients once, at its end.
 function L.tick()
     if not DazedPlumb.Sync.authority() then return end
+    P.batch(L.tickNow)
+end
+
+function L.tickNow()
     local pipes = K.pipes()
     local served = {}
     for _, r in ipairs(groups(pipes)) do
