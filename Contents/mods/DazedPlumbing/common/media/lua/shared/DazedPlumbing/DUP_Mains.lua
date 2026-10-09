@@ -194,7 +194,7 @@ function W.fixtures(obj)
     local key = W.keyOf(obj)
     local e = key and W.store().mains[key]
     if not e then return {}, 0 end
-    local stamp = math.floor(U.worldHours() * 60) .. "|" .. S.version
+    local stamp = math.floor(U.worldHours() * 60) .. "|" .. S.versionOf(DazedPlumb.Pipes.KEY) .. "|" .. S.versionOf(W.TAG)
     local c = found[key]
     if c and c.stamp == stamp then return c.list, c.total end
     local fp = W.footprint(e)

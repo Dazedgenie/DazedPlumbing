@@ -514,6 +514,17 @@ local hugs = 0
 for _, p in ipairs(path) do if p.x == 2 then hugs = hugs + 1 end end
 ok(path and hugs >= 3, "a weighted route keeps to the cheap side")
 
+-- graph caches follow the pipe table alone, plus Climate's ice switch
+local idxBefore = K.index()
+DazedCore.Sync.touch("DazedPlumbWells")
+ok(K.index() == idxBefore, "a wells change leaves the pipe index cached")
+K.touch()
+ok(K.index() ~= idxBefore, "a pipe change rebuilds the pipe index")
+local stampOff = K.flowStamp()
+DazedClimate = { Plumbing = { enabled = function() return true end } }
+ok(K.flowStamp() ~= stampOff, "Climate's ice switching on changes the flow stamp")
+DazedClimate = nil
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)

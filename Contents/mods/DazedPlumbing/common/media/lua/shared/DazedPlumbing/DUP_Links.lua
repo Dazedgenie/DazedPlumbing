@@ -394,13 +394,13 @@ end
 
 --- Lines that meet at the same tank share it: their machines draw from it
 --  together, fairly. Returns lists of resolved networks, one per such group.
--- The networks only change when the pipes do (every change bumps the sync version), so the
+-- The networks only change when the pipes do (or Climate's ice switches), so the
 -- per-minute tick reuses them instead of walking every pipe again.
 local netCache = { v = -1 }
 local function components(pipes)
-    local S = DazedPlumb.Sync
-    if netCache.v ~= S.version or netCache.pipes ~= pipes then
-        netCache = { v = S.version, pipes = pipes, list = N.components(pipes) }
+    local stamp = K.flowStamp()
+    if netCache.v ~= stamp or netCache.pipes ~= pipes then
+        netCache = { v = stamp, pipes = pipes, list = N.components(pipes) }
     end
     return netCache.list
 end

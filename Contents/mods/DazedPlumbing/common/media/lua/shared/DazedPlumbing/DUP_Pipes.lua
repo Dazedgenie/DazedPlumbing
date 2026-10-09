@@ -121,12 +121,23 @@ function K.pipes() return store().pipes end
 function K.touch(now) S.touch(K.KEY, now) end
 function K.record(x, y, z) return store().pipes[N.key(x, y, z)] end
 
---- Cached index of ends, rebuilt when a synced table changed.
+--- How many changes the pipe table has seen; a pump touching the wells table leaves it alone.
+function K.version() return S.versionOf(K.KEY) end
+
+--- K.version() with Climate's ice switch folded in, since a frozen square only blocks flow while ice is on.
+function K.flowStamp()
+    local M = DazedPlumb.Model
+    local ice = M ~= nil and M.iceOn ~= nil and M.iceOn() == true
+    return K.version() * 2 + (ice and 1 or 0)
+end
+
+--- Cached index of ends, rebuilt when the pipe table changed.
 local cache = { v = -1 }
 function K.index()
-    if cache.v ~= S.version then
-        cache.idx = N.index(store().pipes)
-        cache.v = S.version
+    local pipes = store().pipes
+    if cache.v ~= K.version() or cache.pipes ~= pipes then
+        cache.idx = N.index(pipes)
+        cache.v, cache.pipes = K.version(), pipes
     end
     return cache.idx
 end
@@ -136,8 +147,9 @@ end
 local ofCache = { v = -1, map = {} }
 
 function K.componentsOf(endStr)
-    if ofCache.v ~= S.version or ofCache.pipes ~= store().pipes then
-        ofCache = { v = S.version, pipes = store().pipes, map = {} }
+    local stamp = K.flowStamp()
+    if ofCache.v ~= stamp or ofCache.pipes ~= store().pipes then
+        ofCache = { v = stamp, pipes = store().pipes, map = {} }
     end
     local hit = ofCache.map[endStr]
     if hit then return hit end
