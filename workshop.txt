@@ -1,5 +1,7 @@
 version=1
 title=Dazed Plumbing
+description=[b]Disclaimer: this mod was made with AI assistance.[/b] If you're not comfortable with that, please stop reading here.
+description=
 description=[h1]Dazed Plumbing[/h1]
 description=[b]Tanks, pipes, pumps and running water for Build 42.[/b]
 description=Store water, propane and petrol, pipe them where you need them, and bring a whole house's taps back to life after the water shuts off.
