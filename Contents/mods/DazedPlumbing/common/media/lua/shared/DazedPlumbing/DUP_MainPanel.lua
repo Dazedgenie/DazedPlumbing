@@ -74,17 +74,22 @@ local function viaPanel(player, via, key)
 end
 
 --- The main a command is about, if this player may work it: main, entry, key; or nil (the player is told why).
-function Pn.authorised(player, args)
+--  With `unloadedOk` a player at a wall panel is served from the entry alone while the main's square is not loaded
+--  here: main is then false.
+function Pn.authorised(player, args, unloadedOk)
     if not S.authority() or type(args) ~= "table" then return nil end
     local x, y, z = int(args.x), int(args.y), int(args.z)
     if not (x and y and z) then return nil end
     local key = NK.key(x, y, z)
-    local main = W.mainAt(key)
+    local main, why = W.mainAt(key)
     local e = W.store().mains[key]
-    if not main then return refuse(player, "IGUI_DazedPlumb_MainGone") end
+    local via = viaPanel(player, args.via, key)
+    if not main and not (why == "unloaded" and e and via) then return refuse(player, "IGUI_DazedPlumb_MainGone") end
     if not e then return refuse(player, "IGUI_DazedPlumb_MainNone") end
-    if not (W.near(player, x, y, z) or viaPanel(player, args.via, key)) then
-        return refuse(player, "IGUI_DazedPlumb_PanelFar")
+    if not (via or W.near(player, x, y, z)) then return refuse(player, "IGUI_DazedPlumb_PanelFar") end
+    if not main then
+        if not unloadedOk then return refuse(player, "IGUI_DazedPlumb_PanelOutOfRange") end
+        return false, e, key
     end
     return main, e, key
 end
@@ -242,17 +247,33 @@ local function roomName(x, y, z)
     return (type(n) == "string" and n ~= "") and n or nil
 end
 
---- Everything the board shows that the synced entry does not carry.
-function Pn.info(main, e, key)
+-- The entry's own fields, the clock and the building, which every reply carries.
+local function baseInfo(e, key)
     local info = { key = key, flow = W.flow(), reach = W.reach() }
     for _, f in ipairs({ "k", "at", "rate", "shut", "drain", "drained", "valves", "prio", "lpm", "today", "histDay" }) do info[f] = e[f] end
     if e.hist then info.hist = {} for i = 1, 24 do info.hist[i] = e.hist[i] or 0 end end
     info.day, info.hour = W.clock()
-    info.status = W.status(main, e)
     local fp = W.footprint(e)
     local _, _, _, _, z0, z1 = R.fpBounds(fp)
     info.building = { kind = e.k == "s" and "structure" or "building", tiles = fp and R.fpCount(fp) or 0,
                       floors = z0 and (z1 - z0 + 1) or 0 }
+    return info
+end
+
+--- The reply while the main's square is not loaded on the authority: the entry's figures, no live readings.
+function Pn.waitingInfo(e, key)
+    local info = baseInfo(e, key)
+    info.waiting = true
+    info.status = { supply = e.lpm or 0, demand = 0, rationed = false, dry = false, tainted = false,
+                    paused = e.shut == true, frozen = false, piped = false }
+    info.tanks, info.sources, info.fixtures, info.fixtureCount = {}, {}, {}, 0
+    return info
+end
+
+--- Everything the board shows that the synced entry does not carry.
+function Pn.info(main, e, key)
+    local info = baseInfo(e, key)
+    info.status = W.status(main, e)
     local net = Pn.network(main)
     info.tanks, info.sources = {}, {}
     for _, t in ipairs(net.tanks) do info.tanks[#info.tanks + 1] = tankRow(t, net.feeding) end
@@ -296,10 +317,15 @@ local function changed(player, cmd, key, what)
     log(player, cmd, key, what)
 end
 
-local function fixtureSquare(main, args)
+-- A fixture square the main feeds; with the main not loaded, any square of its footprint.
+local function fixtureSquare(main, args, e)
     local fx, fy, fz = int(args.fx), int(args.fy), int(args.fz)
     if not (fx and fy and fz) then return nil end
     local k = NK.key(fx, fy, fz)
+    if not main then
+        local fp = W.footprint(e)
+        return (fp and R.fpHas(fp, fx, fy, fz)) and k or nil
+    end
     for _, f in ipairs((W.fixtures(main))) do
         if W.fixKey(f) == k then return k end
     end
@@ -307,9 +333,9 @@ local function fixtureSquare(main, args)
 end
 
 function Pn.mainValve(player, args)
-    local main, e, key = Pn.authorised(player, args)
-    if not main then return end
-    local k = fixtureSquare(main, args)
+    local main, e, key = Pn.authorised(player, args, true)
+    if not e then return end
+    local k = fixtureSquare(main, args, e)
     if not k then return refuse(player, "IGUI_DazedPlumb_PanelNoFixture") end
     local list = W.squares(e.valves)
     local out = {}
@@ -348,8 +374,8 @@ function Pn.mainPrio(player, args)
 end
 
 function Pn.mainRate(player, args)
-    local main, e, key = Pn.authorised(player, args)
-    if not main then return end
+    local _, e, key = Pn.authorised(player, args, true)
+    if not e then return end
     local r = tonumber(args.rate)
     if not r or r ~= r then return end
     local flow = W.flow()
@@ -361,26 +387,27 @@ function Pn.mainRate(player, args)
 end
 
 function Pn.mainShut(player, args)
-    local main, e, key = Pn.authorised(player, args)
-    if not main then return end
+    local main, e, key = Pn.authorised(player, args, true)
+    if not e then return end
     local shut = args.shut == true
     if (e.shut == true) == shut then return end
     e.shut = shut or nil
     if not shut then e.drained = nil end
-    -- the line menu's pause follows (and its onSource hook finds the entry already agreeing)
+    -- the line menu's pause follows (its onSource hook finds the entry already agreeing); an unloaded main catches up
+    -- when it loads (W.afterFlow reconciles the two and drains)
     local a = L.adapters[W.ID]
-    if a and L.linkOf(main, W.ID) then L.setSource(main, a, shut and "manual" or "tank") end
-    if shut and e.drain then W.applyDrain(main, e) end
+    if main and a and L.linkOf(main, W.ID) then L.setSource(main, a, shut and "manual" or "tank") end
+    if main and shut and e.drain then W.applyDrain(main, e) end
     changed(player, "mainShut", key, shut and "shut" or "open")
 end
 
 function Pn.mainDrain(player, args)
-    local main, e, key = Pn.authorised(player, args)
-    if not main then return end
+    local main, e, key = Pn.authorised(player, args, true)
+    if not e then return end
     local drain = args.drain == true
     if (e.drain == true) == drain then return end
     e.drain = drain or nil
-    if drain and e.shut then W.applyDrain(main, e) end
+    if main and drain and e.shut then W.applyDrain(main, e) end
     changed(player, "mainDrain", key, drain and "on" or "off")
 end
 
@@ -417,9 +444,9 @@ function Pn.mainMachine(player, args)
 end
 
 function Pn.mainInfo(player, args)
-    local main, e, key = Pn.authorised(player, args)
-    if not main then return end
-    CN.reply(player, W.MODULE, "mainInfo", Pn.info(main, e, key))
+    local main, e, key = Pn.authorised(player, args, true)
+    if not e then return end
+    CN.reply(player, W.MODULE, "mainInfo", main and Pn.info(main, e, key) or Pn.waitingInfo(e, key))
 end
 
 for _, c in ipairs({ "mainValve", "mainPrio", "mainRate", "mainShut", "mainDrain", "mainMachine" }) do

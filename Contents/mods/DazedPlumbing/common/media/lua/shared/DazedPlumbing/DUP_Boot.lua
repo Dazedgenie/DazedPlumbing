@@ -19,6 +19,7 @@ require "DazedPlumbing/DUP_Purifiers"
 require "DazedPlumbing/DUP_Power"
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_MainPanel"
+require "DazedPlumbing/DUP_WallPanels"
 require "DazedPlumbing/DUP_FuelPumps"
 require "DazedPlumbing/DUP_Digesters"
 require "DazedPlumbing/DUP_DrilledWells"
@@ -37,7 +38,7 @@ local function check()
         { D.Pipes.VALVE_BASE, D.Pipes.VALVE_COUNT }, { D.Sprinklers.BASE, D.Sprinklers.COUNT }, { D.Pumps.STROKE_BASE, 4 }, { D.Pipes.PORT_BASE, D.Pipes.PORT_COUNT },
         { D.Mains.BASE, D.Mains.COUNT }, { D.FuelPumps.BASE, D.FuelPumps.COUNT },
         { D.Digesters.BASE, D.Digesters.COUNT }, { D.DrilledWells.BASE, D.DrilledWells.COUNT },
-        { D.Smokers.BASE, D.Smokers.COUNT } }
+        { D.Smokers.BASE, D.Smokers.COUNT }, { D.WallPanels.BASE, D.WallPanels.COUNT } }
     local sprites, total = 0, 0
     for _, b in ipairs(blocks) do
         for n = b[1], b[1] + b[2] - 1 do
@@ -62,6 +63,7 @@ local function check()
     for _, it in ipairs(DazedPlumb.Digesters.allItems()) do want[#want + 1] = it end
     for _, it in ipairs(DazedPlumb.DrilledWells.allItems()) do want[#want + 1] = it end
     for _, it in ipairs(DazedPlumb.Smokers.allItems()) do want[#want + 1] = it end
+    for _, it in ipairs(DazedPlumb.WallPanels.allItems()) do want[#want + 1] = it end
     for i = 1, #want do
         if sm and sm:getItem(want[i]) then items = items + 1
         elseif not missing then missing = want[i] end

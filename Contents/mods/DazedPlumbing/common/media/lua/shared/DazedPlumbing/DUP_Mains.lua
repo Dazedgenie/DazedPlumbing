@@ -144,6 +144,12 @@ function W.mainAt(key)
 end
 
 ----------------------------------------------------------- connecting (authority)
+--- Wall panels follow the mains table: bound again when a main is connected, unbound when it goes.
+function W.panelsChanged()
+    local Wp = DazedPlumb.WallPanels
+    if Wp and Wp.bindAll then pcall(Wp.bindAll) end
+end
+
 --- Does a main at (x, y, z) reach a footprint?
 function W.reaches(fp, x, y, z)
     return B.reaches(fp, x, y, z, W.reach(), W.BAND)
@@ -166,6 +172,7 @@ function W.connect(obj, sx, sy, sz)
     mains[key] = { k = t.k, x = t.x, y = t.y, z = t.z, id = t.id, rects = R.encodeRects(R.rectsOf(fp)),
                    at = U.worldHours() }
     S.touch(W.TAG, true)
+    W.panelsChanged()
     return true, "IGUI_DazedPlumb_MainConnected"
 end
 
@@ -175,6 +182,7 @@ function W.disconnect(obj)
     if not (key and W.store().mains[key]) then return false end
     W.store().mains[key] = nil
     S.touch(W.TAG, true)
+    W.panelsChanged()
     return true, "IGUI_DazedPlumb_MainDisconnected"
 end
 
@@ -187,7 +195,10 @@ function W.housekeep()
         if not m and why == "gone" then drop[#drop + 1] = key end
     end
     for _, k in ipairs(drop) do W.store().mains[k] = nil end
-    if #drop > 0 then S.touch(W.TAG) end
+    if #drop > 0 then
+        S.touch(W.TAG)
+        W.panelsChanged()
+    end
 end
 
 ----------------------------------------------------------- the fixtures it feeds
@@ -575,6 +586,18 @@ function W.status(obj, e)
         have = have + math.max(0, t.amount())
         if t.tainted() then out.tainted = true end
         if d and M.isFrozen(d) then out.frozen = true end
+    end
+    -- Dazed Climate's ice: a frozen square anywhere on the main's own pipe run stops it like a shut valve
+    if M.iceOn() then
+        local K, NN = DazedPlumb.Pipes, DazedPlumb.Net
+        local endStr = L.endFor(obj, L.adapters[W.ID])
+        local pipes = K.pipes()
+        for _, k in ipairs(endStr and K.index()[endStr] or {}) do
+            local c = NN.component(pipes, k, true)
+            for _, ck in ipairs(c and c.keys or {}) do
+                if pipes[ck] and pipes[ck].frozen then out.frozen = true end
+            end
+        end
     end
     out.dry = out.piped and have <= 0.001
     out.rationed = not out.paused and want > 0.001 and (want > W.rateOf(e) + 0.001 or have < math.min(want, W.rateOf(e)) - 0.001)

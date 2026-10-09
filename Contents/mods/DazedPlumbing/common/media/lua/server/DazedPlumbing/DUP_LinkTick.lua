@@ -3,6 +3,7 @@ require "DazedPlumbing/DUP_Links"
 require "DazedPlumbing/DUP_Fixtures"
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_MainPanel"
+require "DazedPlumbing/DUP_WallPanels"
 require "DazedPlumbing/DUP_Pumps"
 
 Events.EveryOneMinute.Add(function()
@@ -12,5 +13,6 @@ Events.EveryOneMinute.Add(function()
     DazedPlumb.Links.tick()
     DazedPlumb.Mains.afterFlow()     -- litres this minute, today's chart, drain on shut-off
     DazedPlumb.Mains.housekeep()     -- forget mains that were lifted
+    DazedPlumb.WallPanels.tick()     -- wall panels: unbound ones look for a main, lifted ones are forgotten
     DazedPlumb.Pumps.housekeep()     -- forget refilled wells with no pump (every ten minutes)
 end)
