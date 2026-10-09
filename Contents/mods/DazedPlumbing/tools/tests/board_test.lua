@@ -113,6 +113,18 @@ check(oh["valve:1"] and oh["valve:2"] == nil and oh["prio:down:1"] == nil, "a fi
 local wait = B.build(snap({ waiting = true, fixtures = {}, sources = {} }), opts())
 check(texts(wait, "IGUI_DazedPlumb_BoardWaiting") == 2, "waiting for the first reply says so")
 
+-- a wall panel's board: no CONNECT BUILDING; out of range says so; frozen shows its reason; watts when running
+local nc2 = ids(B.build(snap(), opts({ noConnect = true })))
+check(nc2.connect == nil and nc2.shut, "noConnect drops CONNECT BUILDING only")
+local oor = B.build(snap({ outOfRange = true, fixtures = {}, sources = {} }), opts())
+check(texts(oor, "IGUI_DazedPlumb_BoardOutOfRange") >= 1, "out of range is spelled out")
+local fz = B.build(snap({ status = { frozen = true, piped = true } }), opts())
+check(texts(fz, "IGUI_DazedPlumb_BoardReasonFrozen") == 1 and texts(fz, "IGUI_DazedPlumb_BoardPaused") >= 1, "frozen: PAUSED with the reason")
+local wt = B.build(snap({ sources = { { kind = "pump", state = "running", lpm = 8, powered = true, watts = 400, canOff = true } } }), opts())
+check(texts(wt, "400 W") == 1, "a running powered pump shows its watts")
+local np = B.build(snap({ sources = { { kind = "pump", state = "nopower", lpm = 0, powered = false, watts = 400, canOff = true } } }), opts())
+check(texts(np, "IGUI_DazedPlumb_PanelState_nopower") == 1, "an unpowered pump says no power")
+
 -- scaling, dial range, formats
 local s2 = B.build(snap(), opts({ S = 2 }))
 check(s2.w == 2 * B.W and ids(s2).shut.w == 2 * h.shut.w, "the face scales with the font set")

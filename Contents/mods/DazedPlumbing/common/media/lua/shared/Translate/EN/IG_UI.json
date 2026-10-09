@@ -214,5 +214,13 @@
     "IGUI_DazedPlumb_PanelState_unpiped": "not piped",
     "IGUI_DazedPlumb_PanelState_down": "line broken",
     "IGUI_DazedPlumb_PanelState_full": "tanks full",
-    "IGUI_DazedPlumb_PanelState_pumping": "pumping"
+    "IGUI_DazedPlumb_PanelState_pumping": "pumping",
+    "IGUI_DazedPlumb_PanelUnbound": "No water main serves this building",
+    "IGUI_DazedPlumb_PanelIndoors": "A water panel hangs inside a building.",
+    "IGUI_DazedPlumb_PanelWall": "A water panel needs a wall on the side it faces.",
+    "IGUI_DazedPlumb_PanelOutOfRange": "The water main is out of range; try again when the area is loaded.",
+    "IGUI_DazedPlumb_BoardOutOfRange": "Main out of range — figures update when the area loads",
+    "IGUI_DazedPlumb_BoardReasonFrozen": "frozen: waits for the thaw",
+    "IGUI_DazedGuide_PlumbPanel_Title": "The water panel",
+    "IGUI_DazedGuide_PlumbPanel_Text": "A connected water main has a Water panel (right-click the main). <LINE> <LINE> SUPPLY shows what reached the house last minute, DEMAND what its fixtures want. Click the left or right half of LINE RATE to lower or raise the house's share. <LINE> <LINE> Each fixture has a valve and arrows for the fill order: the first in line fills first when water is short. Sources on the line can be switched on and off, and their flow stepped. <LINE> <LINE> The MAIN SHUT-OFF wheel needs two clicks within two seconds; tick DRAIN FIXTURES ON SHUT-OFF to empty the house when it closes. Lamps show TAINTED, DRY, RATIONED and PAUSED (frozen pipes pause it too). <LINE> <LINE> Build a Water Panel and hang it on a wall inside the house to use the board from indoors. It binds to the main that serves the building; until one does, its menu says so."
 }

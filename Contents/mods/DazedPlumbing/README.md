@@ -15,7 +15,12 @@ A connected water main gets a **Water panel** (right-click the main -> Water mai
 - **CONNECT BUILDING** opens the Building Picker, as the menu does. **DRAIN FIXTURES ON SHUT-OFF**: when the main is shut off, every fixture it feeds is emptied once.
 - **MAIN SHUT-OFF**: click the wheel, then click again within two seconds. It reads OPEN or PAUSED. It is the same switch as the main line's pause in the pipe menu: either one turns both.
 - Who can use it: a player within the main's reach plus two squares, as for the picker. Every switch is a command the server checks (range, the fixture or machine still on this main) and limits to four a second; the window never writes anything itself. Works on a dedicated server and in hosted games.
-- Art: the board reuses Dazed Power's board textures when that mod is loaded and draws plain shapes without it. The tank column, knob and shut-off wheel are drawn in code for now; Blender renders are a follow-up.
+- **Controls are mouse only** (no keys): a click is a press that moves the mouse 4 px or less, so the board still drags by its body; the wheel scrolls the sources and fixtures lists; the X closes it.
+- **The wall panel** (item `Base.DazedWaterPanel`, recipe `MakeDazedWaterPanel`: Welding 2, 2 small sheet metal, a shut-off valve, 4 screws and a screwdriver; 4 kg). Hang it **inside a building, against a wall** on the side it faces (one to a square). It binds by itself to the water main that serves that building, at once when placed or when a main connects, and within a minute otherwise; a panel in a house no main serves can still be hung, and its menu says *No water main serves this building* until one does. Right-click it -> **Water panel** opens the main's board from indoors, worked through the panel (you stand within 2 squares of it). CONNECT BUILDING is greyed there (that stays at the main). If the main's square is not loaded on the server, the board says *Main out of range* and shows the last figures; the rate, shut-off, drain and valves still work, the machine switches wait. Lifting a panel changes nothing on the main; disconnecting or lifting the main leaves its panels unbound. Tiles 256-259 (sheet grown to 8x33), placeholder art from `tools/panel_art.py`.
+- **With Dazed Climate**, a frozen square on the main's own pipe run or a frozen feeding tank lights FROZEN and the PAUSED lamp, and the shut-off card reads *frozen: waits for the thaw*. **With Dazed Power**, a running source shows its watts; an electric pump, purifier or drilled well without power reads *no power*.
+- The guide (Dazed guide -> Plumbing) has a *Water panel* page.
+- Art: the board reuses Dazed Power's board textures when that mod is loaded and draws plain shapes without it.
+- **Blender renders still to do:** the board's tank column (60x170 case and gauge glass), the LINE RATE knob (36 px), the MAIN SHUT-OFF wheel (92 px, open and turned), and the wall panel's four world sprites (256-259, E S W N; it faces the wall it hangs on, like the downspout) plus its 32 px icon. All four are code-drawn placeholders today.
 - Saves: nothing to migrate. A main nobody opens the panel on behaves exactly as before; the new fields (`rate`, `shut`, `drain`, `valves`, `prio`, figures) are added only when used. A main whose line was paused before 0.17.0 reads as shut.
 
 ## Ice (0.15.0)
@@ -208,7 +213,7 @@ The pipes are rendered light grey on purpose: the game tints them per fluid.
 
 `pack_tiles.py check` confirms the tile definitions, the pack and the item scripts agree (and that the `.tiles` file round-trips byte for byte). `pack_tiles.py grow --rows N` adds room for new sprites without moving any existing index. `pzformat/` holds the pack and tile readers and writers from pz-sprite-forge (MIT). Saved worlds remember sprite names, so only ever append.
 
-`fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. The next sprite needs `pack_tiles.py grow --rows 33`.
+`panel_art.py` draws the wall water panel (sprites 256-259 and its icon), grows the sheet to 33 rows and gives the tiles their properties. `fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. Row 33 holds the panel and has 4 free tiles (260-263); after them the next sprite needs `pack_tiles.py grow --rows 34`.
 
 `pipe_art.py`, `machine_art.py` and `icon_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
 
@@ -222,6 +227,7 @@ lua place_test.lua                             # a large tank picked up is one i
 lua mains_test.lua                             # the water main: picking a house, reach, feeding, taps kept
 lua panel_test.lua                             # the main water panel: fill order, valves, throttle, shut-off, drain, figures, commands, the window
 lua board_test.lua                             # the panel's face: controls, scrolling, scaling, drawn stand-ins without textures
+lua wallpanel_test.lua                         # the wall panel: placement, binding, working the main through it, the board by key
 lua fuel_test.lua                              # the fuel pumps: litres per action, limits, hand vs electric, power, cans, vehicles, sprite and item counts
 lua digester_test.lua                          # the biogas digester
 lua sprinkler_test.lua                         # the sprinkler schedule: windows (over midnight too), rain skip, the action, the tick
@@ -232,13 +238,16 @@ lua smoker_test.lua                            # the smoker: burn rate, smoking 
 ```
 
 ## Changes
-- **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain. No save migration.
+- **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain, and a **wall panel** item that opens it from inside the house. No save migration.
   - *Patch notes:*
     - New files: `DUP_MainPanel.lua` (server commands `mainValve`, `mainPrio`, `mainRate`, `mainShut`, `mainDrain`, `mainMachine`, `mainInfo` through `DazedCore.Net`, 250 ms / 500 ms limits), `DUP_BoardLayout.lua` (the face as draw ops), `DUP_Board.lua` (the window); tests `panel_test.lua` and `board_test.lua`.
     - Water main: optional entry fields `rate`, `shut`, `drain`, `drained`, `valves`, `prio`, `lpm`, `today`, `hist`, `histDay`, `used`. `W.put` fills in priority order and skips closed valves; the minute tick runs `W.beforeFlow` / `W.afterFlow` around the link tick for the figures, use detection and the drain. Figures alone are synced at most every 5 game minutes.
     - The main line's pause and the panel's shut-off are one switch (new optional adapter hook `onSource` in `L.setSource`).
     - The main's fixture list is no longer rescanned when the mains table changes, only when the pipes or the footprint do.
     - Fixtures: `X.kindOf`, `X.amount`, `X.tainted`, `X.selfFed`, `X.empty`.
+    - Wall panel: `DUP_WallPanels.lua` (placement rule, binding, the server-only `DazedPlumbPanels` list and its minute tick), `DUP_PanelMenu.lua` (menu and guide page), item, recipe, tiles 256-259 (`tools/panel_art.py`, sheet 8x33). Boot line `256/256 tiles, 33/33 items`; 33 recipes.
+    - The board opens by key: `DUP_Board.open(player, mainOrKey, { via = {x, y, z}, readOnly })`; `mainInfo` answers `waiting = true` while the main's square is unloaded on the server. Climate's frozen pipes count in `W.status`.
+    - Tests: new `wallpanel_test.lua`; `fuel_test.lua` and `digester_test.lua` expect the new counts.
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
     - **Gauge on a digester-fed tank (MP):** opening the gauge on a client no longer settles the digester there (it advanced the clock, digested waste and sent ModData from the client). A client's `available()` returns `Dg.preview`, the same figure worked out without writing; `settle`/`publish`/`refresh` on digesters and smokers are authority-only.

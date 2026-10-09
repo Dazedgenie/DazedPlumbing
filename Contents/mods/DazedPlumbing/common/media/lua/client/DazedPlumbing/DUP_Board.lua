@@ -6,6 +6,7 @@ require "DazedCore/DC_Picker"
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_MainPanel"
 require "DazedPlumbing/DUP_BoardLayout"
+require "DazedPlumbing/DUP_WallPanels"
 
 local W, P = DazedPlumb.Mains, DazedPlumb.Parts
 local Board = DazedPlumb.BoardLayout
@@ -103,7 +104,7 @@ function DUP_Board:onHit(id)
     if (list == "src" or list == "fix") and (dir == "up" or dir == "down") then return self:scrollBy(list, dir == "up" and -1 or 1) end
     if not s then return end
     if id == "connect" then
-        if not self.readOnly and W.PICKER then DazedCore.Picker.open(self.player, self.main, W.PICKER) end
+        if not self.readOnly and not self.via and self.main and W.PICKER then DazedCore.Picker.open(self.player, self.main, W.PICKER) end
         return
     end
     if self.readOnly or not s.connected then return end
@@ -194,10 +195,18 @@ function DUP_Board:onMouseUp(x, y)
 end
 
 ----------------------------------------------------------------- reading
---- Is the main still standing, and is the player still where the panel can be worked from?
+--- Is the main (or the wall panel it was opened at) still there, and is the player still close enough?
 function DUP_Board:stillThere()
+    if self.via then
+        local v = self.via
+        local pl = self.player
+        local panel, why = DazedPlumb.WallPanels.panelAt(DazedPlumb.Net.key(v.x, v.y, v.z))
+        if not panel and why == "gone" then return false end
+        if not pl then return false end
+        local dx, dy = pl:getX() - v.x, pl:getY() - v.y
+        return dx * dx + dy * dy <= 36 and pl:getZ() == v.z
+    end
     if not self.main or self.main:getObjectIndex() == -1 then return false end
-    if self.via then return true end
     local pl = self.player
     if not pl then return false end
     local dx, dy = pl:getX() - self.mx, pl:getY() - self.my
@@ -255,7 +264,9 @@ function DUP_Board:refresh()
     local rec = Bd.info[self.key]
     local info = rec and rec.data or nil
     local flow = (info and tonumber(info.flow)) or W.flow()
-    local snap = { connected = e ~= nil, waiting = e ~= nil and info == nil, flow = flow }
+    if not self.main then self.main = W.mainAt(self.key) end      -- a main that loads after a panel opened by key
+    local snap = { connected = e ~= nil, waiting = e ~= nil and info == nil, flow = flow,
+                   outOfRange = info ~= nil and info.waiting == true }
     if e then
         snap.rate = math.max(1, math.min(flow, tonumber(e.rate) or flow))
         snap.shut, snap.drain, snap.drained = e.shut == true, e.drain == true, e.drained == true
@@ -315,6 +326,7 @@ function DUP_Board:prerender()
         self.model = Board.build(s, {
             S = S, fontH = fontH, measure = measure, getText = getText, txt = CU.txt,
             needles = self.needles, readOnly = self.readOnly, blink = self.blink, shutArmed = armed,
+            noConnect = self.via ~= nil or self.main == nil,
             srcScroll = srcScroll, fixScroll = fixScroll,
         })
         b = b or {}
@@ -400,10 +412,15 @@ end
 ----------------------------------------------------------------- opening
 function DUP_Board:new(x, y, player, main, opts)
     local o = ISPanel.new(self, x, y, WIDTH, HEIGHT)
-    local sq = main:getSquare()
+    -- the main's square (not x/y: those are the panel's own position on screen); by key the main may not be loaded
+    if type(main) == "string" then
+        o.mx, o.my, o.mz = DazedPlumb.Net.split(main)
+        main = W.mainAt(main)
+    else
+        local sq = main:getSquare()
+        o.mx, o.my, o.mz = sq:getX(), sq:getY(), sq:getZ()
+    end
     o.player, o.main = player, main
-    -- the main's square (not x/y: those are the panel's own position on screen)
-    o.mx, o.my, o.mz = sq:getX(), sq:getY(), sq:getZ()
     o.key = DazedPlumb.Net.key(o.mx, o.my, o.mz)
     opts = type(opts) == "table" and opts or {}
     o.readOnly = opts.readOnly == true
@@ -415,9 +432,15 @@ function DUP_Board:new(x, y, player, main, opts)
     return o
 end
 
---- Open the panel for a water main; one at a time, so a second open replaces the first.
+--- Open the panel for a water main (its object, or its "x,y,z" key when it may not be loaded here); one at a time.
+--  opts: readOnly, via = {x, y, z} of the wall panel it is opened at.
 function DUP_Board.open(player, main, opts)
-    if not (player and main and main:getSquare()) then return nil end
+    if not player or not main then return nil end
+    if type(main) == "string" then
+        if not DazedPlumb.Net.split(main) then return nil end
+    elseif not main:getSquare() then
+        return nil
+    end
     if Bd.current then Bd.current:close() end
     local x = getPlayerScreenLeft(0) + px(60)
     local y = getPlayerScreenTop(0) + px(60)

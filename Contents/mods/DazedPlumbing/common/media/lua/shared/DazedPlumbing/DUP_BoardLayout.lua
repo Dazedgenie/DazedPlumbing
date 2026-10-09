@@ -12,7 +12,8 @@
        sources     { { kind, label, state, detail, lpm, off, flow, canOff, canFlow, powered, watts } }
        fixtures    { { kind, room, amount, cap, closed, prio, used, ownTap, townWater, tainted } }   in fill order
        today       litres today              hist      24 hourly litres          hour   hour of the day (0-24)
-       nowHour     the world hour, for "used N h ago" ]]
+       nowHour     the world hour, for "used N h ago"
+       outOfRange  bool, the main's square is not loaded on the server: only the entry's figures ]]
 
 DazedPlumb = DazedPlumb or {}
 local Board = {}
@@ -98,7 +99,7 @@ function Board.lamps(s)
         { lab = "IGUI_DazedPlumb_BoardLampTainted", lit = st.tainted == true, col = "red" },
         { lab = "IGUI_DazedPlumb_BoardLampDry", lit = st.dry == true, col = "red", blink = true },
         { lab = "IGUI_DazedPlumb_BoardLampRationed", lit = st.rationed == true, col = "amber" },
-        { lab = "IGUI_DazedPlumb_BoardLampPaused", lit = (st.paused or s.shut) == true, col = "amber" },
+        { lab = "IGUI_DazedPlumb_BoardLampPaused", lit = (st.paused or s.shut or st.frozen) == true, col = "amber" },
     }
 end
 
@@ -109,7 +110,7 @@ end
 
 --- Build the face for a snapshot `s`.
 --  `o`: S, fontH(name), measure(name, str), getText(key), txt(key, ...), needles { supply, demand } (0..1, eased by the
---  window), readOnly, blink, shutArmed, srcScroll, fixScroll.
+--  window), readOnly, noConnect (no CONNECT BUILDING: opened at a wall panel), blink, shutArmed, srcScroll, fixScroll.
 --  @return { w, h, ops, hits, scrolls, needleOps } in screen pixels; needleOps { supply, demand } each
 --  { op, x, y, d } in base pixels, for Board.needleQuad (a "quad" op) or Board.needleLine (a "line" op).
 function Board.build(s, o)
@@ -144,6 +145,15 @@ function Board.build(s, o)
             str = string.sub(str, 1, n - 1)
         end
         return str .. ".."
+    end
+    local function wrap(str, font, w)
+        local out, cur = {}, ""
+        for word in string.gmatch(tostring(str or ""), "%S+") do
+            local try = cur == "" and word or (cur .. " " .. word)
+            if mw(font, try) > w and cur ~= "" then out[#out + 1] = cur cur = word else cur = try end
+        end
+        if cur ~= "" then out[#out + 1] = cur end
+        return out
     end
     local function tr(key, fallback)
         local v = T(key)
@@ -317,7 +327,11 @@ function Board.build(s, o)
         local rows = type(s.sources) == "table" and s.sources or {}
         text(T("IGUI_DazedPlumb_BoardSources"), x, y, C.ink, "Medium")
         local ry, pitch = y + 24, 19
-        if s.waiting then text(T("IGUI_DazedPlumb_BoardWaiting"), x, ry, C.muted, "Small")
+        if s.outOfRange then
+            for li, l in ipairs(wrap(T("IGUI_DazedPlumb_BoardOutOfRange"), "Small", w)) do
+                if li <= 3 then text(l, x, ry + (li - 1) * fh("Small"), C.muted, "Small") end
+            end
+        elseif s.waiting then text(T("IGUI_DazedPlumb_BoardWaiting"), x, ry, C.muted, "Small")
         elseif #rows == 0 then text(T("IGUI_DazedPlumb_BoardSourcesNone"), x, ry, C.muted, "Small") end
         local fitN = Board.SRC_ROWS
         local maxOff = math.max(0, #rows - fitN)
@@ -330,6 +344,7 @@ function Board.build(s, o)
             local name = tr("IGUI_DazedPlumb_SourceKind_" .. tostring(r.kind), tostring(r.kind))
             text(fit(name, "Small", 100), x + 16, yy + pitch / 2 - fh("Small") / 2, r.off and C.muted or C.ink, "Small")
             local state = tr("IGUI_DazedPlumb_PanelState_" .. tostring(r.state), tostring(r.state or ""))
+            if r.powered and r.watts and on then state = string.format("%d W", math.floor(r.watts + 0.5)) end
             text(fit(state, "NewSmall", 64), x + 120, yy + pitch / 2 - fh("NewSmall") / 2, C.muted, "NewSmall")
             local fl = Board.fmtL(r.lpm)
             if r.canFlow and r.flow then fl = fl .. " " .. string.format("%d%%", math.floor(r.flow * 100 + 0.5)) end
@@ -375,6 +390,8 @@ function Board.build(s, o)
         local off = math.max(0, math.min(maxOff, math.floor(tonumber(o.fixScroll) or 0)))
         if not s.connected then
             text(T("IGUI_DazedPlumb_BoardNotConnected"), x + 12, ry, C.muted, "Small")
+        elseif s.outOfRange then
+            text(fit(T("IGUI_DazedPlumb_BoardOutOfRange"), "Small", w - 24), x + 12, ry, C.muted, "Small")
         elseif s.waiting then
             text(T("IGUI_DazedPlumb_BoardWaiting"), x + 12, ry, C.muted, "Small")
         elseif #rows == 0 then
@@ -463,10 +480,11 @@ function Board.build(s, o)
     -- CONNECT BUILDING and DRAIN FIXTURES ON SHUT-OFF.
     local function buttons()
         local x, y, w = 394, 440, 182
-        local a = o.readOnly and 0.35 or 1
+        local can = not o.readOnly and not o.noConnect
+        local a = can and 1 or 0.35
         card(x, y, w, 28, C.dark, C.dark, a)
         text(fit(T("IGUI_DazedPlumb_BoardConnect"), "Small", w - 12), x + w / 2, y + 14 - fh("Small") / 2, C.cream, "Small", "center", a)
-        if not o.readOnly then hit(x, y, w, 28, "connect") end
+        if can then hit(x, y, w, 28, "connect") end
         local cy = y + 38
         local da = live and 1 or 0.35
         rect(x + 2, cy + 2, 16, 16, C.dark, da)
@@ -501,13 +519,14 @@ function Board.build(s, o)
     -- MAIN SHUT-OFF: a big wheel; it reads OPEN or PAUSED, and a second click within two seconds turns it.
     local function shutoff()
         local x, y, w, h = 588, 380, 158, 168
-        local paused = (st.paused or s.shut) == true
+        local shut = (st.paused or s.shut) == true
+        local paused = shut or st.frozen == true
         local a = live and 1 or 0.45
         card(x, y, w, h, C.dark, C.dark)
         text(fit(T("IGUI_DazedPlumb_BoardShutOff"), "NewSmall", w - 12), x + w / 2, y + 6, C.cream, "NewSmall", "center", a)
         local cx, cy, r = x + w / 2, y + 74, 46
-        ring(cx, cy, r, 7, paused and C.red or C.segOn, a)
-        local turn = paused and math.rad(36) or 0
+        ring(cx, cy, r, 7, shut and C.red or (paused and C.ice or C.segOn), a)
+        local turn = shut and math.rad(36) or 0
         for i = 0, 4 do
             local ang = turn + 2 * math.pi * i / 5
             line(cx, cy, cx + (r - 3) * math.cos(ang), cy + (r - 3) * math.sin(ang), 4, C.steel, a)
@@ -518,6 +537,8 @@ function Board.build(s, o)
         text(label, cx, y + 128, paused and C.segLow or C.segOn, "Medium", "center", a)
         if o.shutArmed then
             text(fit(T("IGUI_DazedPlumb_BoardConfirm"), "NewSmall", w - 8), cx, y + 128 + fh("Medium"), C.cream, "NewSmall", "center", o.blink ~= false and 1 or 0.4)
+        elseif st.frozen then
+            text(fit(T("IGUI_DazedPlumb_BoardReasonFrozen"), "NewSmall", w - 8), cx, y + 128 + fh("Medium"), C.ice, "NewSmall", "center")
         elseif s.drain and not paused then
             text(fit(T("IGUI_DazedPlumb_BoardDrainArmed"), "NewSmall", w - 8), cx, y + 128 + fh("Medium"), C.cream, "NewSmall", "center", 0.7)
         end
