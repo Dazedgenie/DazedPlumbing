@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- pipes in the world.
+--[[ Dazed Plumbing -- pipes in the world.
 
      The data model (records, joins, networks) is DUP_Net; this file puts it
      on the map. A pipe is a plain world object that never blocks movement:

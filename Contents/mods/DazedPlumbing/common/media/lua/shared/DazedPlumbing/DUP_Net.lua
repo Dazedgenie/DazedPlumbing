@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the pipe NETWORK, as pure data.
+--[[ Dazed Plumbing -- the pipe NETWORK, as pure data.
 
      No engine calls live here, so the whole thing runs in the test harness.
 

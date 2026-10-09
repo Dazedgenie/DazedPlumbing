@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- timed actions for the fuel pump: refuel a parked vehicle and fill a carried can.
+--[[ Dazed Plumbing -- timed actions for the fuel pump: refuel a parked vehicle and fill a carried can.
      Each action moves one chunk on the authority, whose complete() re-checks everything; the menu queues several.
      Only plain fields (the pump, the vehicle or item, a number) go to the server. ]]
 

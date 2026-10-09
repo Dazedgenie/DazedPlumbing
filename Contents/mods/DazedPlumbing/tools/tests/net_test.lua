@@ -1,6 +1,6 @@
 -- Pure tests for DUP_Net: joins, valves, pruning, sharing and flow. Run: lua54 net_test.lua <DazedPlumbing/common/media/lua>
 local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Utilities: Core, required
+local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Core, required
 dofile(root .. "/shared/DazedPlumbing/DUP_Net.lua")
 local N = DazedPlumb.Net
 local fails, n = 0, 0

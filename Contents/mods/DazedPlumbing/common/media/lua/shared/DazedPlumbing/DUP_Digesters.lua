@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the biogas digester: hand-fed rotten food and manure make propane for a piped tank (a link SOURCE of "propane", no power).
+--[[ Dazed Plumbing -- the biogas digester: hand-fed rotten food and manure make propane for a piped tank (a link SOURCE of "propane", no power).
      State is flat numbers in ModData `dazedDigester` { waste, buf, hour }; sprites are dazedplumb_01_244..247 (facings E, S, W, N). ]]
 
 require "DazedCore/DC_Boot"

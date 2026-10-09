@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- timed actions for the pumps: work the handle
+--[[ Dazed Plumbing -- timed actions for the pumps: work the handle
      (into the piped tank) and fill a carried container from the well.
      Run by the authority; complete() re-checks everything. ]]
 

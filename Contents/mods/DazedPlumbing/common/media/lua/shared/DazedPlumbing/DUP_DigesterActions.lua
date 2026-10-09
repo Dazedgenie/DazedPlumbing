@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the timed action for the biogas digester: add one item of waste.
+--[[ Dazed Plumbing -- the timed action for the biogas digester: add one item of waste.
      The authority's complete() re-checks everything; the menu queues one action per item.
      Only plain fields (the digester and the item) go to the server. ]]
 

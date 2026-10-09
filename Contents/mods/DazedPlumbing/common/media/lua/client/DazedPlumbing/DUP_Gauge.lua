@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the tank gauge window.
+--[[ Dazed Plumbing -- the tank gauge window.
 
      Opened from a tank's menu ("Open gauge"). It shows, live:
        - a gauge in the fluid's colour, the amount, capacity and percent

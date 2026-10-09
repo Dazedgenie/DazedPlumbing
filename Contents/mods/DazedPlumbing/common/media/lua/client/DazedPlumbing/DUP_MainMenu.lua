@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a water main: what it serves, the line rate,
+--[[ Dazed Plumbing -- right-click menu for a water main: what it serves, the line rate,
      Connect a building... (the core's Building Picker) and Disconnect. The pipe rows come from
      DUP_LinkMenu. ]]
 

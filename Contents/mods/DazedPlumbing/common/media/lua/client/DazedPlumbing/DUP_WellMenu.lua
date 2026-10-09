@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for the drilled well: power, status, output and the on/off switch.
+--[[ Dazed Plumbing -- right-click menu for the drilled well: power, status, output and the on/off switch.
      The pipe rows ("Well line -> Pipe to: <tank>") come from DUP_LinkMenu. ]]
 
 require "DazedPlumbing/DUP_DrilledWells"

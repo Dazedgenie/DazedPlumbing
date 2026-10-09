@@ -1,7 +1,7 @@
 module Base
 {
     /* ------------------------------------------------------------------ *
-     * Dazed Utilities: Plumbing -- the recipes.
+     * Dazed Plumbing -- the recipes.
      *
      * CRAFTED tanks are properly welded: sheet metal, pipe, a torch and a
      * mask, Welding skill by size. SALVAGED ones are rigged from small

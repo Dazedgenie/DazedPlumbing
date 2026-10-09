@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the water purifier.
+--[[ Dazed Plumbing -- the water purifier.
 
      A purifier stands BETWEEN a source and a tank:
 

@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- smokers in the live world (authority only).
+--[[ Dazed Plumbing -- smokers in the live world (authority only).
      Registers every smoker that streams in or is placed, settles it on load (the hours away, at most 48) and once a minute. ]]
 
 require "DazedPlumbing/DUP_Smokers"

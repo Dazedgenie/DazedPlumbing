@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- digesters in the live world (authority only).
+--[[ Dazed Plumbing -- digesters in the live world (authority only).
      Registers every digester that streams in or is placed and settles it on load (the hours away, at most 48) and once a minute. ]]
 
 require "DazedPlumbing/DUP_Digesters"

@@ -1,7 +1,7 @@
 -- A 2- or 3-square tank picked up comes back as ONE item carrying the master's state.
 -- Run: lua54 place_test.lua <common/media/lua>
 local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Utilities: Core, required
+local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Core, required
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local fails, n = 0, 0

@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for the water purifier:
+--[[ Dazed Plumbing -- right-click menu for the water purifier:
      its buffer, flow and filter, and fitting / removing a cartridge. The pipe
      rows come from DUP_LinkMenu. ]]
 

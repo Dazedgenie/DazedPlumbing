@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- start-up check.
+--[[ Dazed Plumbing -- start-up check.
 
      One console line so a player or a bug report can tell at a glance that
      everything arrived: DazedPlumbing: ready -- 72/72 tiles, 18/18 items
@@ -24,7 +24,7 @@ require "DazedPlumbing/DUP_DrilledWells"
 require "DazedPlumbing/DUP_Smokers"
 
 local P = DazedPlumb.Parts
-DazedPlumb.VERSION = "0.16.0"
+DazedPlumb.VERSION = "0.16.1"
 DazedCore.Boot.register("DazedPlumbing", DazedPlumb.VERSION)
 
 local function check()

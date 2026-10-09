@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- what a tank IS, as the game sees it.
+--[[ Dazed Plumbing -- what a tank IS, as the game sees it.
 
      The identity of a placed tank is its SPRITE NAME, the way Dazed Power
      recognises its parts: tile `dazedplumb_01_<N>`.

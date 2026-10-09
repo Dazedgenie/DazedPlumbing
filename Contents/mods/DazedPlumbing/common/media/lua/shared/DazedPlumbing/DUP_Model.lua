@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the tank physics. Pure Lua: no engine calls.
+--[[ Dazed Plumbing -- the tank physics. Pure Lua: no engine calls.
 
      A tank is a vessel with a TYPE (what it holds), a SIZE, a TIER (how it
      came to be) and a record of what it holds right now. Everything here

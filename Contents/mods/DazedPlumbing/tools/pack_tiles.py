@@ -14,7 +14,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE / "pzformat"))                      # a local copy, if any
-sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Utilities: Core
+sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Core
 from tiledef import TileDefinitions, Tile  # noqa: E402
 from packfile import TexturePack  # noqa: E402
 

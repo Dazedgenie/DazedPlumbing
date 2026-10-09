@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- water pumps.
+--[[ Dazed Plumbing -- water pumps.
 
      Two pumps draw water from the ground:
 

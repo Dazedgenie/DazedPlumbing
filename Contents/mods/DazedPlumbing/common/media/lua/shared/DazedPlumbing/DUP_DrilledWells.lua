@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the drilled well: a link SOURCE of clean water and a Dazed Power load (kind "well") that, like the
+--[[ Dazed Plumbing -- the drilled well: a link SOURCE of clean water and a Dazed Power load (kind "well") that, like the
      electric fuel pump, runs only when wired to a powered controller. Sprites dazedplumb_01_248..251 (facings E, S, W, N) follow the digester's. ]]
 
 require "DazedCore/DC_Boot"

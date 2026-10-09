@@ -187,6 +187,6 @@ if __name__ == "__main__":
     ap.add_argument("--preview")
     a = ap.parse_args()
     sys.path.insert(0, str(HERE / "pzformat"))                      # a local copy, if any
-    sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Utilities: Core
+    sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Core
     print("page", build())
     if a.preview: preview(a.preview)

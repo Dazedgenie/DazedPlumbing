@@ -1,7 +1,7 @@
 module Base
 {
     /* ------------------------------------------------------------------ *
-     * Dazed Utilities: Plumbing -- the tank items.
+     * Dazed Plumbing -- the tank items.
      *
      * 18 moveables: 3 sizes x 3 types x 2 tiers (salvaged, crafted). Each
      * WorldObjectSprite is the south-facing MASTER piece (piece 1) of its row on this mod's

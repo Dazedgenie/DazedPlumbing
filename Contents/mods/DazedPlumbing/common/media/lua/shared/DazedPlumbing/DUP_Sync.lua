@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- who is in charge, and keeping clients in step.
+--[[ Dazed Plumbing -- who is in charge, and keeping clients in step.
 
      The AUTHORITY (single player, or the server) owns every change to the world: pipes, tanks,
      wells, links. A client never writes them. The mechanics live in the core (DazedCore.Sync);

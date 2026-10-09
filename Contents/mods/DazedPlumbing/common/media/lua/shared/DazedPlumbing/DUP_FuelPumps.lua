@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the fuel pump: refuel a parked vehicle or fill a can from a piped petrol tank.
+--[[ Dazed Plumbing -- the fuel pump: refuel a parked vehicle or fill a can from a piped petrol tank.
      Two builds exist: a hand pump you crank and an electric one that works only when wired to a Dazed Power controller.
 
      A fuel pump is a link SINK for "gas" that never takes fuel into itself (room is always 0); it only

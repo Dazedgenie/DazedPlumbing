@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- a water or petrol tank wears a FluidContainer that mirrors what it holds,
+--[[ Dazed Plumbing -- a water or petrol tank wears a FluidContainer that mirrors what it holds,
      so the game's own Fluid menu (info, transfer, empty), drinking and washing all work on it.
      The tank's ModData stays the record: on the authority, what the game took or added since the last look is
      applied to it, then the container is rewritten to match. ]]

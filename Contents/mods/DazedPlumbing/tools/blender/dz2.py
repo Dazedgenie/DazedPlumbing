@@ -1,4 +1,4 @@
-"""Dazed Utilities art in the new style: DazedPower and DazedPlumbing sprites, icons and masks, built on dz_render.py.
+"""Dazed art in the new style: DazedPower and DazedPlumbing sprites, icons and masks, built on dz_render.py.
 
     blender -b --factory-startup -P dz2.py -- <out dir> <job> [job ...]
 Jobs: dp:<family>|dp:all, pl:<family>|pl:all, icons:dp, icons:pl, test. Cells land in <out>/<mod>/<family>/<index>.png at 256x512.

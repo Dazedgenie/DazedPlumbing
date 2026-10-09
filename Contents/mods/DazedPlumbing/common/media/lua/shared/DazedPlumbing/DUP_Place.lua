@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- picking tanks up, putting them down, and
+--[[ Dazed Plumbing -- picking tanks up, putting them down, and
      where they may go.
 
      A tank is a vanilla MOVEABLE (the item's WorldObjectSprite and the

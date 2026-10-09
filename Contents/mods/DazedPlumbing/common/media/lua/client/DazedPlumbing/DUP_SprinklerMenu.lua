@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a garden sprinkler: the crops in reach, its state, the switch and the schedule.
+--[[ Dazed Plumbing -- right-click menu for a garden sprinkler: the crops in reach, its state, the switch and the schedule.
      The pipe rows come from DUP_LinkMenu. ]]
 
 require "DazedPlumbing/DUP_Sprinklers"
