@@ -240,7 +240,8 @@ function Sm.settle(obj, now)
 end
 
 -- What each smoker last showed the clients, so the minute tick sends only visible changes.
-local shown = setmetatable({}, { __mode = "k" })
+-- Kahlua ignores weak keys, so the tick drops an entry once its smoker leaves the live list.
+local shown = {}
 
 --- Tell the clients when what the menu shows has changed (the lit state or a tenth of an hour of progress). Authority only.
 function Sm.publish(obj, force)
@@ -250,6 +251,7 @@ function Sm.publish(obj, force)
     for k, v in pairs(st.prog) do parts[#parts + 1] = k .. "=" .. string.format("%.1f", v) end
     table.sort(parts)
     local key = table.concat(parts, "|")
+    Sm.live[obj] = true                                -- every remembered smoker is one the tick can drop
     if not force and shown[obj] == key then return end
     shown[obj] = key
     if obj.transmitModData then obj:transmitModData() end
@@ -294,7 +296,8 @@ function Sm.progressNow(obj)
 end
 
 ----------------------------------------------------------- the live registry and tick
-Sm.live = Sm.live or setmetatable({}, { __mode = "k" })
+-- Plain keys: the tick removes a smoker that is gone (Kahlua does not honour __mode).
+Sm.live = Sm.live or {}
 
 function Sm.register(obj)
     if obj then Sm.live[obj] = true end
@@ -315,6 +318,9 @@ function Sm.tick()
                 Sm.live[obj] = nil
             end
         end
+    end
+    for obj in pairs(shown) do
+        if not Sm.live[obj] then shown[obj] = nil end
     end
 end
 

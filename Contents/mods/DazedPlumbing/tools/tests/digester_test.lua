@@ -405,6 +405,10 @@ local noState = E.object(Dg.sprite("S"), E.square(52, 50))
 ok(Dg.preview(noState).buf == 0 and noState.md.dazedDigester == nil, "a preview of a digester with no state is empty and creates none")
 isClient = keepClient
 ok(near(L.adapters[Dg.ID].available(seen), wantBuf, 1e-9) and sd.hour == 4024 and sends == 1, "the authority settles to the same figure and sends it once")
+ok(Dg.live[seen] == true, "a published digester is on the live list, so the tick can forget it")
+seen.square = nil
+Dg.tick()
+ok(Dg.live[seen] == nil, "and it leaves once lifted")
 -- the smoker follows the same rule: a client never settles or publishes one
 require "DazedPlumbing/DUP_Smokers"
 local Sm = DazedPlumb.Smokers
@@ -419,7 +423,10 @@ ok(smk.md.dazedSmoker.hour == 4000 and smk.md.dazedSmoker.lit == true and smkSen
     "a client's smoker refresh and publish change and send nothing")
 isClient = keepClient
 Sm.publish(smk, true)
-ok(smkSends == 1, "the authority's publish sends")
+ok(smkSends == 1 and Sm.live[smk] == true, "the authority's publish sends and puts the smoker on the live list")
+smk.square = nil
+Sm.tick()
+ok(Sm.live[smk] == nil, "a lifted smoker leaves the live list")
 isClient = keepClient
 -- a lifted digester drops out of the tick
 solo.square = nil

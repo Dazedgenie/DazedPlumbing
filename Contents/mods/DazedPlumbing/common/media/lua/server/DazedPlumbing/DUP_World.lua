@@ -26,8 +26,9 @@ local try = P.try
 W.SETTLE_HOURS = 1 / 6                 -- ten game minutes
 W.FIRE_EVERY = 5                       -- game minutes between looks for flames beside a tank
 W.MAX_CATCHUP_HOURS = 72
-W.tanks = W.tanks or setmetatable({}, { __mode = "k" })
-W.spouts = W.spouts or setmetatable({}, { __mode = "k" })
+-- Plain keys (Kahlua ignores __mode): the minute tick drops a tank or downspout once it is gone.
+W.tanks = W.tanks or {}
+W.spouts = W.spouts or {}
 
 local worldHours = DazedCore.Util.worldHours
 
@@ -169,11 +170,13 @@ end
 
 --- The building whose roof drains to this tank: one standing on a square next to a tank
 --  square, with the tank itself outside. Returns the building, or nil.
--- Buildings do not move: each tank's answer is kept for an in-game hour (weak keys, so lifted tanks drop out).
-local roofMemo = setmetatable({}, { __mode = "k" })
+-- Buildings do not move: each tank's answer is kept for an in-game hour. The whole memo is
+-- emptied every hour too, so tanks that unloaded or were lifted are not held on to.
+local roofMemo, roofMemoAt = {}, nil
 
 function W.roofOf(obj)
     local now = worldHours()
+    if not roofMemoAt or now - roofMemoAt >= 1 or now < roofMemoAt then roofMemo, roofMemoAt = {}, now end
     local hit = roofMemo[obj]
     if hit and now - hit.at < 1 then return hit.b or nil end
     local b = W.findRoof(obj)
@@ -274,7 +277,7 @@ function W.tickWorld()
     for obj in pairs(W.tanks) do
         local ok, keep = pcall(settle, obj, now, true, rain, fireLook)
         if not ok then print("DazedPlumbing: tank tick failed: " .. tostring(keep)) end
-        if not ok or not keep then W.tanks[obj] = nil end
+        if not ok or not keep then W.tanks[obj] = nil roofMemo[obj] = nil end
     end
 end
 

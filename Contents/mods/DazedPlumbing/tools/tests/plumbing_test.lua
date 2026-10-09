@@ -263,6 +263,18 @@ ok(near(far.md.dazedplumb.amount, 10 / 60, 0.01) and far.md.dazedplumb.catching 
 RAIN = 0
 W.tick()
 ok(far.md.dazedplumb.catching == nil, "the tag clears when the rain stops")
+-- the roof memo: one lookup per tank an hour, emptied hourly so gone tanks are not kept
+local keepFind, finds = W.findRoof, 0
+W.findRoof = function(o) finds = finds + 1 return keepFind(o) end
+local hNow = E.hours or 100
+E.hours = hNow + 5
+W.roofOf(t1) W.roofOf(t1)
+ok(finds == 1 and W.roofOf(t1) == bldg, "a tank's roof is looked up once within the hour")
+E.hours = hNow + 6.1
+W.roofOf(t1)
+ok(finds == 2, "and again after the hour, when the memo is emptied")
+E.hours = hNow
+W.findRoof = keepFind
 
 
 -- downspouts: facing, wall check, buffer, roof share with a tank, and a line to a tank

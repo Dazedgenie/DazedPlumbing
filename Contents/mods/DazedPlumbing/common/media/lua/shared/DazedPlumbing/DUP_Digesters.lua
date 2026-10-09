@@ -148,13 +148,15 @@ function Dg.preview(obj, now, temp)
 end
 
 -- What each machine last showed the clients, so the minute tick sends only visible changes.
-local shown = setmetatable({}, { __mode = "k" })
+-- Kahlua ignores weak keys, so the tick drops an entry once its machine leaves the live list.
+local shown = {}
 
 --- Tell the clients when what the menu shows has changed (authority only).
 function Dg.publish(obj)
     if not DazedPlumb.Sync.authority() then return end
     local st = Dg.state(obj)
     local key = string.format("%.1f|%.2f", st.waste, st.buf)
+    Dg.live[obj] = true                                -- every remembered machine is one the tick can drop
     if shown[obj] == key then return end
     shown[obj] = key
     if obj.transmitModData then obj:transmitModData() end
@@ -168,7 +170,8 @@ function Dg.refresh(obj)
 end
 
 ----------------------------------------------------------- the live registry and tick
-Dg.live = Dg.live or setmetatable({}, { __mode = "k" })
+-- Plain keys: the tick removes a machine that is gone (Kahlua does not honour __mode).
+Dg.live = Dg.live or {}
 
 function Dg.register(obj)
     if obj then Dg.live[obj] = true end
@@ -189,6 +192,9 @@ function Dg.tick()
                 Dg.live[obj] = nil
             end
         end
+    end
+    for obj in pairs(shown) do
+        if not Dg.live[obj] then shown[obj] = nil end
     end
 end
 
