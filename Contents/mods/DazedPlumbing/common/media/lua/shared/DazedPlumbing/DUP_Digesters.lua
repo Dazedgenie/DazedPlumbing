@@ -114,6 +114,7 @@ end
 --- Settle the hours since the digester was last settled (at most MAX_CATCHUP_HOURS). Authority only.
 --  Returns true when it made gas.
 function Dg.settle(obj, now, temp)
+    if not DazedPlumb.Sync.authority() then return false end
     local st = Dg.state(obj)
     now = now or worldHours()
     local last = st.hour
@@ -127,11 +128,31 @@ function Dg.settle(obj, now, temp)
     return gas > 0
 end
 
+--- What settling now would leave, worked out without writing anything: { waste, buf }. For a client's gauge or menu.
+function Dg.preview(obj, now, temp)
+    local md = obj and obj.getModData and obj:getModData()
+    local raw = md and md[Dg.KEY]
+    if type(raw) ~= "table" then return { waste = 0, buf = 0 } end
+    local waste = min(Dg.SLURRY_CAP, max(0, tonumber(raw.waste) or 0))
+    local buf = min(Dg.BUF_CAP, max(0, tonumber(raw.buf) or 0))
+    local last = tonumber(raw.hour)
+    now = now or worldHours()
+    if last then
+        local gap = min(now - last, Dg.MAX_CATCHUP_HOURS)
+        if gap > 0 then
+            local d, gas = Dg.digest(waste, gap, Dg.tempFactor(temp), Dg.BUF_CAP - buf)
+            waste, buf = max(0, waste - d), min(Dg.BUF_CAP, buf + gas)
+        end
+    end
+    return { waste = waste, buf = buf }
+end
+
 -- What each machine last showed the clients, so the minute tick sends only visible changes.
 local shown = setmetatable({}, { __mode = "k" })
 
---- Tell the clients when what the menu shows has changed.
+--- Tell the clients when what the menu shows has changed (authority only).
 function Dg.publish(obj)
+    if not DazedPlumb.Sync.authority() then return end
     local st = Dg.state(obj)
     local key = string.format("%.1f|%.2f", st.waste, st.buf)
     if shown[obj] == key then return end
@@ -141,6 +162,7 @@ end
 
 --- Bring a digester up to date with the clock (authority only) and publish it.
 function Dg.refresh(obj)
+    if not DazedPlumb.Sync.authority() then return end
     Dg.settle(obj, nil, Dg.tempAt(obj))
     Dg.publish(obj)
 end
@@ -265,6 +287,8 @@ function Dg.register_adapter()
         id = Dg.ID, produces = "propane", tainted = false, noNodes = true, label = "ContextMenu_DazedPlumb_DigesterLine",
         match = function(o) return Dg.isDigester(o) end,
         available = function(o)
+            -- a client (the gauge) only previews: settling there would advance the clock and send ModData
+            if not DazedPlumb.Sync.authority() then return Dg.preview(o, nil, Dg.tempAt(o)).buf end
             Dg.refresh(o)
             return Dg.state(o).buf
         end,

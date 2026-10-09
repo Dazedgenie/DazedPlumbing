@@ -387,6 +387,39 @@ isClient = function() return true end
 E.hours = 4010
 Dg.tick()
 ok(solo.md.dazedDigester.hour == 4001, "a client does not settle or tick a digester")
+-- the gauge on a client asks the adapter what the digester can give: it previews, and writes nothing
+local seen = digesterAt(51, 50, 40, 0.5, 4000)
+local sends = 0
+seen.transmitModData = function() sends = sends + 1 end
+isClient = function() return true end
+E.hours = 4024
+local offered = L.adapters[Dg.ID].available(seen)
+local wantBuf = math.min(Dg.BUF_CAP, 0.5 + select(2, Dg.digest(40, 24, 1, Dg.BUF_CAP - 0.5)))
+ok(near(offered, wantBuf, 1e-9), "a client's available() previews a day of gas: " .. offered)
+local sd = seen.md.dazedDigester
+ok(sd.hour == 4000 and sd.waste == 40 and sd.buf == 0.5 and sends == 0, "and leaves the state alone and sends nothing")
+Dg.refresh(seen)
+Dg.publish(seen)
+ok(sd.hour == 4000 and sends == 0 and Dg.live[seen] == nil, "refresh and publish do nothing on a client")
+local noState = E.object(Dg.sprite("S"), E.square(52, 50))
+ok(Dg.preview(noState).buf == 0 and noState.md.dazedDigester == nil, "a preview of a digester with no state is empty and creates none")
+isClient = keepClient
+ok(near(L.adapters[Dg.ID].available(seen), wantBuf, 1e-9) and sd.hour == 4024 and sends == 1, "the authority settles to the same figure and sends it once")
+-- the smoker follows the same rule: a client never settles or publishes one
+require "DazedPlumbing/DUP_Smokers"
+local Sm = DazedPlumb.Smokers
+local smk = E.object(Sm.sprite("S"), E.square(53, 50))
+smk.md.dazedSmoker = { lit = true, hour = 4000, prog = {} }
+local smkSends = 0
+smk.transmitModData = function() smkSends = smkSends + 1 end
+isClient = function() return true end
+Sm.refresh(smk)
+Sm.publish(smk, true)
+ok(smk.md.dazedSmoker.hour == 4000 and smk.md.dazedSmoker.lit == true and smkSends == 0 and Sm.live[smk] == nil,
+    "a client's smoker refresh and publish change and send nothing")
+isClient = keepClient
+Sm.publish(smk, true)
+ok(smkSends == 1, "the authority's publish sends")
 isClient = keepClient
 -- a lifted digester drops out of the tick
 solo.square = nil

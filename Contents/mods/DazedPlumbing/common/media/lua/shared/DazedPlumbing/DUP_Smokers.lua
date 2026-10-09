@@ -219,6 +219,7 @@ end
 
 --- Settle the hours since the smoker was last settled (authority only). Returns the hours it smoked.
 function Sm.settle(obj, now)
+    if not DazedPlumb.Sync.authority() then return 0 end
     local st = Sm.state(obj)
     now = now or worldHours()
     local last = st.hour
@@ -241,8 +242,9 @@ end
 -- What each smoker last showed the clients, so the minute tick sends only visible changes.
 local shown = setmetatable({}, { __mode = "k" })
 
---- Tell the clients when what the menu shows has changed (the lit state or a tenth of an hour of progress).
+--- Tell the clients when what the menu shows has changed (the lit state or a tenth of an hour of progress). Authority only.
 function Sm.publish(obj, force)
+    if not DazedPlumb.Sync.authority() then return end
     local st = Sm.state(obj)
     local parts = { tostring(st.lit), tostring(st.out) }
     for k, v in pairs(st.prog) do parts[#parts + 1] = k .. "=" .. string.format("%.1f", v) end
@@ -255,6 +257,7 @@ end
 
 --- Bring a smoker up to date (authority only) and publish it.
 function Sm.refresh(obj)
+    if not DazedPlumb.Sync.authority() then return end
     Sm.settle(obj)
     Sm.publish(obj)
 end
