@@ -172,6 +172,36 @@ function U.draw(square, amount)
     return got
 end
 
+--- Forget wells whose loaded square holds no pump, once they have refilled (authority, every ten game minutes).
+--  A full well is what a new one starts as, so nothing is lost; unloaded squares are kept, and the count dropped is returned.
+U.PRUNE_EVERY = 1 / 6
+local lastPrune = nil
+function U.housekeep(now)
+    if not DazedPlumb.Sync.authority() then return 0 end
+    now = now or worldHours()
+    if lastPrune and now >= lastPrune and now - lastPrune < U.PRUNE_EVERY then return 0 end
+    lastPrune = now
+    local st, adapter = wells().wells, L.adapters[U.ID]
+    if not adapter then return 0 end
+    local rain, drop = raining(), {}
+    for key, w in pairs(st) do
+        local x, y, z = string.match(key, "^(-?%d+),(-?%d+),(-?%d+)$")
+        if x and type(w) == "table" then
+            local pump, why = L.machineAt(tonumber(x), tonumber(y), tonumber(z), adapter)
+            if not pump and why == "gone" then
+                local cap = tonumber(w.cap) or 0
+                local reserve = U.recharged(tonumber(w.reserve) or 0, cap, now - (tonumber(w.hour) or now), rain)
+                if reserve >= cap - 0.5 then drop[#drop + 1] = key end
+            end
+        elseif not x then
+            drop[#drop + 1] = key                        -- not a square key: nothing could ever read it
+        end
+    end
+    for _, k in ipairs(drop) do st[k] = nil end
+    if #drop > 0 then DazedPlumb.Sync.touch(U.WELLS) end   -- the wells key only: pipe caches stay valid
+    return #drop
+end
+
 ----------------------------------------------------------- power
 --- Does a power mod feed this machine by wire? Asked through the core's registry; an older
 --  add-on's single hook (DazedPlumb.externalPower) still counts.

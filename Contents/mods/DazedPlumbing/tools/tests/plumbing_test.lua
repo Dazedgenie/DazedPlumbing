@@ -172,6 +172,26 @@ w = U.well(sqW)
 ok(not empty(ModData.getOrCreate("DazedPlumbWells").wells), "authority creates the well")
 local drawn = U.draw(sqW, 50)
 ok(near(drawn, 50) and S.dirty["DazedPlumbWells"] == true, "drawing marks the wells for sync")
+-- wells with no pump are forgotten once full; a drained one, a pumped one and an unloaded one stay
+local wellsT = ModData.getOrCreate("DazedPlumbWells").wells
+local pumpSq = E.square(6, 5)
+E.object(U.sprite("hand", "S"), pumpSq)
+U.well(pumpSq)
+wellsT["999,999,0"] = { reserve = 100, cap = 800, hour = E.hours or 100 }      -- a square that is not loaded
+local netV, wellV = DazedCore.Sync.versionOf("DazedPlumbNet"), DazedCore.Sync.versionOf("DazedPlumbWells")
+ok(U.housekeep() == 0 and wellsT["5,5,0"] and wellsT["6,5,0"] and wellsT["999,999,0"], "a drained well keeps its level until it refills")
+ok(U.housekeep() == 0, "the sweep runs at most every ten minutes")
+local hBase = E.hours or 100
+E.hours = hBase + 3
+wellsT["999,999,0"].reserve = 800
+ok(U.housekeep() == 1 and wellsT["5,5,0"] == nil and wellsT["6,5,0"] and wellsT["999,999,0"], "a refilled well with no pump goes; the pumped and unloaded ones stay")
+ok(DazedCore.Sync.versionOf("DazedPlumbWells") == wellV + 1 and DazedCore.Sync.versionOf("DazedPlumbNet") == netV, "pruning touches the wells key only")
+isClient = function() return true end
+E.hours = hBase + 4
+ok(U.housekeep() == 0, "a client never prunes")
+isClient = keep
+wellsT["999,999,0"] = nil
+E.hours = hBase
 
 -- sync bookkeeping
 for k in pairs(S.dirty) do S.dirty[k] = nil end
