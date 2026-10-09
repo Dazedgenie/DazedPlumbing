@@ -530,6 +530,32 @@ local nm = P.sprite("large", "water", "crafted", "E", 2)
 ok(P.spriteInfo(nm) == P.spriteInfo(nm) and P.spriteInfo(nm).piece == 2, "a tank sprite's info is one shared table")
 ok(P.spriteInfo("carpentry_01_0") == nil and P.spriteInfo(nil) == nil and P.spriteInfo("dazedplumb_01_x") == nil, "foreign names are not tanks")
 
+-- zombies wearing through two outdoor squares in one minute: both break, the clients hear once
+do
+    local hit = {}
+    for k, r in pairs(K.pipes()) do
+        if N.isReal(r) and r.outdoor and (r.cond or 100) > 0 and #hit < 2 then hit[#hit + 1] = k end
+    end
+    for _, k in ipairs(hit) do
+        K.pipes()[k].cond = 1
+        local x, y, z = N.split(k)
+        E.square(x, y, z).movers = { {} }
+    end
+    local oldInstanceof = instanceof
+    instanceof = function(_, cls) return cls == "IsoZombie" end
+    local v0 = K.version()
+    K.tick()
+    instanceof = oldInstanceof
+    local broken = 0
+    for _, k in ipairs(hit) do
+        if K.pipes()[k].cond <= 0 then broken = broken + 1 end
+        local x, y, z = N.split(k)
+        E.square(x, y, z).movers = nil
+    end
+    ok(#hit == 2 and broken == 2 and K.version() == v0 + 1, "two squares broken by wear cost one pipe-table send")
+    for _, k in ipairs(hit) do local x, y, z = N.split(k) K.repairAt(x, y, z) end
+end
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)

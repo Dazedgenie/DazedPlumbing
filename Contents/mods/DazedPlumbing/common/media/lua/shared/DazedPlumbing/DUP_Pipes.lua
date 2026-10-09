@@ -632,12 +632,18 @@ function K.disconnect(endStr)
     return sound
 end
 
---- Break one square (damage or a deliberate cut): object gone, record kept at 0.
-function K.breakAt(x, y, z)
+-- Break a square without telling the clients; the caller sends once when it is done.
+local function breakQuietly(x, y, z)
     local r = K.record(x, y, z)
     if not r or r.virtual then return false end
     r.cond = 0
     removeObject(x, y, z)
+    return true
+end
+
+--- Break one square (damage or a deliberate cut): object gone, record kept at 0.
+function K.breakAt(x, y, z)
+    if not breakQuietly(x, y, z) then return false end
     K.touch(true)
     return true
 end
@@ -676,7 +682,7 @@ function K.cost(plan) return plan and #plan.path or 0 end
 local wearTicks = 0
 function K.tick()
     if not S.authority() then return end
-    local pipes, worn = store().pipes, false
+    local pipes, worn, broke = store().pipes, false, false
     for key, r in pairs(pipes) do
         if N.isReal(r) and r.outdoor and (r.cond or 100) > 0 then
             local x, y, z = N.split(key)
@@ -693,7 +699,7 @@ function K.tick()
                 if hit > 0 then
                     r.cond = r.cond - hit
                     worn = true
-                    if r.cond <= 0 then K.breakAt(x, y, z) end
+                    if r.cond <= 0 and breakQuietly(x, y, z) then broke = true end
                 end
             end
         end
@@ -711,7 +717,11 @@ function K.tick()
     end
     if worn then
         wearTicks = wearTicks + 1
-        if wearTicks >= 5 then wearTicks = 0 K.touch() end     -- condition reaches clients now and then
+        if wearTicks >= 5 and not broke then wearTicks = 0 K.touch() end     -- condition reaches clients now and then
+    end
+    if broke then
+        if wearTicks >= 5 then wearTicks = 0 end
+        K.touch(true)                                  -- every square that broke this minute, in one send
     end
 end
 
