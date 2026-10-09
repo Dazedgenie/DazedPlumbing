@@ -54,6 +54,8 @@ end
 ArrayList = { new = function() local t = {} return { add = function(_, v) t[#t + 1] = v end, size = function() return #t end, get = function(_, i) return t[i + 1] end } end }
 Fluid = { Water = "W", TaintedWater = "TW", Petrol = "P" }
 FluidType = Fluid
+local clock = 0
+getTimestampMs = function() clock = clock + 1000 return clock end   -- each command a second after the last
 
 require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Sync"
@@ -157,6 +159,17 @@ W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 41, sy = 11, sz = 0 })
 ok(W.entry(main) == nil and player.notes[#player.notes] == "IGUI_DazedPlumb_MainFar", "the shed is out of this main's reach")
 W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 12, sy = 12, sz = 0 })
 ok(W.entry(main) ~= nil, "reconnected")
+
+-- a double click: the second pick inside half a second is dropped instead of toggling the house off again
+local frozenClock = clock
+getTimestampMs = function() return frozenClock + 1000 end
+W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 12, sy = 12, sz = 0 })
+local afterFirst = W.entry(main) ~= nil
+W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 12, sy = 12, sz = 0 })
+ok(afterFirst == (W.entry(main) ~= nil), "a second pick inside half a second is ignored")
+clock = frozenClock + 1000
+getTimestampMs = function() clock = clock + 1000 return clock end
+if not afterFirst then W.send(player, "mainPick", { x = 22, y = 15, z = 0, sx = 12, sy = 12, sz = 0 }) end
 
 -- lifting the main: its square is loaded and empty, so housekeeping forgets it
 E.square(22, 15, 0):RemoveTileObject(main)

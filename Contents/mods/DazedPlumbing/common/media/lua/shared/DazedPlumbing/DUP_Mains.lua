@@ -267,22 +267,22 @@ end
 W.register()
 
 ----------------------------------------------------------- the picker's commands
---- A client's click, or Remove all, sent to the authority (handled below). Single player handles it at once.
+-- A client's click, or Remove all, goes to the authority through the core's command layer
+-- (single player runs it at once). A pick is a toggle, so repeats from one player inside half a second are dropped.
+W.PICK_EVERY_MS = 500
+
 function W.send(player, cmd, args)
-    if S.isClient() then
-        if sendClientCommand then sendClientCommand(player, W.MODULE, cmd, args) end
-    else
-        W.onCommand(W.MODULE, cmd, player, args)
-    end
+    return DazedCore.Net.send(player, W.MODULE, cmd, args)
 end
 
+-- The player stands within the main's reach (plus two) of it, no more than BAND floors away.
 local function near(player, x, y, z)
-    if not player then return false end
-    local dx, dy = player:getX() - x, player:getY() - y
-    local r = W.reach() + 2
-    return dx * dx + dy * dy <= r * r and math.abs(player:getZ() - z) <= W.BAND
+    if not DazedCore.Net.near(player, x, y, nil, W.reach() + 2) then return false end
+    local pz = try(player, "getZ")
+    return type(pz) == "number" and type(z) == "number" and math.abs(pz - z) <= W.BAND
 end
 
+--- Run one of the picker's commands for a player (authority).
 function W.onCommand(module, cmd, player, args)
     if module ~= W.MODULE or type(args) ~= "table" then return end
     if cmd ~= "mainPick" and cmd ~= "mainClear" then return end
@@ -299,9 +299,7 @@ function W.onCommand(module, cmd, player, args)
     if note then N.say(player, note, nil, not ok) end
 end
 
-if Events and Events.OnClientCommand and not W.hooked then
-    W.hooked = true
-    Events.OnClientCommand.Add(W.onCommand)
-end
+DazedCore.Net.on(W.MODULE, "mainPick", function(player, args) W.onCommand(W.MODULE, "mainPick", player, args) end, W.PICK_EVERY_MS)
+DazedCore.Net.on(W.MODULE, "mainClear", function(player, args) W.onCommand(W.MODULE, "mainClear", player, args) end)
 
 return W
