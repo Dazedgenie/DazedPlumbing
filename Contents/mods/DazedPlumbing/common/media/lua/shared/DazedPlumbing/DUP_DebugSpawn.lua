@@ -4,6 +4,7 @@
      DUP_Boot checks; a module that is not loaded is skipped. ]]
 
 require "DazedCore/DC_Boot"
+require "DazedCore/DC_DebugSpawn"     -- by name, so it is there whichever mod's shared files load first
 require "DazedPlumbing/DUP_Parts"
 
 local S = DazedCore.DebugSpawn
