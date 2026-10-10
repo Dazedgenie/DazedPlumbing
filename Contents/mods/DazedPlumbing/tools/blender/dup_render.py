@@ -509,11 +509,18 @@ HANDLE_DOWN_BASE = 212                                   # the hand pump mid-str
 
 
 def hand_pump(stroke=False):
-    """A cast-iron pitcher pump on a well pipe, standing on a round concrete well cap; `stroke` presses the handle down."""
+    """A cast-iron pitcher pump on a well pipe, standing on a weathered concrete pad over a capped steel well casing
+    (DazedPower's grounded look, not a bare disc); `stroke` presses the handle down."""
     iron = mat("#3a5243", 0.55, wear=0.14, rust=0.35)
-    conc = mat(CONCRETE, 0.95, wear=0.25)
-    cyl(0.38, 0.12, (0, 0.04, 0.06), conc, segs=36)
-    cyl(0.06, 0.40, (0, 0.04, 0.32), mat(STEEL, 0.45, rust=0.4))           # well pipe
+    box((0.62, 0.58, 0.08), (0, 0.04, 0.04), mat("#8e8a83", 0.95, wear=0.3), bevel=0.014)   # poured pad, chamfered
+    box((0.18, 0.12, 0.012), (0.14, -0.13, 0.083), mat("#6f6a60", 0.95, wear=0.2), bevel=0.004)  # water-stained patch
+    casing = mat("#55595c", 0.55, wear=0.12, rust=0.5)
+    cyl(0.1, 0.1, (0, 0.04, 0.13), casing, segs=28)                         # 4-inch casing stub through the pad
+    cyl(0.115, 0.03, (0, 0.04, 0.19), casing, segs=28)                      # well cap
+    for k in range(3):                                                      # cap bolts
+        a = 2 * math.pi * k / 3 + 0.5
+        cyl(0.012, 0.03, (0.1 * math.cos(a), 0.04 + 0.1 * math.sin(a), 0.21), mat(DARK, 0.5), segs=6)
+    cyl(0.06, 0.34, (0, 0.04, 0.36), mat(STEEL, 0.45, rust=0.4))           # well pipe
     cyl(0.10, 0.04, (0, 0.04, 0.52), iron)                                  # base flange
     cyl(0.115, 0.40, (0, 0.04, 0.74), iron)                                 # barrel
     cyl(0.13, 0.045, (0, 0.04, 0.95), iron)                                 # top rim
@@ -529,7 +536,7 @@ def hand_pump(stroke=False):
     if stroke:
         tube((0, -0.28, 0.67), (0, -0.30, 0.14), 0.022, mat("#7fb2d9", 0.1, alpha=0.65))  # water running from the spout
     tube((0.08, 0.04, 0.56), (0.28, 0.04, 0.56), 0.026, mat(STEEL, 0.45))   # line out to the tank
-    tube((0.28, 0.04, 0.56), (0.28, 0.04, 0.12), 0.026, mat(STEEL, 0.45))
+    tube((0.28, 0.04, 0.56), (0.28, 0.04, 0.08), 0.026, mat(STEEL, 0.45))
 
 
 def electric_pump():

@@ -10,6 +10,8 @@ wear and the 2:1 ortho tile camera are exactly DazedPower's. Run with Blender 4.
     blender -b --factory-startup -P tools/blender/dup_machines_render.py -- <out dir> [all|cells|icons|<machine> ...]
     python  tools/blender/dup_machines_render.py -- <out dir> all            (with `pip install bpy`)
 
+Icon-only: pipesection (Item_DazedPipeSection, a threaded steel pipe length with a coupling).
+
 Raw 256x512 cells land in <out>/cells/<index>.png and 256x256 icon renders in <out>/icons/Item_<Name>.png.
 Then grade and shrink them exactly like DazedPower (grade_all.py + import_art.py):
 
@@ -317,6 +319,31 @@ def m_smoker():
     WEAR["scorch"] = 0.0
 
 
+# ------------------------------------------------------------------ icon-only items
+def pipe_section_icon():
+    """A length of weathered steel pipe: rust-mottled galvanised body, freshly cut threads at both ends and a
+    threaded coupling screwed onto one of them."""
+    galv = mat("#868a87", 0.6, 0.5, var=0.2, rust=0.6, dirt=0.45)
+    thread = mat("#a9aca8", 0.38, 0.75, var=0.08, rust=0.05, dirt=0.15)
+    L, r = 0.25, 0.068
+    Z = r * 1.36                                                 # resting on the coupling
+    tube((-L + 0.075, 0, Z), (L - 0.07, 0, Z), r, galv, 24)
+    tube((-L, 0, Z), (-L + 0.075, 0, Z), r - 0.004, thread, 24)          # cut threads: a bright, ridged stub
+    tube((L - 0.07, 0, Z), (L, 0, Z), r - 0.004, thread, 24)
+    for i in range(7):
+        torus(r - 0.003, 0.0045, (-L + 0.008 + i * 0.011, 0, Z), thread, axis="X", seg=24, rseg=6)
+    for i in range(2):
+        torus(r - 0.003, 0.0045, (L - 0.064 + i * 0.011, 0, Z), thread, axis="X", seg=24, rseg=6)
+    cpl = mat("#6f7370", 0.5, 0.55, var=0.12, rust=0.3, dirt=0.3)    # coupling on the +X end
+    cyl(r * 1.36, 0.1, (L, 0, Z), cpl, axis="X", segs=28)
+    for x in (L - 0.05, L + 0.05): torus(r * 1.3, 0.006, (x, 0, Z), cpl, axis="X", seg=28, rseg=6)
+    cyl(r * 0.9, 0.102, (L + 0.001, 0, Z), mat("#141414", 0.9, dirt=0, wear=False), axis="X", segs=24)   # bore
+    cyl(r * 0.9, 0.004, (-L - 0.001, 0, Z), mat("#141414", 0.9, dirt=0, wear=False), axis="X", segs=24)
+
+
+ICON_ONLY = [("pipesection", pipe_section_icon, "DazedPipeSection")]
+
+
 MACHINES = [("main", 232, m_water_main, "DazedWaterMain"), ("fuelhand", 236, m_fuel_hand, "DazedFuelPumpHand"),
             ("fuelelec", 240, m_fuel_elec, "DazedFuelPumpElectric"), ("digester", 244, m_digester, "DazedDigester"),
             ("well", 248, m_well, "DazedDrilledWell"), ("smoker", 252, m_smoker, "DazedSmoker")]
@@ -343,6 +370,11 @@ def render_item_icons(names):
         WEAR.update(rust=0.0, dirt=0.0, scorch=0.0)
         icon_shot("Item_" + item, fn, out)
         log("icon", item)
+    for name, fn, item in ICON_ONLY:
+        if names and name not in names: continue
+        WEAR.update(rust=0.0, dirt=0.0, scorch=0.0)
+        icon_shot("Item_" + item, fn, out)
+        log("icon", item)
 
 
 for job in _JOBS:
@@ -352,5 +384,6 @@ for job in _JOBS:
     elif job == "cells": render_cells(None)
     elif job == "icons": render_item_icons(None)
     elif job in names: render_cells([job]); render_item_icons([job])
+    elif job in [i[0] for i in ICON_ONLY]: render_item_icons([job])
     elif job.startswith("cells:"): render_cells(job[6:].split(","))
     log("job", job, "took %.0fs" % (time.time() - t0))

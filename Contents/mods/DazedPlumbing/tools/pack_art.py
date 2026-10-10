@@ -32,6 +32,9 @@ def load(p):
     m = p.with_name(p.stem + "_m.png")
     if m.exists():                                    # PNG alpha is straight, so the mask's red is the share
         keep = Image.open(m).convert("RGBA").getchannel("R")
+        # grow the mask a pixel past the cut: two pieces' complementary anti-aliased edges, drawn one over the
+        # other, leave a hairline of floor showing through; overlapping them closes it (same surface both sides)
+        keep = keep.filter(ImageFilter.MaxFilter(3))
         im.putalpha(ImageChops.multiply(im.getchannel("A"), keep))
     if im.size == (CW * 2, CH * 2):
         im = shrink(im)
