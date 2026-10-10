@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the timed actions: pour in, take out, patch.
+--[[ Dazed Plumbing -- the timed actions: pour in, take out, patch.
 
      Each is a vanilla timed action, run on the authority (the server in
      multiplayer) by its complete(), which re-checks EVERYTHING against the

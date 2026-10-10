@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the downspout.
+--[[ Dazed Plumbing -- the downspout.
 
      A downspout is bolted to the outside of a building's wall. While it rains it takes its
      share of that building's whole roof (see DUP_Model: RUNOFF and DOWNSPOUT) into a small

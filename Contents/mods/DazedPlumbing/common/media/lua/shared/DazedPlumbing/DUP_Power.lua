@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the machines that need power, told to the core as DazedCore.Power loads.
+--[[ Dazed Plumbing -- the machines that need power, told to the core as DazedCore.Power loads.
      The electric water pump (400 W), purifier (150 W), electric fuel pump (200 W) and drilled well (400 W) are billed by a power mod; the fuel pump and well need their wire.
 
      "Really working" = switched on, powered, piped to a tank with room, and (for the pump) the ground still has water. ]]

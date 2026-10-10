@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the garden sprinkler.
+--[[ Dazed Plumbing -- the garden sprinkler.
 
      A sprinkler is a water SINK on a network, like a tap: pipe it to a water
      tank (or a line already serving one) and every minute it waters the crops

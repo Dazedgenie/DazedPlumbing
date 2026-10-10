@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the Main Water Panel's commands, run on the authority and synced; the board never writes ModData.
+--[[ Dazed Plumbing -- the Main Water Panel's commands, run on the authority and synced; the board never writes ModData.
      A player must stand within the main's reach (plus two) of it, or within 2 squares of a wall panel whose ModData
      `dazedPanelMain` names this main ("x,y,z"; its square comes as `args.via`, phase 3).
 

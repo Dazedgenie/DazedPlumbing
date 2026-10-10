@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a fuel pump: the petrol on its line, refuel a parked vehicle and fill a petrol can.
+--[[ Dazed Plumbing -- right-click menu for a fuel pump: the petrol on its line, refuel a parked vehicle and fill a petrol can.
      The pipe rows come from DUP_LinkMenu; the on/off switch of the electric pump comes from DUP_PumpMenu. ]]
 
 require "DazedPlumbing/DUP_FuelPumps"

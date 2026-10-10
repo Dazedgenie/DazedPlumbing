@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for the biogas digester: waste, gas buffer and status, and "Add waste".
+--[[ Dazed Plumbing -- right-click menu for the biogas digester: waste, gas buffer and status, and "Add waste".
      The pipe rows come from DUP_LinkMenu. ]]
 
 require "DazedPlumbing/DUP_Digesters"

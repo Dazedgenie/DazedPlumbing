@@ -1,4 +1,4 @@
-"""Dazed Utilities: Plumbing -- render the world sprites and icons in Blender with the pz-sprite-forge rig.
+"""Dazed Plumbing -- render the world sprites and icons in Blender with the pz-sprite-forge rig.
 
 Run inside Blender (4.2+) from the Python console:
     ART = r"C:\\Users\\<you>\\Zomboid\\dup_art"; FAMILIES = ["pumps"]; exec(open(ART + r"\\dup_render.py").read())

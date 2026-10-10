@@ -1,7 +1,7 @@
 -- The biogas digester on a fake engine: model maths, the add-waste logic, gas into a piped propane tank, load catch-up, placement and the file counts.
 -- Run: lua digester_test.lua <common/media/lua> [<core lua root>]
 local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Utilities: Core, required
+local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Core, required
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local fails, n = 0, 0

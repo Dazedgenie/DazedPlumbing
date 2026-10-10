@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- reading and changing what a carried
+--[[ Dazed Plumbing -- reading and changing what a carried
      container holds.
 
      Three kinds of vessel, three ways the game stores their contents:

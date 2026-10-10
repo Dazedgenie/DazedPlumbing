@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- start-up check.
+--[[ Dazed Plumbing -- start-up check.
 
      One console line so a player or a bug report can tell at a glance that
      everything arrived: DazedPlumbing: ready -- 72/72 tiles, 18/18 items

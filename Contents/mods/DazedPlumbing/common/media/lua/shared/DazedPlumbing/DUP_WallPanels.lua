@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the wall water panel: a cabinet hung on a wall inside a house that opens the main's board.
+--[[ Dazed Plumbing -- the wall water panel: a cabinet hung on a wall inside a house that opens the main's board.
      The authority binds it to the main whose footprint holds its square, as ModData `dazedPanelMain` = "x,y,z" of that main.
 
      Placement: an indoor square of a building, with a wall on the side the sprite faces (like the downspout, it faces

@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the smoker: a propane-fired box with an item container that smokes raw meat and fish while lit.
+--[[ Dazed Plumbing -- the smoker: a propane-fired box with an item container that smokes raw meat and fish while lit.
      State is ModData `dazedSmoker` { lit, hour, out, prog = { [item id] = hours } }; sprites dazedplumb_01_252..255 (facings E, S, W, N). ]]
 
 require "DazedCore/DC_Boot"

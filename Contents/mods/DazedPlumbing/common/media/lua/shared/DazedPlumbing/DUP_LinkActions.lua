@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- timed actions for pipes: lay a run, take a
+--[[ Dazed Plumbing -- timed actions for pipes: lay a run, take a
      machine off its line, pause it, cut, mend, fit a valve, turn a valve.
      The AUTHORITY runs complete() and re-checks the world; the menu only
      previews. Pipe sections and valves are items, taken from the pack here. ]]

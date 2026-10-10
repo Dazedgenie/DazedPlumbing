@@ -1,8 +1,8 @@
-name=Dazed Utilities: Plumbing
+name=Dazed Plumbing
 id=DazedPlumbing
 require=DazedCore
 author=Dazedgenie
-description=Tanks, pipes and water for Project Zomboid: propane, gas (petrol) and water tanks in three sizes; colour-coded pipe networks that join several machines and tanks, with shut-off valves; hand and electric water pumps and a powered purifier; hand and Dazed Power electric fuel pumps that refuel parked vehicles and fill petrol cans from a piped petrol tank; a biogas digester that turns rotten food and manure into propane for a piped tank; taps that feed sinks, baths, showers and toilets from a tank; and a water main that plumbs a whole house from the outside. Pipes are built from pipe sections and need Welding. Needs Dazed Utilities: Core. Works with Dazed Utilities: Power generators, boilers and controllers. Placeholder art.
+description=Tanks, pipes and water for Project Zomboid: propane, gas (petrol) and water tanks in three sizes; colour-coded pipe networks that join several machines and tanks, with shut-off valves; hand and electric water pumps and a powered purifier; hand and Dazed Power electric fuel pumps that refuel parked vehicles and fill petrol cans from a piped petrol tank; a biogas digester that turns rotten food and manure into propane for a piped tank; taps that feed sinks, baths, showers and toilets from a tank; and a water main that plumbs a whole house from the outside. Pipes are built from pipe sections and need Welding. Needs Dazed Core. Works with Dazed Power generators, boilers and controllers. Placeholder art.
 modversion=0.17.0
 versionMin=42.0.0
 category=features

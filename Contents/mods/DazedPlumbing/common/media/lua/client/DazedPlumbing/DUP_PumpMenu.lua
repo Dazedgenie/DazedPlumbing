@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a water pump: the
+--[[ Dazed Plumbing -- right-click menu for a water pump: the
      well's level, "Pump" (hand pump into its piped tank) and "Fill a
      container". The pipe / link rows come from DUP_LinkMenu. ]]
 

@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the timed action that lights or puts out a smoker.
+--[[ Dazed Plumbing -- the timed action that lights or puts out a smoker.
      The authority's complete() re-checks the gas; only plain fields (the smoker and on/off) go to the server. ]]
 
 require "TimedActions/ISBaseTimedAction"

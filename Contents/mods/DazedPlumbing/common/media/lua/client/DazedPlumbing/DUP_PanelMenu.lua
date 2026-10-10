@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a wall water panel, and its page in the Dazed guide.
+--[[ Dazed Plumbing -- right-click menu for a wall water panel, and its page in the Dazed guide.
      Bound, it offers Water panel (the main's board, worked through this panel); unbound, it says no main serves the house. ]]
 
 require "DazedPlumbing/DUP_WallPanels"

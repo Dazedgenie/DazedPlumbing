@@ -1,6 +1,6 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for a water main: Water panel (once a building is connected),
-     what it serves, the line rate, Connect a building... (the core's Building Picker) and Disconnect. The pipe rows
-     come from DUP_LinkMenu. ]]
+--[[ Dazed Plumbing -- right-click menu for a water main: Water panel (once a building is connected),
+     what it serves, the line rate, Connect a building... (the core's Building Picker) and Disconnect.
+     The pipe rows come from DUP_LinkMenu. ]]
 
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_Board"

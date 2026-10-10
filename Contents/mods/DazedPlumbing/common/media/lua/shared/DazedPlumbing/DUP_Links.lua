@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- machines and tanks on the pipe networks.
+--[[ Dazed Plumbing -- machines and tanks on the pipe networks.
 
      WHAT A MACHINE IS is an ADAPTER, a small table anyone can register (this
      mod registers pumps, the purifier and water fixtures; Dazed Power

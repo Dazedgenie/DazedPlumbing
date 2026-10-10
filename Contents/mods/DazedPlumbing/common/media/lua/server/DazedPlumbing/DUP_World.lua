@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- tanks in the live world (authority only).
+--[[ Dazed Plumbing -- tanks in the live world (authority only).
 
      Registers every tank that streams in or is placed, then once a minute:
 

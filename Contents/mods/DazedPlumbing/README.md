@@ -1,7 +1,7 @@
-# Dazed Utilities: Plumbing  (v0.17.0, Build 42)
+# Dazed Plumbing  (v0.17.0, Build 42)
 
-Release 9 (0.15.0): **ice** with Dazed Utilities: Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and the Dazed Utilities core. Needs **Dazed Utilities: Core** (`DazedCore`), loaded first.
-Works with *Dazed Utilities: Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
+Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core** (`DazedCore`), loaded first.
+Works with *Dazed Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
 
 ## Main water panel (0.17.0)
 A connected water main gets a **Water panel** (right-click the main -> Water main -> *Water panel*, the first row once a building is connected). It is one board, like Dazed Power's charge board: drag it by its body, close it with the X.
@@ -34,7 +34,7 @@ A connected water main gets a **Water panel** (right-click the main -> Water mai
 - Saves: nothing to migrate. A main nobody opens the panel on behaves exactly as before; the new fields (`rate`, `shut`, `drain`, `valves`, `prio`, figures) are added only when used. A main whose line was paused before 0.17.0 reads as shut.
 
 ## Ice (0.15.0)
-With **Dazed Utilities: Climate** loaded, water freezes. A frozen pipe square passes nothing, like a closed valve, until
+With **Dazed Climate** loaded, water freezes. A frozen pipe square passes nothing, like a closed valve, until
 it thaws; a frozen water tank gives and takes nothing (its Fluid menu shows it empty). A tank that freezes while over
 80% full may **crack**: once thawed it leaks 2% of its capacity an hour until the crack is welded (*Tank -> Weld the
 crack*: a blowtorch with 2 uses, a welding mask, Welding 2). The tank menu and gauge show **FROZEN** and **CRACKED**.
@@ -47,7 +47,7 @@ An electric borehole pump for clean water. Stand it on **bare natural ground in 
 - **Water:** about **15 L a minute of clean water** while powered and the tank has room. It draws from deep ground, so it does not use or dry out the square's ground water the hand and electric pumps share. When the tanks are full it waits and draws nothing.
 - The menu and its tooltip show whether it is wired, its status (pumping, tanks full, switched off, no power, not piped, line broken or paused) and its output.
 - **Build:** recipe `MakeDazedDrilledWell`, **Welding 3 and Mechanics 2**: 4 metal pipes, 2 sheet metal, a shut-off valve, 6 screws; a blowtorch, a welding mask and a wrench (or pipe wrench). **27 kg**, so one piece. Tiles 248-251, placeholder art (`tools/well_art.py`, which also grew the sheet to 8x32).
-- Dazed Power's priority table has no entry for `well` yet, so it sheds at Normal priority. The LOADS label key `IGUI_DazedPower_Load_well` lives in this mod's EN `IG_UI.json` (the game merges every mod's translations).
+- Dazed Power gives the well Normal load priority by default. The LOADS label key `IGUI_DazedPower_Load_well` lives in this mod's EN `IG_UI.json` (the game merges every mod's translations).
 
 ## The smoker (0.14.0)
 A propane-fired smoke box. Pipe it to a **propane tank** like any machine (*Smoker gas line -> Pipe to: <tank>*), put **raw meat or fish** in its container (it is a container like a crate: open it in the loot window, 15 capacity), then right-click it -> **Smoker -> Light**.
@@ -112,11 +112,11 @@ A pump for refuelling at the base. Pipe it to a **petrol tank** like any machine
 
 ## The water main (0.10.0)
 A house plumbed from the outside. Build a **Water Main** (Welding 4: 3 metal pipes, 2 sheet metal, a valve, 6 screws; welding mask, blowtorch and pipe wrench) or find one in plumbing and hardware stock. Stand it **outdoors** within **6 squares** of the house, pipe it to a water tank like any machine (*Main line -> Pipe to: <tank>*), then right-click it -> **Connect a building...**: the Building Picker shades the house under the cursor (yellow: a click connects it; red: out of reach or already served by another main). Map houses come with their basements; a structure you built yourself is picked the same way, on a dedicated server too.
-Once the town water is off, **every sink, bath, shower, toilet, washer and dishwasher inside** is fed from the tank every minute, up to **30 L a minute for the whole house** (shared among what is running). A fixture with a tap of its own keeps its tap. Tank dry: dry taps. Tainted tank: tainted taps (a purifier upstream fixes that). One main serves one building and a building takes one main; lifting the main or cutting its pipe disconnects it.
+Once the town water is off, **every sink, bath, shower, toilet, washer and dishwasher inside** is fed from the tank every minute, up to **30 L a minute for the whole house** (shared among what is running). A fixture with a tap of its own keeps its tap. Tank dry: dry taps. Tainted tank: tainted taps (a purifier upstream fixes that). One main serves one building and a building takes one main; lifting the main (or Disconnect on its menu) frees the building. Cutting its pipe only stops the flow until the pipe is mended.
 Sandbox: *Water main reach* (squares, 6) and *Water main line rate* (L/min, 30).
 
 ## What you get
-- 18 tanks: 3 sizes (small ~10, large ~30, extra-large ~100) x 3 contents (propane in kg, gas in L, water in L) x 2 tiers.
+- 18 tanks: 3 sizes x 3 contents x 2 tiers. Water and gas (petrol): small 200 L, large 1000 L, extra-large 2000 L. Propane: 45 / 200 / 400 kg.
 - **Salvaged** tier: 80% capacity, starts leaking below condition 60. Found in loot, or rigged from scrap (screwdriver, small sheet metal, screws, duct tape).
 - **Crafted** tier: full capacity, leaks below condition 35. Welded (welding mask, blowtorch, sheet metal, pipe; XL also metal bars).
 - Right-click a tank: **Pour in** / **Take out into** (propane tanks and lantern bottles, water containers, petrol cans) / **Patch the tank** (small sheet metal + screws, +30 condition).
@@ -129,12 +129,12 @@ Right-click a machine (a Dazed Power propane or petrol generator or steam boiler
 - **One line, many machines.** A run that ends beside a pipe already serving that tank **joins it** automatically, so one line can feed several machines and tanks. Pipes only join where their art shows a join (a branch gets a T-shaped square).
 - **One fluid per line, colour-coded.** Water is blue, propane white, petrol red (the same as the tank barrels). Different fluids never join, and cannot share a square.
 - **Fair sharing.** Machines on the same tank split what it holds evenly (a machine that wants less leaves the rest to the others). Pumps fill the tanks on their line by free room. Lines that meet at the same tank share it too.
-- **Shut-off valves.** Right-click a plain run of pipe -> **Fit a shut-off valve** (needs a valve and Welding 2), then **Close / Open the valve**. An open valve is a shade darker than its pipe; a closed valve is drawn near-black and stops the flow past it.
+- **Shut-off valves.** Right-click a plain run of pipe -> **Fit a shut-off valve** (needs a valve and Welding 2), then **Close / Open the valve**. The valve is a brass ball valve: its red lever runs along the pipe when open and across it when closed, and a closed valve stops the flow past it.
 - **Costs (placeholders, easy to change).** One **pipe section** per square laid or mended; a metal pipe makes four (craft with a blowtorch and welding mask, Welding 1). **Welding 1** is needed to lay, mend or join pipe; a **valve** (metal pipe + 2 screws + blowtorch, Welding 2) to fit one. Disconnecting a machine lifts the dead-end pipe and hands half of its sound sections back (`Pipes.REFUND`).
 - **Disconnect** takes a machine off its line and lifts any pipe left dead-ended; cut and mend work square by square (right-click a pipe). A machine standing right beside a tank needs no pipe.
 - Indoors the pipe runs overhead, outdoors on the ground, and never blocks movement. Outdoor pipes wear under zombies and vehicles and break at 0 (a broken square stops the flow until mended).
 - Old pipes and fuel lines from 0.4-0.6 are **not migrated**: start new worlds, or cut the old links.
-- With *Dazed Utilities: Power*: **propane / petrol generators** burn straight from a tank on their line (drawn as fuel is used, even across a long time-skip; the generator is pointed at the fullest tank on its line). **Steam boilers** are topped up with water (20 L/min).
+- With *Dazed Power*: **propane / petrol generators** burn straight from a tank on their line (drawn as fuel is used, even across a long time-skip; the generator is pointed at the fullest tank on its line). **Steam boilers** are topped up with water (20 L/min).
 - Vanilla generators are not supported: Dazed Power turns every placed generator into its own battery controller.
 Other mods register machines with `DazedPlumb.Links.register{...}` (see DUP_Links.lua); a sink may give its own `rate(obj)` (the water main does). Machines that need power are told to the core: `DazedCore.Power.registerLoad{...}` (see DUP_Power.lua).
 
@@ -154,7 +154,7 @@ Console lines to check: `town water: WaterShutModifier=...` and `tap: addFluid o
 Every change to pipes, tanks, wells and links is made by the **authority** (single player, or the server): timed actions run their `complete()` there, and the once-a-minute ticks do nothing on a client. Pipes and wells live in global ModData that the server transmits when something changes (and a client asks for on joining). Dedicated servers are a design target; this has not been run on one yet.
 
 ## Install
-Drop the `DazedPlumbing` folder into `Zomboid/Workshop/<anything>/Contents/mods/` (or `Zomboid/mods/`), enable "Dazed Utilities: Plumbing". Art is hand-built from simple shaded boxes (placeholder quality, but aligned).
+Drop the `DazedPlumbing` folder into `Zomboid/Workshop/<anything>/Contents/mods/` (or `Zomboid/mods/`), enable "Dazed Plumbing". Most art is Blender-rendered; the newest pieces still use stand-in art.
 
 ## First-test checklist (things I could not verify outside the game)
 Console lines to look for (`Zomboid/console.txt`):
@@ -243,9 +243,14 @@ lua digester_test.lua                          # the biogas digester
 lua sprinkler_test.lua                         # the sprinkler schedule: windows (over midnight too), rain skip, the action, the tick
 lua well_test.lua                              # the drilled well: output per minute, power by wire only, clean water, full tanks, the load
 lua smoker_test.lua                            # the smoker: burn rate, smoking timer, 48 h catch-up, no gas or a shut line, the smoked-food change
-./run_all.sh                                   # every test above that run_all.sh lists
+lua run_all.lua [<core lua root>]              # the whole set (was run_all.sh; the Workshop refuses .sh files)
 # each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
 ```
+
+## Licence
+
+Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Core and Dazed Power, so code can move
+between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
 - **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain, and a **wall panel** item that opens it from inside the house. No save migration.
@@ -258,6 +263,7 @@ lua smoker_test.lua                            # the smoker: burn rate, smoking 
     - Wall panel: `DUP_WallPanels.lua` (placement rule, binding, the server-only `DazedPlumbPanels` list and its minute tick), `DUP_PanelMenu.lua` (menu and guide page), item, recipe, tiles 256-259 (`tools/panel_art.py`, sheet 8x33). Boot line `256/256 tiles, 33/33 items`; 33 recipes.
     - The board opens by key: `DUP_Board.open(player, mainOrKey, { via = {x, y, z}, readOnly })`; `mainInfo` answers `waiting = true` while the main's square is unloaded on the server. Climate's frozen pipes count in `W.status`.
     - Tests: new `wallpanel_test.lua`; `fuel_test.lua` and `digester_test.lua` expect the new counts.
+- **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged. Now licensed CC BY-NC-SA 4.0 (`LICENSE`). The test runner is now `tools/tests/run_all.lua`, since the Steam Workshop refuses `.sh` files in an upload. README brought in line with the code: tank sizes, the valve's look, what cutting a water main's pipe does, the well's load priority and the art note.
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
     - **Gauge on a digester-fed tank (MP):** opening the gauge on a client no longer settles the digester there (it advanced the clock, digested waste and sent ModData from the client). A client's `available()` returns `Dg.preview`, the same figure worked out without writing; `settle`/`publish`/`refresh` on digesters and smokers are authority-only.
@@ -266,7 +272,7 @@ lua smoker_test.lua                            # the smoker: burn rate, smoking 
     - **Ports:** a device swapped for another within a minute with no object event now gets the right port (the re-check compares sprite names as well as the object count).
 - **0.11.0.** **Fuel pump** (see its section): hand (2 L/min) and electric (10 L/min, 200 W, Dazed Power wire only). Refuels a parked vehicle within 2 squares and fills petrol cans from the piped petrol tank. New: `DUP_FuelPumps.lua` (model, sprites, link adapter), `DUP_FuelActions.lua` (`DUP_FuelVehicle`, `DUP_FuelCan`), `DUP_FuelMenu.lua`, 2 items, 2 recipes, 8 sprites (236-243, tile sheet grown to 8x31), EN text, `fuel_test.lua` and `run_all.sh`. The electric pump is a new `DazedCore.Power` load (`fuelpump`).
   - *Patch notes:* the power switch now also works on fuel pumps; placing a fuel pump is limited to one per square; boot check counts 240 sprites and 29 items. No sandbox options, no save migration. The vehicle tank calls are untested in game (see the checklist).
-- **0.10.0.** **Needs Dazed Utilities: Core.** What both Dazed mods shared moves there: heavy parts (now v2, both engine argument orders), sync, notes, the Building Picker and the power registry. `DU_HeavyParts` and the old power shim are gone from this mod; the pump and purifier are registered as loads with `DazedCore.Power` (DUP_Power.lua), and Dazed Power bills them; original Dazed Power is no longer supported. Server notes travel through the core's command. **Water main** (see its section): item, recipe, loot, 4 sprites (232-235, placeholder art), two sandbox options, the `DazedPlumbMains` synced table. Link sinks may give a `rate` of their own. Tests take the core's Lua root as a second argument; `tools/pzformat` now lives in the core (the tools look there).
+- **0.10.0.** **Needs Dazed Core.** What both Dazed mods shared moves there: heavy parts (now v2, both engine argument orders), sync, notes, the Building Picker and the power registry. `DU_HeavyParts` and the old power shim are gone from this mod; the pump and purifier are registered as loads with `DazedCore.Power` (DUP_Power.lua), and Dazed Power bills them; original Dazed Power is no longer supported. Server notes travel through the core's command. **Water main** (see its section): item, recipe, loot, 4 sprites (232-235, placeholder art), two sandbox options, the `DazedPlumbMains` synced table. Link sinks may give a `rate` of their own. Tests take the core's Lua root as a second argument; `tools/pzformat` now lives in the core (the tools look there).
 - **0.9.12.** Heavy tanks come apart into parts, like a bed or shelving: anything over 30 kg is carried as 2-4 parts named "(1/2)", "(2/2)" and so on, each 30 kg or less. Placing it needs every part in your inventory, and the other parts are used up when it goes down. Large and XL tanks must be emptied before they can be picked up; the tank menu says so. Crafted or looted heavy tanks split the same way within a minute of reaching your inventory.
 - **0.9.11.** From the full test pass:
   - **Fluid menu on LG/XL tanks:** clicking any square of a long tank now gives the Fluid menu (the game only adds its own on the tank's first square).

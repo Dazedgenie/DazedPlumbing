@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the WATER MAIN: a house plumbed from the outside.
+--[[ Dazed Plumbing -- the WATER MAIN: a house plumbed from the outside.
 
      A water main stands outdoors beside a building and is piped to the network like any machine
      (it is a link SINK that takes water). Right-click -> Connect a building... opens the core's
@@ -47,7 +47,7 @@ W.MODULE = "DazedPlumb"
 W.BAND = 3                       -- floors above and below the main it may reach the footprint on
 W.DEFAULT_REACH, W.DEFAULT_FLOW = 6, 30
 
--- The Dazed Utilities preset values: { easy, standard, realistic, hardcore } per option.
+-- The Dazed Core preset values: { easy, standard, realistic, hardcore } per option.
 W.PRESETS = { NeedWrench = { false, true, true, true }, MainReach = { 8, 6, 6, 4 }, MainFlow = { 40, 30, 20, 15 } }
 if DazedCore and DazedCore.Preset then DazedCore.Preset.register("DazedPlumb", W.PRESETS) end
 

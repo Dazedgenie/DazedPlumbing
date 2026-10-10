@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the Main Water Panel's face as draw operations plus click regions, so it tests headlessly.
+--[[ Dazed Plumbing -- the Main Water Panel's face as draw operations plus click regions, so it tests headlessly.
      DUP_Board draws the ops (Dazed Power's kinds: rect, card, tex, quad, line, text); Board.tex looks for each part in
      Plumbing's own board art, then Dazed Power's, and answers nil when neither has it so the face draws a stand-in.
 

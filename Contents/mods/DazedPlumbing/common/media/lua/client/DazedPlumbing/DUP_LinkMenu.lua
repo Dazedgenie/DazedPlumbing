@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the line menu on machines, pumps and taps, and
+--[[ Dazed Plumbing -- the line menu on machines, pumps and taps, and
      the menu on a laid pipe.
 
      MACHINE (a generator, boiler, pump, purifier or a water fixture): one entry

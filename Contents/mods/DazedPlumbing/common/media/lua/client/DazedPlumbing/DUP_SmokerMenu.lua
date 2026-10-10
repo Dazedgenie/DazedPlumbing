@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- right-click menu for the smoker: gas on the line, lit state, what is smoking and Light / Extinguish.
+--[[ Dazed Plumbing -- right-click menu for the smoker: gas on the line, lit state, what is smoking and Light / Extinguish.
      The pipe rows come from DUP_LinkMenu; meat goes in and out through the smoker's own container in the loot window. ]]
 
 require "DazedPlumbing/DUP_Smokers"

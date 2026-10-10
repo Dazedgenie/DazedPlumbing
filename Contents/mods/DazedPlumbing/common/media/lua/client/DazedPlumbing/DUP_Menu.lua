@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the right-click menu for a tank.
+--[[ Dazed Plumbing -- the right-click menu for a tank.
 
      One entry, "Tank", with a submenu: a status line (what it holds, its
      condition, a leak warning), then pour-in rows (one per carried container

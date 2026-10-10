@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the pipe and network tick (authority only). ]]
+--[[ Dazed Plumbing -- the pipe and network tick (authority only). ]]
 require "DazedPlumbing/DUP_Links"
 require "DazedPlumbing/DUP_Fixtures"
 require "DazedPlumbing/DUP_Mains"

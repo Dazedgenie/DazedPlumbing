@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- vanilla rain collector barrels as water sources.
+--[[ Dazed Plumbing -- vanilla rain collector barrels as water sources.
 
      A rain barrel the game already collects rain in can be piped to a water tank: the tank
      draws the barrel down (up to 20 L a minute) through the same pipes a pump uses. The water

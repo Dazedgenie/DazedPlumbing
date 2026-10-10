@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- the Main Water Panel window: dials, line rate, tower, sources, fixtures, today, shut-off.
+--[[ Dazed Plumbing -- the Main Water Panel window: dials, line rate, tower, sources, fixtures, today, shut-off.
      It reads the synced mains entry and the last mainInfo reply, and every switch is a DUP_MainPanel command. ]]
 
 require "ISUI/ISPanel"

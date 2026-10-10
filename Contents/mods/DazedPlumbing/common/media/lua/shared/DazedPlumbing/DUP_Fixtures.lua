@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- taps: a sink, bath, shower, toilet or washer piped to a tank is topped up from it
+--[[ Dazed Plumbing -- taps: a sink, bath, shower, toilet or washer piped to a tank is topped up from it
      every minute, into a FluidContainer on the fixture (made if missing) where the game looks once the town water is off.
      While the town supply still runs the fixture has endless water of its own and is left alone. ]]
 

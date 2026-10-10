@@ -1,4 +1,4 @@
---[[ Dazed Utilities: Plumbing -- where worn tanks turn up.
+--[[ Dazed Plumbing -- where worn tanks turn up.
 
      The SALVAGED tanks (never the crafted ones) are added to procedural loot
      lists for garages, metalwork, farms and fuel storage, lightly: small
