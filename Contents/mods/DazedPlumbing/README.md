@@ -1,4 +1,4 @@
-# Dazed Plumbing  (v0.16.1, Build 42)
+# Dazed Plumbing  (v0.16.2, Build 42)
 
 Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core** (`DazedCore`), loaded first.
 Works with *Dazed Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
@@ -16,7 +16,7 @@ An electric borehole pump for clean water. Stand it on **bare natural ground in 
 - **Power:** a **400 W** Dazed Power load (LOADS label WELL, load kind `well`). Like the electric fuel pump it runs **only when wired to a powered Dazed Power controller**; the town grid or a generator's square does not count. Without Dazed Power installed it is simply unpowered. It has the same on/off switch as the electric pumps and counts as working (billed) only while it is pumping.
 - **Water:** about **15 L a minute of clean water** while powered and the tank has room. It draws from deep ground, so it does not use or dry out the square's ground water the hand and electric pumps share. When the tanks are full it waits and draws nothing.
 - The menu and its tooltip show whether it is wired, its status (pumping, tanks full, switched off, no power, not piped, line broken or paused) and its output.
-- **Build:** recipe `MakeDazedDrilledWell`, **Welding 3 and Mechanics 2**: 4 metal pipes, 2 sheet metal, a shut-off valve, 6 screws; a blowtorch, a welding mask and a wrench (or pipe wrench). **27 kg**, so one piece. Tiles 248-251, placeholder art (`tools/well_art.py`, which also grew the sheet to 8x32).
+- **Build:** recipe `MakeDazedDrilledWell`, **Welding 3 and Mechanics 2**: 4 metal pipes, 2 sheet metal, a shut-off valve, 6 screws; a blowtorch, a welding mask and a wrench (or pipe wrench). **27 kg**, so one piece. Tiles 248-251, Blender art (`tools/blender/dup_machines_render.py`).
 - Dazed Power gives the well Normal load priority by default. The LOADS label key `IGUI_DazedPower_Load_well` lives in this mod's EN `IG_UI.json` (the game merges every mod's translations).
 
 ## The smoker (0.14.0)
@@ -26,7 +26,7 @@ A propane-fired smoke box. Pipe it to a **propane tank** like any machine (*Smok
 - **What counts:** a Food with FoodType Meat, Fish, Game, Seafood or Poultry, any Dazed Butchery cut (`Base.DB_*`) and anything that answers `isMeat`/`isFish`; not food that is already cooked, burnt, rotten or smoked. An item taken out loses its smoke so far.
 - **While you are away:** it works while its square is loaded and catches up the hours away when it loads again, **at most 48 h** (and only as long as the gas lasts).
 - The menu and its tooltip show the propane on the line, whether it is lit (smoking, lit with nothing raw, not lit, went out) and how many items are smoking and the hours to go.
-- **Build:** recipe `MakeDazedSmoker`, **Welding 2 and Cooking 3**: a metal drum, 2 sheet metal, a metal pipe, a shut-off valve, 4 screws; a blowtorch, a welding mask and a screwdriver. **26 kg**, so one piece. One to a square; like any vanilla container it can only be lifted empty. Tiles 252-255 with a `smoker` container, placeholder art (`tools/smoker_art.py`). No sandbox options: the numbers are constants at the top of `DUP_Smokers.lua`.
+- **Build:** recipe `MakeDazedSmoker`, **Welding 2 and Cooking 3**: a metal drum, 2 sheet metal, a metal pipe, a shut-off valve, 4 screws; a blowtorch, a welding mask and a screwdriver. **26 kg**, so one piece. One to a square; like any vanilla container it can only be lifted empty. Tiles 252-255 with a `smoker` container, Blender art (`tools/blender/dup_machines_render.py`). No sandbox options: the numbers are constants at the top of `DUP_Smokers.lua`.
 - Multiplayer: the server settles and changes everything; "Light / Extinguish" sends only the smoker and on/off. A smoked item is re-sent to the clients whole (removed and added again) so its new name and freshness show.
 
 ## Sprinkler schedule (0.14.0)
@@ -37,8 +37,8 @@ Each sprinkler has a **watering window** and a **Skip when raining** toggle (rig
 - The menu and the Sprinkler row's tooltip show the schedule and why it is waiting. Settings live in the sprinkler's ModData (`dazedSprinkler.from`, `.to`, `.rainSkip`) and are changed only on the authority, by a timed action. Lifting a sprinkler resets its schedule to the defaults.
 
 ### Patch notes 0.14.0
-- New: **drilled well** (item `Base.DazedDrilledWell`, recipe `MakeDazedDrilledWell`, sprites 248-251, files `DUP_DrilledWells.lua`, `DUP_WellMenu.lua`, `tools/well_art.py`). A new `DazedCore.Power` load kind, `well` (400 W).
-- New: **smoker** (item `Base.DazedSmoker`, recipe `MakeDazedSmoker`, sprites 252-255 with a `smoker` container, files `DUP_Smokers.lua`, `DUP_SmokerActions.lua`, `DUP_SmokerMenu.lua`, `DUP_SmokerWorld.lua`, `tools/smoker_art.py`).
+- New: **drilled well** (item `Base.DazedDrilledWell`, recipe `MakeDazedDrilledWell`, sprites 248-251, files `DUP_DrilledWells.lua`, `DUP_WellMenu.lua`). A new `DazedCore.Power` load kind, `well` (400 W).
+- New: **smoker** (item `Base.DazedSmoker`, recipe `MakeDazedSmoker`, sprites 252-255 with a `smoker` container, files `DUP_Smokers.lua`, `DUP_SmokerActions.lua`, `DUP_SmokerMenu.lua`, `DUP_SmokerWorld.lua`).
 - New: **sprinkler schedule** (window presets and the rain skip; new action `DUP_SprinklerSchedule`).
 - The power switch now also works on the well; placement refuses a well off bare natural ground or outdoors.
 - Boot line is now `252/252 tiles, 32/32 items`; 32 recipes. Tile sheet grown to 8x32 (now full).
@@ -56,7 +56,7 @@ A drum you feed rotten food and manure; it slowly makes propane for a **propane 
 - **Buffer and full tanks:** gas waits in a **2 kg buffer** and flows into the tank at up to 1 kg a minute. When the tank is full (or it is not piped, or the line is paused) the buffer fills and digestion **pauses** with the waste kept; a full drum of waste is exactly 2 kg of gas.
 - **While you are away:** it works while its square is loaded; when it loads again it catches up the hours away, **at most 48 h**.
 - The menu and its tooltip show **waste units, gas buffer in kg and status** (digesting, digesting slowly (cold), frozen, gas buffer full, idle) and the hourly output.
-- **Build:** **Welding 2**: a metal drum, 2 metal pipes, 1 sheet metal, a shut-off valve, 4 screws, a blowtorch, welding mask and a screwdriver. **28 kg**, so one piece. One to a square. Lifting it empties it (waste and buffer are lost, like the purifier's buffer). Tiles 244-247, placeholder art (`tools/digester_art.py`). No sandbox options: the numbers are constants at the top of `DUP_Digesters.lua`.
+- **Build:** **Welding 2**: a metal drum, 2 metal pipes, 1 sheet metal, a shut-off valve, 4 screws, a blowtorch, welding mask and a screwdriver. **28 kg**, so one piece. One to a square. Lifting it empties it (waste and buffer are lost, like the purifier's buffer). Tiles 244-247, Blender art (`tools/blender/dup_machines_render.py`). No sandbox options: the numbers are constants at the top of `DUP_Digesters.lua`.
 - Multiplayer: the server settles and moves everything; "Add waste" sends only the digester and the item, and the server re-checks both.
 
 ### Patch notes 0.13.0
@@ -77,7 +77,7 @@ A pump for refuelling at the base. Pipe it to a **petrol tank** like any machine
 - The menu shows the petrol on the line in litres, and how fast the pump moves it.
 - **Hand fuel pump:** you crank it, 2 L a minute (a 2 L chunk per action), no power. **Welding 2**: 3 metal pipes, 2 sheet metal, a shut-off valve, 4 screws, screwdriver.
 - **Electric fuel pump:** about 10 L a minute, a **200 W** load that counts as working only while it is moving fuel. It runs **only when wired to a powered Dazed Power controller** (not off the town grid or a generator's square) and has the same on/off switch as the electric water pump. **Electricity 3 and Welding 2**: a hand fuel pump (consumed), 4 electronics scrap, 3 electric wire, 1 engine parts, screwdriver.
-- Both weigh under 30 kg (16 and 22), so they are one piece, not parts. Tiles 236-243, placeholder art.
+- Both weigh under 30 kg (16 and 22), so they are one piece, not parts. Tiles 236-243, Blender art (`tools/blender/dup_machines_render.py`).
 - Dazed Power needs the load name `IGUI_DazedPower_Load_fuelpump` ("FUEL PUMP") to show it on its LOADS page.
 
 ## The water main (0.10.0)
@@ -193,9 +193,9 @@ The pipes are rendered light grey on purpose: the game tints them per fluid.
 
 `pack_tiles.py check` confirms the tile definitions, the pack and the item scripts agree (and that the `.tiles` file round-trips byte for byte). `pack_tiles.py grow --rows N` adds room for new sprites without moving any existing index. `pzformat/` holds the pack and tile readers and writers from pz-sprite-forge (MIT). Saved worlds remember sprite names, so only ever append.
 
-`fuelpump_art.py` draws the fuel pump stand-ins (sprites 236-243, two icons, tile properties); run `pack_tiles.py grow --rows 31` first. `digester_art.py` (244-247), `well_art.py` (248-251, grows the sheet to 32 rows itself) and `smoker_art.py` (252-255, the last free row) do the same for the digester, the drilled well and the smoker. The next sprite needs `pack_tiles.py grow --rows 33`.
+The water main, both fuel pumps, the digester, the drilled well and the smoker (sprites 232-255) are rendered by `tools/blender/dup_machines_render.py` with DazedPower's own rig (`dz2.py` and `dz_render.py`), so they share Power's camera, lights, wear and grade. `blender -b --factory-startup -P tools/blender/dup_machines_render.py -- <out> all` (or plain Python with `pip install bpy`), then `python3 tools/blender/dup_machines_post.py <out> <final>` grades, shrinks and makes the icons, and `python3 tools/pack_art.py <final>/cells` packs them; copy `<final>/icons/*.png` to `common/media/textures/`. The next sprite needs `pack_tiles.py grow --rows 33`.
 
-`pipe_art.py`, `machine_art.py` and `icon_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
+`pipe_art.py`, `machine_art.py`, `icon_art.py`, `main_art.py`, `fuelpump_art.py` and `digester_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
 
 ## Tests (outside the game)
 `tools/tests/` runs the real Lua on a stand-in engine (Lua 5.1-compatible code; any Lua 5.1-5.4 will do):
@@ -220,6 +220,7 @@ Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Co
 between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
+- **0.16.2 (art).** New Blender art for the water main, both fuel pumps, the biogas digester, the drilled well and the smoker (world sprites 232-255 and their six icons), rendered with Dazed Power's own rig so they match its look (`tools/blender/dup_machines_render.py`). Same sprite indices, so saves and builds are unaffected.
 - **0.16.1 (rename).** Now called **Dazed Plumbing** in the mod list and Workshop; needs **Dazed Core** (was "Dazed Utilities: Core"). Mod ID, saves and settings unchanged. Now licensed CC BY-NC-SA 4.0 (`LICENSE`). The test runner is now `tools/tests/run_all.lua`, since the Steam Workshop refuses `.sh` files in an upload. README brought in line with the code: tank sizes, the valve's look, what cutting a water main's pipe does, the well's load priority and the art note.
 - **0.16.0.** Optimization pass: graph caches keyed on the pipe table's own version, batched ModData sends from the minute ticks, cached port squares and fixture lists, memoized sprite lookups, and water-main picker commands through `DazedCore.Net`. No save migration.
   - *Fixes:*
