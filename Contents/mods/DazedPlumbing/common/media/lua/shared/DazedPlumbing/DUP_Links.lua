@@ -12,6 +12,7 @@
                                  names the tank it should draw from
            release(obj)          the line was cut, paused or lost
            rate(obj)             its own most-per-minute, instead of the fluid's (a water main)
+           onSource(obj, src)    its line was switched to "tank" or "manual" (L.setSource)
        A SOURCE gives to a network:   produces, available, take  (a pump)
            available(obj)        how much it can give now; take(obj, amt) gives it up
            tainted = true        what it gives is tainted water (or a function(obj) -> boolean)
@@ -164,11 +165,13 @@ function L.clear(machine, adapter)
 end
 
 --- Switch a line between feeding ("tank") and paused ("manual").
+-- An adapter's optional onSource(machine, source) hears every switch (the water main keeps its shut-off in step).
 function L.setSource(machine, adapter, source)
     local link = L.linkOf(machine, adapter.id)
     if not link then return false end
     link.source = source
     if source ~= "tank" and adapter.release then pcall(adapter.release, machine) end
+    if adapter.onSource then pcall(adapter.onSource, machine, source) end
     if machine.transmitModData then machine:transmitModData() end
     return true
 end

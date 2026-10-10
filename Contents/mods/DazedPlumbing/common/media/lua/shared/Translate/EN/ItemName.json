@@ -30,5 +30,6 @@
     "Base.DazedFuelPumpElectric": "Electric Fuel Pump",
     "Base.DazedDigester": "Biogas Digester",
     "Base.DazedDrilledWell": "Drilled Well",
-    "Base.DazedSmoker": "Smoker"
+    "Base.DazedSmoker": "Smoker",
+    "Base.DazedWaterPanel": "Water Panel"
 }

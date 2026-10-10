@@ -30,5 +30,6 @@
     "MakeDazedFuelPumpElectric": "Build Electric Fuel Pump",
     "MakeDazedDigester": "Build Biogas Digester",
     "MakeDazedDrilledWell": "Build Drilled Well",
-    "MakeDazedSmoker": "Build Smoker"
+    "MakeDazedSmoker": "Build Smoker",
+    "MakeDazedWaterPanel": "Build Water Panel"
 }

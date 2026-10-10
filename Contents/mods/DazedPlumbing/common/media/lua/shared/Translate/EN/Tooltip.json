@@ -27,5 +27,6 @@
     "Tooltip_DazedPlumb_NeedWelding": "Needs Welding level %1.",
     "Tooltip_DazedPlumb_NeedTorch": "Needs a blowtorch with at least %1 uses left.",
     "Tooltip_DazedPlumb_NeedMask": "Needs a welding mask.",
-    "Tooltip_DazedPlumb_Frozen": "Frozen solid. It thaws when the weather warms."
+    "Tooltip_DazedPlumb_Frozen": "Frozen solid. It thaws when the weather warms.",
+    "Tooltip_DazedWaterPanel": "Hang it on a wall inside a house that a water main serves. Right-click it for the Water panel: the main's dials, valves and shut-off without walking out to the main."
 }

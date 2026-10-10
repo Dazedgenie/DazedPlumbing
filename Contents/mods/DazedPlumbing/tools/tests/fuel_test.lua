@@ -47,21 +47,21 @@ ok(count == 8, "eight distinct fuel pump sprites")
 ok(Fp.spriteInfo("dazedplumb_01_235") == nil and Fp.spriteInfo("dazedplumb_01_244") == nil, "neighbouring tiles are not fuel pumps")
 ok(DazedPlumb.Mains.spriteInfo("dazedplumb_01_236") == nil and DazedPlumb.Pumps.spriteInfo("dazedplumb_01_236") == nil, "no overlap with water pumps or the main")
 
--- the whole taxonomy as the boot check counts it: 252 sprites, 32 items, all present
+-- the whole taxonomy as the boot check counts it: 256 sprites, 33 items, all present
 require "DazedPlumbing/DUP_Boot"
 local itemsTxt = slurp(media .. "/scripts/dup_items.txt")
 local defined = {}
 for name in itemsTxt:gmatch("\n%s+item%s+(%w+)") do defined[name] = true end
 local itemCount = 0 for _ in pairs(defined) do itemCount = itemCount + 1 end
-ok(itemCount == 32, "32 items in dup_items.txt, found " .. itemCount)
+ok(itemCount == 33, "33 items in dup_items.txt, found " .. itemCount)
 getScriptManager = function() return { getItem = function(_, ft) return defined[ft:match("%.(.+)$")] and {} or nil end } end
-getSprite = function(name) local i = tonumber(name:match("_(%d+)$")) return (i and i < 256) and {} or nil end
+getSprite = function(name) local i = tonumber(name:match("_(%d+)$")) return (i and i < 260) and {} or nil end
 for _, h in ipairs(Events.OnGameStart.handlers) do h() end
 local boot
 for _, line in ipairs(E.printed) do if line:find("DazedPlumbing: ready") or line:find("INCOMPLETE") then boot = line end end
-ok(boot and boot:find("252/252 tiles, 32/32 items", 1, true), "boot check: " .. tostring(boot))
-ok(DazedPlumb.VERSION == "0.16.1", "version constant is 0.16.1")
-ok(slurp(media .. "/../../42/mod.info"):find("modversion=0.16.1", 1, true) ~= nil, "mod.info says 0.16.1")
+ok(boot and boot:find("256/256 tiles, 33/33 items", 1, true), "boot check: " .. tostring(boot))
+ok(DazedPlumb.VERSION == "0.17.0", "version constant is 0.17.0")
+ok(slurp(media .. "/../../42/mod.info"):find("modversion=0.17.0", 1, true) ~= nil, "mod.info says 0.17.0")
 for _, it in ipairs(Fp.allItems()) do ok(defined[it:match("%.(.+)$")], it .. " is defined") end
 
 -- tiles 236..243 name their item; each item points at its south tile; weights stay under the heavy limit

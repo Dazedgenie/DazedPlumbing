@@ -130,6 +130,48 @@ function X.put(obj, amount, dirty)
     return 0
 end
 
+--- What kind of fixture it is: its tile's own name when that is one of X.NAMES, else "fixture".
+function X.kindOf(obj)
+    local n = customName(obj)
+    if X.NAMES[n] then return n end
+    return "fixture"
+end
+
+--- Litres in the fixture now (0 with no container yet).
+function X.amount(obj)
+    local fc = try(obj, "getFluidContainer")
+    return fc and (try(fc, "getAmount") or 0) or 0
+end
+
+--- Is the fixture's water tainted?
+function X.tainted(obj)
+    local fc = try(obj, "getFluidContainer")
+    return fc ~= nil and X.amount(obj) > 0 and F.isTaintedFluid(fc) == true
+end
+
+--- Does the game feed this fixture itself (town water, or a rain barrel upstairs)? Then it is never drained.
+function X.selfFed(obj) return endless(obj) or barrelFed(obj) end
+
+--- Empty the fixture's container (the main's drain on shut-off); returns the litres let out.
+function X.empty(obj)
+    if X.selfFed(obj) then return 0 end
+    local fc = try(obj, "getFluidContainer")
+    local before = fc and (try(fc, "getAmount") or 0) or 0
+    if before <= 0.001 then return 0 end
+    if fc.Empty then pcall(fc.Empty, fc) end
+    local after = try(fc, "getAmount") or before
+    if after > 0.001 and fc.adjustAmount then
+        pcall(fc.adjustAmount, fc, 0)
+        after = try(fc, "getAmount") or after
+    end
+    once("fcempty", "tap: emptying the fixture " .. (after < before - 1e-6 and "worked" or "did NOT lower it"))
+    if after < before - 1e-6 then
+        F.syncObject(obj)
+        return before - after
+    end
+    return 0
+end
+
 L.register({
     id = X.ID, supplies = "water", label = "ContextMenu_DazedPlumb_Tap",
     match = X.isFixture, room = X.room, put = X.put,

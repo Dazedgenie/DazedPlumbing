@@ -419,6 +419,22 @@ module Base
         Tags                = base:heavyitem;base:hasmetal;base:showcondition,
     }
 
+    /* The wall water panel (tiles 256-259, the item points at its south tile 257): reads and works a water main from inside the house. */
+
+    item DazedWaterPanel
+    {
+        DisplayName         = Water Panel,
+        DisplayCategory     = Furniture,
+        ItemType            = base:moveable,
+        Weight              = 4.0,
+        Icon                = DazedWaterPanel,
+        WorldObjectSprite   = dazedplumb_01_257,
+        ConditionMax        = 100,
+        MetalValue          = 10.0,
+        Tooltip             = Tooltip_DazedWaterPanel,
+        Tags                = base:hasmetal;base:showcondition,
+    }
+
     /* The fuel pumps (tiles 236-243, kind x facing; the items point at their south tiles: hand 237, electric 241). */
 
     item DazedFuelPumpHand
