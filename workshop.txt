@@ -85,4 +85,4 @@ description=CC BY-NC-SA 4.0, the same as the rest of the Dazed suite. Share and 
 description=
 description=[i]Mod ID: DazedPlumbing · Version 0.16.2[/i]
 tags=Build 42;Building;Items;Multiplayer;Realistic
-visibility=public
+visibility=private
