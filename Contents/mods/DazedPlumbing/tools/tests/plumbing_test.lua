@@ -642,6 +642,20 @@ end
 ok(P.indexOf("dazedplumb_01_212") == 212 and P.indexOf("dazedpower_01_212") == nil and P.indexOf("dazedplumb_01_2x") == nil, "tile numbers come only from our sprite names")
 ok(K.spriteInfo(K.sprite(5, true)) == true and select(2, K.spriteInfo(K.sprite(5, true))) == 5 and K.spriteInfo("x_01_150") == nil, "pipe sprites still decode to outdoor and mask")
 
+-- Dazed Core's debug spawn gets every item, once each.
+do
+    for _, m in ipairs({ "DUP_Mains", "DUP_FuelPumps", "DUP_Digesters", "DUP_DrilledWells", "DUP_Smokers", "DUP_DebugSpawn" }) do
+        require("DazedPlumbing/" .. m)
+    end
+    local set = DazedCore.DebugSpawn and DazedCore.DebugSpawn.sets.plumbing
+    local list = set and set.items() or {}
+    local seen, dup = {}, false
+    for _, it in ipairs(list) do if seen[it] then dup = true end seen[it] = true end
+    ok(set ~= nil and #list == #P.allItems() + 14 and not dup, "the debug spawn set lists every tank and fitting once (" .. #list .. ")")
+    ok(seen["Base.DazedPumpHand"] and seen["Base.DazedSmoker"] and seen["Base.DazedValve"] and seen["Base.DazedTankXLWaterCrafted"],
+        "the debug spawn set reaches tanks, pumps, smoker and valve")
+end
+
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))
 if fails > 0 then for _, l in ipairs(E.printed) do E.realPrint("  log: " .. l) end end
 os.exit(fails == 0 and 0 or 1)
