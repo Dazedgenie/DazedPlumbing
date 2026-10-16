@@ -38,6 +38,7 @@ description=[img]https://raw.githubusercontent.com/Dazedgenie/Dazed-Workshop/mai
 description=[img]https://raw.githubusercontent.com/Dazedgenie/Dazed-Workshop/main/Plumbing/images/water.png?v=2[/img]
 description=[list]
 description=[*][b]Water main[/b]: stand it outside a house, pick the building in the [b]Building Picker[/b], and every sink, bath, shower, toilet and washer inside runs from your tank once the town water is off.
+description=[*][b]Water panel[/b]: right-click a connected main to open a board with supply and demand dials, the house's line rate, every tank and source on the line, per-fixture valves and fill order, and a main shut-off with an optional drain. A wall panel hung inside opens it from indoors.
 description=[*][b]Taps[/b] pipe a single fixture straight to a tank. Tainted water stays tainted.
 description=[*][b]Hand and electric water pumps[/b] on bare ground draw ground water into a tank.
 description=[*][b]Drilled well[/b]: about 15 L of clean water a minute, wired to Dazed Power.
