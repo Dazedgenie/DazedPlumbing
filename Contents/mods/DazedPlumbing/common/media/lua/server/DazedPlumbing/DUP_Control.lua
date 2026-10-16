@@ -448,7 +448,7 @@ function T.view()
         cards = {
             { title = "Wells and pumps", items = pumps },
             { title = "Tanks", items = tanks,
-              lines = { "Only loaded tanks and piped tanks are listed: an unpiped tank in an unloaded area cannot be seen." } },
+              lines = { "Unpiped tanks in unloaded areas are not listed." } },
             { title = "Mains and links", items = links },
         },
     }
