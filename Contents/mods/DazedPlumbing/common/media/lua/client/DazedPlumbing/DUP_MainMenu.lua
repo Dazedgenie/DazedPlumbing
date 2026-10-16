@@ -1,8 +1,9 @@
---[[ Dazed Plumbing -- right-click menu for a water main: what it serves, the line rate,
-     Connect a building... (the core's Building Picker) and Disconnect. The pipe rows come from
-     DUP_LinkMenu. ]]
+--[[ Dazed Plumbing -- right-click menu for a water main: Water panel (once a building is connected),
+     what it serves, the line rate, Connect a building... (the core's Building Picker) and Disconnect.
+     The pipe rows come from DUP_LinkMenu. ]]
 
 require "DazedPlumbing/DUP_Mains"
+require "DazedPlumbing/DUP_Board"
 require "DazedCore/DC_Picker"
 
 local W = DazedPlumb.Mains
@@ -57,6 +58,9 @@ local function addMainMenu(playerNum, context, worldobjects, test)
 
     local e = W.entry(obj)
     if e then
+        -- connected: the panel comes first; unconnected, Connect a building... stays the first thing to do
+        sub:addOption(getText("ContextMenu_DazedPlumb_WaterPanel"), worldobjects,
+            function(_, o, pl) DUP_Board.open(pl, o) end, obj, playerObj)
         sub:addOption(U.txt("IGUI_DazedPlumb_MainServes", describe(e)), nil, nil).notAvailable = true
         local list, total = W.fixtures(obj)
         sub:addOption(U.txt("IGUI_DazedPlumb_MainFixtures", #list, total), nil, nil).notAvailable = true

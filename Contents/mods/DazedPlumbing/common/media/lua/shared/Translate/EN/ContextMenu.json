@@ -51,6 +51,7 @@
     "ContextMenu_DazedPlumb_MainLine": "Main line",
     "ContextMenu_DazedPlumb_MainConnect": "Connect a building...",
     "ContextMenu_DazedPlumb_MainDisconnect": "Disconnect the building",
+    "ContextMenu_DazedPlumb_WaterPanel": "Water panel",
     "ContextMenu_DazedPlumb_FuelPump": "Fuel pump",
     "ContextMenu_DazedPlumb_FuelPumpLine": "Fuel pump line",
     "ContextMenu_DazedPlumb_FuelRefuel": "Refuel",

@@ -30,6 +30,7 @@ require "DazedPlumbing/DUP_FuelPumps"
 require "DazedPlumbing/DUP_Digesters"
 require "DazedPlumbing/DUP_DrilledWells"
 require "DazedPlumbing/DUP_Smokers"
+require "DazedPlumbing/DUP_WallPanels"
 require "DazedCore/DC_Boot"
 DazedCore.Heavy.register("Base.DazedTank")
 
@@ -95,6 +96,13 @@ function ISMoveableSpriteProps:placeMoveableInternal(...)
     if obj and square and DazedPlumb.Mains.spriteInfo(spriteName) then
         local md = obj:getModData()
         if md.modData then md.modData = nil end
+    end
+    -- A wall panel starts unbound (vanilla copies the item's data onto it); the authority binds it to the main serving its house.
+    if obj and square and DazedPlumb.WallPanels.spriteInfo(spriteName) then
+        local md = obj:getModData()
+        if md.modData then md.modData = nil end
+        md[DazedPlumb.WallPanels.MD] = nil
+        DazedPlumb.WallPanels.register(obj)
     end
     -- A fuel pump starts switched on and idle (vanilla copies the item's data onto it; none of it is wanted).
     if obj and square and DazedPlumb.FuelPumps.spriteInfo(spriteName) then
@@ -183,6 +191,16 @@ if origCanPlace then
                 for i = 0, objs:size() - 1 do
                     if DazedPlumb.Mains.isMain(objs:get(i)) then return false end
                 end
+            end
+            return allowed
+        end
+        -- A wall panel: indoors in a building, against a wall on its facing side, one to a square.
+        local panel = self.spriteName and DazedPlumb.WallPanels.spriteInfo(self.spriteName)
+        if panel and square then
+            local okPanel, why = DazedPlumb.WallPanels.canPlace(square, panel.facing)
+            if not okPanel then
+                if why then G.note(character, why) end
+                return false
             end
             return allowed
         end

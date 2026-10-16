@@ -2,7 +2,7 @@ version = 1
 tileset
 {
     file = dazedplumb_01
-    size = 8,32
+    size = 8,33
     id = 1
     // dazedplumb_01_0
     tile
@@ -4555,5 +4555,85 @@ tileset
         solidtrans = 
         container = smoker
         ContainerCapacity = 15
+    }
+    // dazedplumb_01_256
+    tile
+    {
+        xy = 0,32
+        CustomName = Water Panel
+        GroupName = Dazed Plumbing
+        Facing = E
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterPanel
+        PickUpWeight = 40
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_257
+    tile
+    {
+        xy = 1,32
+        CustomName = Water Panel
+        GroupName = Dazed Plumbing
+        Facing = S
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterPanel
+        PickUpWeight = 40
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_258
+    tile
+    {
+        xy = 2,32
+        CustomName = Water Panel
+        GroupName = Dazed Plumbing
+        Facing = W
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterPanel
+        PickUpWeight = 40
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_259
+    tile
+    {
+        xy = 3,32
+        CustomName = Water Panel
+        GroupName = Dazed Plumbing
+        Facing = N
+        Material = MetalPlates
+        Material2 = MetalScrap
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedWaterPanel
+        PickUpWeight = 40
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
     }
 }
