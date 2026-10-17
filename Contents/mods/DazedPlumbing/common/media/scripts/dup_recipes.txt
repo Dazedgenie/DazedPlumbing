@@ -431,7 +431,7 @@ module Base
             item 1 [Base.DazedPumpHand] mode:destroy,
             item 4 [Base.ElectronicsScrap],
             item 3 [Base.ElectricWire],
-            item 1 [Base.EngineParts],
+            item 1 [Base.EngineParts;Base.DazedPartMotorSmall],
         }
         outputs
         {
