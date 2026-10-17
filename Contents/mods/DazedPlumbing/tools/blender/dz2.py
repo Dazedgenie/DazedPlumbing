@@ -1,7 +1,8 @@
 """Dazed art in the new style: DazedPower and DazedPlumbing sprites, icons and masks, built on dz_render.py.
 
     blender -b --factory-startup -P dz2.py -- <out dir> <job> [job ...]
-Jobs: dp:<family>|dp:all, pl:<family>|pl:all, icons:dp, icons:pl, test. Cells land in <out>/<mod>/<family>/<index>.png at 256x512.
+Jobs: dp:<family>|dp:all, pl:<family>|pl:all, icons:dp, icons:dp:<Item>[,<Item>], icons:pl, test. Cells land in
+<out>/<mod>/<family>/<index>.png at 256x512. DZ_DEVICE=CUDA (or OPTIX, HIP, CPU...) picks the Cycles device.
 """
 import os, sys, math, random, time
 DZ_LIBRARY = True
@@ -485,6 +486,574 @@ def hydro_part(state):
         puffs((0, -0.32, 0.1), 4, 0.05, "#d8e6ee", 0.35, (0.0, -0.1, 0.2), seed=8)
 
 
+def point_light(at, energy, col=(1.0, 0.6, 0.25)):
+    """A small point lamp in the model (a fire, an element, a spark), placed through the head transform."""
+    ld = bpy.data.lights.new("pl", "POINT"); ld.energy = energy; ld.color = col; ld.shadow_soft_size = 0.05
+    lo = bpy.data.objects.new("pl", ld); MODEL.objects.link(lo); lo.location = HEAD[-1] @ Vector(at); BUILT.append(lo)
+
+
+def spark(c, size=0.035):
+    """A crackle on a live wire: three crossed glowing slivers and a pinch of blue light."""
+    c = Vector(c); g = glow("#e9f7ff", 14)
+    for rot in ((0, 0, 0), (0, 60, 0), (0, -60, 0)):
+        box((size * 2, 0.003, 0.004), c, g, rot=rot, bevel=0)
+    ball(size * 0.35, c, g, segs=8)
+    point_light(c + Vector((0, -0.05, 0)), 1.5, (0.65, 0.85, 1.0))
+
+
+def fence_part(state):
+    """A charged fence section across the square: wooden end posts, a steel T-post, four strands on yellow
+    insulators, a warning plate and the energizer box. Live strands glow faintly and crackle."""
+    p = P(); on = state == "on"
+    tpost = mat("#4c5a4e", 0.55, 0.45, var=0.12, rust=0.2, dirt=0.3)
+    yellow = mat("#d9b23a", 0.45, dirt=0.15)
+    zs = (0.22, 0.46, 0.7, 0.94)
+    for x in (-0.44, 0.44):
+        box((0.075, 0.075, 1.14), (x, 0, 0.57), p["wood_grey"], bevel=0.008)
+        cyl(0.045, 0.02, (x, 0, 1.15), p["wood_dark"], segs=12)
+    box((0.032, 0.022, 1.08), (0, 0, 0.54), tpost); box((0.07, 0.008, 1.08), (0, 0.012, 0.54), tpost)
+    box((0.1, 0.02, 0.05), (0, 0, 0.06), tpost, rot=(0, 0, 0))
+    for x in (-0.44, 0.0, 0.44):
+        for z in zs:
+            cyl(0.017, 0.05, (x, -0.055, z), yellow, axis="Y", segs=10)
+    strand = glow("#6fbcff", 1.3) if on else mat("#b9bcbf", 0.35, 0.8, dirt=0.1)
+    for z in zs:
+        tube((-0.46, -0.075, z), (0.46, -0.075, z), 0.006, strand, 8)
+    # the warning plate hung on the second strand
+    box((0.17, 0.006, 0.11), (0.22, -0.085, 0.52), mat("#e2b93b", 0.5, dirt=0.2), bevel=0.003)
+    k = mat("#1b1b1b", 0.6, dirt=0, wear=False)
+    box((0.012, 0.003, 0.05), (0.212, -0.0895, 0.535), k, rot=(0, 28, 0), bevel=0)
+    box((0.012, 0.003, 0.05), (0.228, -0.0895, 0.505), k, rot=(0, 28, 0), bevel=0)
+    box((0.018, 0.003, 0.008), (0.22, -0.0895, 0.52), k, bevel=0)
+    # the energizer on the left end post, its lead to the top strand and its ground wire
+    box((0.11, 0.07, 0.14), (-0.44, -0.075, 1.05), mat("#5f6a70", 0.5, 0.35, dirt=0.2), bevel=0.01)
+    box((0.07, 0.004, 0.03), (-0.44, -0.111, 1.08), mat("#d8d3c4", 0.6, dirt=0.15))
+    lamp((-0.415, -0.112, 1.02), on, "#e04a3a", 0.01)
+    path([(-0.4, -0.08, 0.98), (-0.36, -0.08, 0.95), (-0.32, -0.075, 0.94)], 0.006, p["wire_r"])
+    path([(-0.47, -0.08, 0.98), (-0.48, -0.1, 0.5), (-0.46, -0.2, 0.05), (-0.36, -0.28, 0.02)], 0.006, mat("#4c8f3a", 0.6))
+    cyl(0.012, 0.1, (-0.36, -0.28, 0.04), p["copper"], segs=8)
+    if on:
+        spark((0.0, -0.08, 0.7), 0.05); spark((0.3, -0.08, 0.22), 0.04)
+
+
+def cooler_part(state):
+    """A walk-in-cooler evaporator high on the wall behind (+Y): a galvanized housing with two fans, a drain
+    and conduit down the wall. Running: blurred fans, a lit lamp and cold mist falling from the fans."""
+    p = P(); on = state == "on"; back = 0.5; z = 1.86
+    housing = mat("#bfc3c4", 0.42, 0.45, var=0.08, dirt=0.2)
+    box((0.76, 0.3, 0.38), (0, back - 0.15, z), housing, bevel=0.012)
+    front = back - 0.3
+    box((0.74, 0.012, 0.05), (0, front - 0.004, z + 0.155), mat("#9ea3a6", 0.45, 0.45))
+    for i in range(3): box((0.6, 0.006, 0.008), (0, front - 0.011, z + 0.14 + i * 0.012), p["dark"], bevel=0)
+    grille = mat("#d0d3d5", 0.35, 0.7, dirt=0.1)
+    for x in (-0.18, 0.18):
+        cyl(0.12, 0.006, (x, front - 0.002, z - 0.02), mat("#1a1c1e", 0.7, dirt=0, wear=False), axis="Y", segs=32)
+        if on:
+            cyl(0.105, 0.004, (x, front - 0.012, z - 0.02), mat("#8a9096", 0.5, alpha=0.4, dirt=0, wear=False), axis="Y", segs=32)
+        else:
+            for a in (20, 140, 260):
+                r = math.radians(a)
+                box((0.045, 0.004, 0.095), (x + math.cos(r) * 0.055, front - 0.012, z - 0.02 + math.sin(r) * 0.055),
+                    mat("#4a5056", 0.5, 0.4), rot=(0, -a + 90, 0), bevel=0.002)
+        cyl(0.022, 0.016, (x, front - 0.016, z - 0.02), p["steel_dark"], axis="Y", segs=14)
+        for rr in (0.12, 0.085, 0.05): torus(rr, 0.004, (x, front - 0.022, z - 0.02), grille, axis="Y", seg=36, rseg=6)
+        for a in (0, 90): box((0.24, 0.005, 0.006), (x, front - 0.022, z - 0.02), grille, rot=(0, a, 0), bevel=0)
+    box((0.12, 0.004, 0.04), (0.0, front - 0.004, z - 0.15), mat("#d8d3c4", 0.6, dirt=0.15))
+    lamp((0.31, front - 0.008, z - 0.15), on, "#6fe07a", 0.011)
+    box((0.78, 0.28, 0.025), (0, back - 0.14, z - 0.2), mat("#a9aeb1", 0.45, 0.45, dirt=0.25))
+    bracket = mat("#5b6266", 0.5, 0.4, rust=0.15)
+    for x in (-0.3, 0.3):
+        box((0.03, 0.28, 0.03), (x, back - 0.14, z - 0.225), bracket)
+        tube((x, back - 0.27, z - 0.235), (x, back - 0.02, z - 0.42), 0.01, bracket, 6)
+    # the drain dips under the tray and goes into the wall; the supply runs in a short conduit to a box beside it
+    path([(0.28, back - 0.12, z - 0.21), (0.28, back - 0.1, z - 0.34), (0.28, back - 0.02, z - 0.4), (0.28, back, z - 0.4)], 0.012, p["copper"])
+    conduit = mat("#9aa0a4", 0.45, 0.5, dirt=0.2)
+    path([(-0.38, back - 0.12, z + 0.05), (-0.42, back - 0.1, z + 0.05), (-0.44, back - 0.05, z - 0.06)], 0.012, conduit)
+    box((0.07, 0.05, 0.1), (-0.44, back - 0.025, z - 0.1), mat("#6a7378", 0.5, 0.4), bevel=0.006)
+    if on:
+        for i, x in enumerate((-0.18, 0.18)):
+            puffs((x, front - 0.05, z - 0.14), 3, 0.035, "#eef6fb", 0.2, (0.0, -0.2, -0.55), seed=21 + i)
+
+
+def heater_part(state):
+    """A cabinet space heater on the floor: cream steel body, chrome grille over three element rods that glow
+    orange while it runs, two knobs and a lamp on top, the cord trailing off the square."""
+    p = P(); on = state == "on"
+    body = mat("#d6cdb8", 0.5, 0.2, var=0.08, dirt=0.25)
+    for x in (-0.16, 0.16): box((0.07, 0.28, 0.03), (x, 0, 0.015), p["steel_dark"], bevel=0.006)
+    box((0.46, 0.22, 0.47), (0, 0, 0.27), body, bevel=0.025)
+    box((0.38, 0.01, 0.32), (0, -0.108, 0.25), mat("#2a2826", 0.7, dirt=0, wear=False))
+    box((0.36, 0.004, 0.3), (0, -0.112, 0.25), mat("#c9c8c2", 0.25, 0.85, dirt=0.05))
+    elem = glow("#ff7a2a", 10) if on else mat("#5a5048", 0.6, 0.4, dirt=0.1)
+    for zz in (0.15, 0.25, 0.35):
+        cyl(0.016, 0.33, (0, -0.124, zz), elem, axis="X", segs=12)
+        for x in (-0.17, 0.17): cyl(0.022, 0.02, (x, -0.124, zz), p["steel_dark"], axis="X", segs=10)
+    chrome = mat("#cfd2d5", 0.22, 0.9, dirt=0.08)
+    for i in range(8): box((0.38, 0.006, 0.007), (0, -0.142, 0.105 + i * 0.041), chrome, bevel=0)
+    for x in (-0.12, 0.0, 0.12): box((0.007, 0.006, 0.31), (x, -0.142, 0.25), chrome, bevel=0)
+    box((0.4, 0.014, 0.012), (0, -0.14, 0.41), chrome); box((0.4, 0.014, 0.012), (0, -0.14, 0.09), chrome)
+    for x in (0.08, 0.16):
+        cyl(0.026, 0.024, (x, 0.02, 0.515), mat("#2a2b2d", 0.5), segs=16)
+        box((0.006, 0.03, 0.006), (x, 0.01, 0.53), mat("#e8e2cf", 0.5))
+    lamp((-0.15, -0.06, 0.508), on, "#ff6a2a", 0.012)
+    box((0.16, 0.035, 0.012), (-0.06, 0.06, 0.506), p["dark"])
+    for s in (-1, 1):
+        for i in range(5): box((0.006, 0.14, 0.012), (0.231 * s, 0, 0.28 + i * 0.03), p["dark"], bevel=0)
+    path([(0.15, 0.11, 0.1), (0.2, 0.18, 0.02), (0.38, 0.34, 0.012), (0.46, 0.45, 0.012)], 0.007, p["wire_k"])
+    if on:
+        point_light((0, -0.3, 0.25), 7, (1.0, 0.5, 0.2))
+
+
+# ------------------------------------------------------------------ wood gas generators
+def gas_line(pts, r, m, flange=None):
+    """A pipe run with a flange ring at each joint (salvaged / workshop lines)."""
+    path(pts, r, m)
+    if flange:
+        for a, b in zip(pts, pts[1:]):
+            a, b = Vector(a), Vector(b); d = (b - a)
+            if d.length < 0.05: continue
+            ax = "X" if abs(d.x) > max(abs(d.y), abs(d.z)) else ("Y" if abs(d.y) > abs(d.z) else "Z")
+            cyl(r * 1.6, 0.014, a + d.normalized() * 0.03, flange, axis=ax, segs=14)
+
+
+def wg_glow(at, state, w=0.1, h=0.05):
+    """The ash-door slit or air nozzle of the firebox: dark when cold, dull red warming, bright running."""
+    if state == "running":
+        box((w, 0.01, h), at, glow("#ff8a30", 9)); point_light(Vector(at) + Vector((0, -0.12, 0)), 6, (1.0, 0.55, 0.2))
+    elif state == "warming":
+        box((w, 0.01, h), at, glow("#c4521f", 4)); point_light(Vector(at) + Vector((0, -0.12, 0)), 2, (1.0, 0.45, 0.15))
+    else:
+        box((w, 0.01, h), at, mat("#161412", 0.95, dirt=0, wear=False))
+
+
+# dz2's woodgasfire rows (the client's fire frames, DP_GenFx): "fire1".."fire4" or "embers" while one is built, else None.
+WG_FRAME = None
+WG_FLICKER = {1: 7.0, 2: 10.5, 3: 6.0, 4: 9.0}     # the open ash door's own light per flame frame
+
+
+def wg_door(size, loc, m, slit, state, sw, sh):
+    """The gasifier's ash door: shut, with the glowing slit under it (the plain sprites), or, on a fire frame, swung
+    open on the left hinge over a mouth of flames (fire1..fire4) or of embers (the warming gasifier)."""
+    if not (WG_FRAME and state in ("running", "warming")):
+        box(size, loc, m, bevel=0.008); wg_glow(slit, state, sw, sh)
+        return
+    p = P(); w, d, h = size; o = Vector(loc) - Vector((0, d / 2, 0))
+    # The mouth: an iron frame standing off the shell, the glowing bed inside it.
+    for x in (-1, 1): box((0.012, d + 0.01, h + 0.012), o + Vector((x * (w / 2 + 0.004), d / 2, 0)), p["iron"], bevel=0.003)
+    for z in (-1, 1): box((w + 0.02, d + 0.01, 0.012), o + Vector((0, d / 2, z * (h / 2 + 0.004))), p["iron"], bevel=0.003)
+    hot = WG_FRAME != "embers"
+    n = int(WG_FRAME[-1]) if hot else 0
+    back = (glow("#ff7a26", (4.0, 6.5, 3.6, 5.5)[n - 1]) if hot else glow("#a8381a", 2.2))
+    box((w, 0.006, h), o + Vector((0, 0.008, 0)), back, bevel=0)
+    rnd = random.Random(23)
+    base = o.z - h / 2 + 0.006
+    for i in range(int(8 + 50 * w)):
+        c = rnd.choice(["#ff5a14", "#d23c0c", "#ff7c2a", "#9a2a08"])
+        ball(rnd.uniform(0.006, 0.011), (o.x + rnd.uniform(-0.44, 0.44) * w, o.y + rnd.uniform(-0.004, 0.008), base + rnd.uniform(0, 0.014)),
+             glow(c, rnd.uniform(5, 9) if hot else rnd.uniform(1.6, 3.2)), segs=8)
+    if hot:
+        rnd = random.Random(200 + 17 * n)
+        for k in range(3):
+            x = o.x + ((k + 0.5) / 3 - 0.5) * w * 0.8 + rnd.uniform(-0.08, 0.08) * w
+            ht = h * rnd.uniform(0.5, 0.92); r = w * rnd.uniform(0.09, 0.13); lean = rnd.uniform(-0.25, 0.25) * r
+            ball(r, (x + lean, o.y + 0.002, base + ht * 0.45), glow("#ff6a16", 9), scale=(1, 0.6, ht * 0.5 / r))
+            ball(r * 0.55, (x + lean * 0.5, o.y - 0.002, base + ht * 0.32), glow("#ffd47a", 16), scale=(1, 0.6, ht * 0.32 / (r * 0.55)))
+        energy, col = WG_FLICKER[n], (1.0, 0.55, 0.2)
+    else:
+        energy, col = 2.0, (1.0, 0.32, 0.1)
+    # The door, swung open on its left hinge.
+    hinge = o + Vector((-w / 2 - 0.008, -0.004, 0)); a = math.radians(-118)
+    box((w, 0.014, h * 1.04), hinge + Vector((math.cos(a), math.sin(a), 0)) * (w / 2), m, rot=(0, 0, -118), bevel=0.004)
+    point_light(o + Vector((0, -0.1, 0)), energy, col)
+
+
+def wg_flare(tip, state):
+    """The flare stack's mouth: a lick of flame and thick smoke while the gasifier warms (the gas is burnt off
+    until it is clean enough for the engine), nothing once the valve turns it to the engine."""
+    tip = Vector(tip)
+    if state != "warming": return
+    cyl(0.022, 0.07, tip + Vector((0, 0, 0.04)), glow("#ffb04a", 10), r2=0.002, segs=10)
+    cyl(0.013, 0.05, tip + Vector((0, 0, 0.035)), glow("#fff0b0", 14), r2=0.001, segs=8)
+    point_light(tip + Vector((0, -0.06, 0.06)), 3, (1.0, 0.6, 0.25))
+    puffs(tip + Vector((0, 0, 0.05)), 8, 0.065, "#9c9a95", 0.55, (0.06, -0.06, 0.9), seed=31)
+
+
+def tilt_head(pivot, rot):
+    """Push a head transform that tips everything built next about `pivot` (a broken, knocked-over part)."""
+    pv = Vector(pivot)
+    HEAD.append(HEAD[-1] @ Matrix.Translation(pv) @ Euler([math.radians(a) for a in rot], "XYZ").to_matrix().to_4x4()
+                @ Matrix.Translation(-pv))
+
+
+def wg_engine(tier, state):
+    """The engine-generator set on the front half of the square; returns (intake, exhaust) points."""
+    p = P(); run = state == "running"
+    if tier == "makeshift":
+        for x in (-0.34, 0.0, 0.34): box((0.06, 0.34, 0.07), (x, -0.25, 0.035), p["wood"])
+        for i in range(3): box((0.8, 0.1, 0.022), (0, -0.37 + i * 0.12, 0.081), p["wood_grey"])
+        eng = mat("#6d6e6a", 0.55, 0.35, rust=0.35, dirt=0.35)
+        box((0.2, 0.18, 0.15), (-0.1, -0.25, 0.17), eng, bevel=0.01)
+        for i in range(4): box((0.21, 0.19, 0.008), (-0.1, -0.25, 0.25 + i * 0.016), p["alu"], bevel=0)
+        box((0.2, 0.18, 0.1), (-0.1, -0.25, 0.36), mat("#8c2f28", 0.55, 0.2, rust=0.35, dirt=0.35), bevel=0.03)
+        cyl(0.06, 0.03, (-0.1, -0.25, 0.42), p["dark"], segs=16)
+        cyl(0.03, 0.1, (0.05, -0.25, 0.2), p["steel"], axis="X")
+        cyl(0.07, 0.13, (0.17, -0.25, 0.2), p["alu"], axis="X"); cyl(0.04, 0.03, (0.25, -0.25, 0.2), p["steel_dark"], axis="X")
+        tape((0.13, -0.25, 0.2), 0.075, "X", 0.025)
+        box((0.18, 0.06, 0.08), (0.17, -0.25, 0.12), p["wood_dark"])
+        path([(0.22, -0.21, 0.25), (0.32, -0.12, 0.27), (0.4, 0.02, 0.1)], 0.007, p["wire_r"])
+        path([(0.22, -0.22, 0.22), (0.34, -0.16, 0.2), (0.42, -0.02, 0.1)], 0.007, p["wire_k"])
+        cyl(0.035, 0.12, (-0.27, -0.3, 0.22), p["iron"], axis="X")
+        lamp((0.17, -0.33, 0.27), run, "#6fe07a", 0.01)
+        return Vector((-0.1, -0.16, 0.3)), Vector((-0.34, -0.3, 0.22))
+    if tier == "salvaged":
+        rail = mat("#3a3c3e", 0.5, 0.4, rust=0.35)
+        for y in (-0.37, -0.13): box((0.78, 0.05, 0.05), (0, y, 0.025), rail)
+        box((0.7, 0.28, 0.025), (0, -0.25, 0.06), rail)
+        eng = mat("#4e6b45", 0.5, 0.3, var=0.15, rust=0.35, dirt=0.35)
+        box((0.26, 0.2, 0.2), (-0.08, -0.25, 0.18), eng, bevel=0.015)
+        box((0.24, 0.12, 0.05), (-0.08, -0.25, 0.305), mat("#3d5537", 0.5, 0.3, rust=0.3), bevel=0.012)
+        for i in range(3): cyl(0.016, 0.03, (-0.16 + i * 0.08, -0.25, 0.34), p["steel_dark"])
+        flywheel((-0.26, -0.25, 0.2), 0.13, 0.03, p["iron"], "running" if run else "off")
+        cyl(0.095, 0.24, (0.2, -0.25, 0.19), mat("#6b2a24", 0.5, 0.3, rust=0.3, dirt=0.3), axis="X", segs=24)
+        for x in (0.08, 0.32): cyl(0.1, 0.02, (x, -0.25, 0.19), p["steel_dark"], axis="X", segs=24)
+        cyl(0.03, 0.06, (0.06, -0.25, 0.19), p["steel"], axis="X")
+        box((0.1, 0.06, 0.08), (0.2, -0.37, 0.24), mat("#2c2d30", 0.5), bevel=0.008)
+        gauge((0.18, -0.402, 0.25), (0, 0, 0), 0.018, 0.6 if run else 0.0)
+        lamp((0.23, -0.402, 0.26), run, "#6fe07a", 0.008)
+        tube((0.0, -0.3, 0.33), (0.0, -0.3, 0.6), 0.02, p["iron"]); cyl(0.035, 0.03, (0.0, -0.3, 0.62), p["iron"], r2=0.02)
+        path([(0.32, -0.2, 0.2), (0.4, -0.05, 0.12), (0.44, 0.1, 0.02)], 0.008, p["wire_k"])
+        return Vector((-0.08, -0.15, 0.25)), Vector((0.0, -0.3, 0.64))
+    olive = mat("#56603e", 0.48, 0.22, var=0.08, dirt=0.15)
+    box((0.8, 0.34, 0.05), (0, -0.25, 0.025), mat("#2f3330", 0.5, 0.3, dirt=0.2), bevel=0.008)
+    box((0.7, 0.3, 0.32), (0, -0.25, 0.21), olive, bevel=0.02)
+    box((0.72, 0.32, 0.012), (0, -0.25, 0.37), mat("#2f3330", 0.5, 0.3))
+    for s in (1, -1):
+        for i in range(5): box((0.01, 0.2, 0.014), (0.35 * s, -0.25, 0.1 + i * 0.045), p["dark"], rot=(0, 25 * s, 0), bevel=0)
+    box((0.24, 0.012, 0.14), (-0.16, -0.405, 0.24), mat("#2a2b2d", 0.45, 0.3))
+    gauge((-0.22, -0.413, 0.26), (0, 0, 0), 0.03, 0.62 if run else 0.0, rim="#b08c4a")
+    lamp((-0.1, -0.414, 0.28), run, "#6fe07a", 0.011); lamp((-0.1, -0.414, 0.22), state == "warming", "#f2b63c", 0.011)
+    box((0.06, 0.006, 0.03), (0.16, -0.405, 0.3), p["brass"])
+    for i in range(4): box((0.24, 0.008, 0.012), (0.14, -0.405, 0.14 + i * 0.035), p["dark"], bevel=0)
+    tube((0.3, -0.2, 0.37), (0.3, -0.2, 0.56), 0.022, p["iron"]); cyl(0.038, 0.035, (0.3, -0.2, 0.58), p["iron"], r2=0.024)
+    path([(0.36, -0.12, 0.1), (0.42, 0.0, 0.05), (0.45, 0.1, 0.02)], 0.01, p["wire_k"])
+    return Vector((-0.1, -0.12, 0.3)), Vector((0.3, -0.2, 0.6))
+
+
+def woodgas_part(tier, state):
+    """A WWII-style wood gas generator: a tall firebox-and-hopper gasifier at the back left, a cooler / filter at the
+    back right with the flare stack, and an engine-generator set across the front."""
+    p = P(); brk = state == "broken"
+    gx, gy = -0.2, 0.13
+    if tier == "makeshift":
+        for dy in (-0.1, 0.1): cinder((gx, gy + dy, 0.095), 0)
+        fb = mat("#4f6a7a", 0.6, 0.3, var=0.22, rust=0.5, dirt=0.4)
+        cyl(0.2, 0.56, (gx, gy, 0.19 + 0.28), fb, segs=32)
+        for zz in (0.37, 0.56): torus(0.202, 0.01, (gx, gy, zz), fb, seg=40)
+        wg_door((0.14, 0.03, 0.1), (gx, gy - 0.195, 0.3), p["iron"], (gx, gy - 0.212, 0.3), "off" if brk else state, 0.09, 0.03)
+        tube((gx - 0.12, gy - 0.12, 0.62), (gx - 0.2, gy - 0.26, 0.62), 0.022, p["iron"]); cyl(0.03, 0.03, (gx - 0.2, gy - 0.26, 0.62), p["steel_dark"], axis="Y")
+        if brk: tilt_head((gx + 0.2, gy, 0.75), (0, 14, -8))
+        hp = mat("#7a3b2e", 0.6, 0.3, var=0.22, rust=0.5, dirt=0.35)
+        cyl(0.2, 0.5, (gx, gy, 0.75 + 0.25), hp, segs=32)
+        for zz in (0.92, 1.1): torus(0.202, 0.01, (gx, gy, zz), hp, seg=40)
+        tape((gx, gy, 0.76), 0.205, "Z", 0.04)
+        if not brk:
+            cyl(0.212, 0.03, (gx, gy, 1.265), mat("#5c5a55", 0.55, 0.4, rust=0.4), segs=32)
+            box((0.14, 0.03, 0.03), (gx, gy, 1.295), p["iron"])
+            for a in (0, 180): box((0.03, 0.02, 0.07), (gx + math.cos(math.radians(a)) * 0.21, gy, 1.24), p["iron"])
+        else:
+            box((0.004, 0.06, 0.2), (gx - 0.05, gy - 0.198, 0.98), p["dark"], rot=(0, 15, 0))
+            box((0.004, 0.05, 0.12), (gx + 0.05, gy - 0.198, 1.06), p["dark"], rot=(0, -25, 0))
+        if brk:
+            HEAD.pop()
+            cyl(0.15, 0.03, (0.36, 0.03, 0.04), mat("#5c5a55", 0.55, 0.4, rust=0.4), segs=32, rot=(14, -18, 0))
+        cinder((0.27, 0.27, 0.095), 90)
+        bucket = mat("#d9d6cc", 0.6, var=0.1, dirt=0.4)
+        cyl(0.11, 0.3, (0.27, 0.27, 0.34), bucket, r2=0.12, segs=24); cyl(0.125, 0.025, (0.27, 0.27, 0.5), bucket, segs=24)
+        path([(gx + 0.19, gy, 0.3), (0.06, gy, 0.3), (0.06, gy, 0.8), (0.16, 0.27, 0.8), (0.16, 0.27, 0.45), (0.17, 0.27, 0.42)], 0.024, p["iron"])
+        tape((0.06, gy, 0.55), 0.03, "Z", 0.03)
+        tube((0.3, 0.27, 0.51), (0.3, 0.27, 1.18), 0.016, p["steel_dark"]); box((0.05, 0.03, 0.03), (0.3, 0.27, 0.86), mat("#b8302a", 0.5))
+        flare = (0.3, 0.27, 1.19)
+    elif tier == "salvaged":
+        leg = mat("#3a3c3e", 0.55, 0.4, rust=0.4)
+        for a in (45, 135, 225, 315):
+            d = Vector((math.cos(math.radians(a)), math.sin(math.radians(a)), 0)) * 0.17
+            box((0.035, 0.035, 0.24), (gx + d.x, gy + d.y, 0.12), leg)
+        torus(0.2, 0.014, (gx, gy, 0.22), leg, seg=40)
+        if brk: tilt_head((gx + 0.19, gy - 0.1, 0.24), (6, 9, 0))
+        shell = mat("#6b6e5e", 0.6, 0.35, var=0.18, rust=0.55, dirt=0.4)
+        cyl(0.19, 0.92, (gx, gy, 0.24 + 0.46), shell, segs=36)
+        for zz in (0.3, 0.55, 0.85, 1.1): torus(0.193, 0.012, (gx, gy, zz), shell, seg=40)
+        for k in range(16):
+            a = 2 * math.pi * k / 16
+            for zz in (0.55, 0.85): ball(0.008, (gx + math.cos(a) * 0.196, gy + math.sin(a) * 0.196, zz + 0.02), p["steel_dark"], segs=6)
+        cyl(0.19, 0.12, (gx, gy, 1.22), shell, r2=0.1, segs=36)
+        if not brk:
+            cyl(0.11, 0.04, (gx, gy, 1.3), p["iron"], segs=24)
+            box((0.03, 0.2, 0.025), (gx, gy - 0.02, 1.335), p["iron"], rot=(-10, 0, 0))
+        else:
+            box((0.004, 0.08, 0.24), (gx - 0.03, gy - 0.188, 0.72), p["dark"], rot=(0, 20, 0))
+        wg_door((0.15, 0.03, 0.13), (gx, gy - 0.19, 0.36), p["iron"], (gx, gy - 0.21, 0.33), "off" if brk else state, 0.08, 0.02)
+        if not (WG_FRAME and state in ("running", "warming")):
+            for x in (-0.06, 0.06): ball(0.01, (gx + x, gy - 0.208, 0.41), p["steel_dark"], segs=6)
+        for a in (200, 250, 290):
+            d = Vector((math.cos(math.radians(a)), math.sin(math.radians(a)), 0))
+            tube((gx + d.x * 0.18, gy + d.y * 0.18, 0.5), (gx + d.x * 0.26, gy + d.y * 0.26, 0.5), 0.016, p["iron"])
+        if brk:
+            HEAD.pop()
+            cyl(0.11, 0.04, (0.36, 0.0, 0.04), p["iron"], segs=24, rot=(14, -18, 0))
+        cyc = mat("#5d5e58", 0.6, 0.35, rust=0.5, dirt=0.35)
+        cyl(0.08, 0.22, (0.08, 0.32, 0.85), cyc, segs=24); cyl(0.08, 0.2, (0.08, 0.32, 0.64), cyc, r2=0.025, segs=24)
+        filt = mat("#556066", 0.6, 0.35, var=0.15, rust=0.45, dirt=0.4)
+        box((0.2, 0.2, 0.5), (0.3, 0.24, 0.27), filt, bevel=0.012)
+        box((0.22, 0.22, 0.03), (0.3, 0.24, 0.53), p["iron"], bevel=0.006)
+        for x in (0.22, 0.38):
+            for y in (0.16, 0.32): ball(0.012, (x, y, 0.55), p["steel_dark"], segs=6)
+        gas_line([(gx + 0.18, gy + 0.05, 1.0), (0.0, 0.32, 1.0), (0.08, 0.32, 0.97)], 0.022, p["iron"], p["steel_dark"])
+        gas_line([(0.08, 0.32, 0.55), (0.08, 0.32, 0.45), (0.2, 0.3, 0.45)], 0.02, p["iron"], p["steel_dark"])
+        tube((0.36, 0.3, 0.55), (0.36, 0.3, 1.3), 0.016, p["iron"]); cyl(0.03, 0.03, (0.36, 0.3, 1.31), p["iron"], r2=0.02)
+        cyl(0.03, 0.02, (0.36, 0.25, 0.75), mat("#b8302a", 0.5), axis="Y")
+        flare = (0.36, 0.3, 1.32)
+    else:
+        olive = mat("#56603e", 0.45, 0.22, var=0.08, dirt=0.15)
+        box((0.5, 0.5, 0.06), (gx, gy, 0.03), mat("#2f3330", 0.5, 0.3, dirt=0.2), bevel=0.008)
+        if brk: tilt_head((gx + 0.18, gy - 0.18, 0.06), (7, 10, 0))
+        cyl(0.19, 0.95, (gx, gy, 0.06 + 0.475), olive, segs=40)
+        for zz in (0.18, 0.62, 1.0): torus(0.192, 0.009, (gx, gy, zz), p["brass"], seg=40)
+        ball(0.19, (gx, gy, 1.01), olive, scale=(1, 1, 0.38))
+        if not brk:
+            cyl(0.08, 0.05, (gx, gy, 1.09), olive, segs=24)
+            torus(0.06, 0.009, (gx, gy, 1.14), mat("#9c2b24", 0.45, 0.3), seg=24)
+            for a in (0, 120, 240):
+                r = math.radians(a); tube((gx, gy, 1.14), (gx + math.cos(r) * 0.06, gy + math.sin(r) * 0.06, 1.14), 0.005, mat("#9c2b24", 0.45, 0.3), 6)
+        else:
+            box((0.004, 0.08, 0.26), (gx - 0.02, gy - 0.188, 0.66), p["dark"], rot=(0, 18, 0))
+            box((0.004, 0.06, 0.12), (gx + 0.06, gy - 0.188, 0.8), p["dark"], rot=(0, -30, 0))
+        wg_door((0.15, 0.025, 0.12), (gx, gy - 0.19, 0.24), mat("#3f4734", 0.45, 0.25), (gx, gy - 0.205, 0.22), "off" if brk else state, 0.07, 0.02)
+        if not (WG_FRAME and state in ("running", "warming")):
+            cyl(0.014, 0.04, (gx + 0.06, gy - 0.21, 0.26), p["brass"], axis="Y")
+        gauge((gx + 0.1, gy - 0.17, 0.78), (0, 0, 25), 0.035, {"running": 0.7, "warming": 0.35}.get(state, 0.0), rim="#b08c4a")
+        if brk:
+            HEAD.pop()
+            cyl(0.08, 0.05, (0.38, 0.0, 0.06), olive, segs=24, rot=(0, 75, 20))
+            torus(0.06, 0.009, (0.38, -0.06, 0.04), mat("#9c2b24", 0.45, 0.3), seg=24, rot=(10, 0, 0))
+        lag = mat("#cfc9b8", 0.85, var=0.1, dirt=0.25)
+        gas_line([(gx + 0.17, gy + 0.05, 0.9), (0.06, 0.3, 0.9), (0.06, 0.3, 0.6)], 0.028, lag, p["brass"])
+        cool = mat("#6c7378", 0.4, 0.6, dirt=0.15)
+        cyl(0.06, 0.5, (0.06, 0.3, 0.33), cool, segs=20)
+        for i in range(9): cyl(0.085, 0.008, (0.06, 0.3, 0.14 + i * 0.046), cool, segs=24)
+        gas_line([(0.06, 0.3, 0.1), (0.3, 0.3, 0.1), (0.3, 0.3, 0.16)], 0.022, lag, p["brass"])
+        can = mat("#56603e", 0.45, 0.22, var=0.08, dirt=0.15)
+        cyl(0.09, 0.42, (0.3, 0.3, 0.37), can, segs=28); ball(0.09, (0.3, 0.3, 0.58), can, scale=(1, 1, 0.35))
+        torus(0.091, 0.008, (0.3, 0.3, 0.3), p["brass"], seg=32)
+        box((0.03, 0.006, 0.18), (0.3, 0.208, 0.4), p["glass"], bevel=0)
+        tube((0.3, 0.3, 0.6), (0.3, 0.3, 1.36), 0.016, mat("#3a3c3e", 0.45, 0.45))
+        torus(0.03, 0.006, (0.3, 0.255, 0.95), mat("#9c2b24", 0.45, 0.3), axis="Y", seg=20)
+        cyl(0.03, 0.03, (0.3, 0.3, 1.37), p["iron"], r2=0.02)
+        flare = (0.3, 0.3, 1.38)
+    intake, exhaust = wg_engine(tier, state)
+    hose = p["rubber"] if tier == "makeshift" else (p["iron"] if tier == "salvaged" else mat("#cfc9b8", 0.85, var=0.1, dirt=0.25))
+    start = Vector((0.27, 0.27, 0.48)) if tier == "makeshift" else (Vector((0.24, 0.17, 0.4)) if tier == "salvaged" else Vector((0.24, 0.24, 0.5)))
+    path([start, Vector((start.x, -0.02, start.z)), Vector((intake.x, -0.02, intake.z + 0.05)), intake], 0.014 if tier == "makeshift" else 0.018, hose)
+    wg_flare(flare, "off" if brk else state)
+    if state == "running":
+        # A fire frame's smoke climbs a quarter of a puff per frame (WG_FRAME fire1..fire4); the plain sprite's is still.
+        ph = (int(WG_FRAME[-1]) - 1) / 4.0 if (WG_FRAME or "").startswith("fire") else None
+        puffs(exhaust, 4 if ph is not None else 3, 0.034 if ph is not None else 0.03, "#9a9894", 0.36 if ph is not None else 0.3,
+              (-0.3, -0.05, 0.6) if tier == "makeshift" else (0.05, -0.05, 0.8), seed=37, phase=ph)
+    if brk:
+        cyl(0.18, 0.003, (0.05, -0.05, 0.002), mat("#0f0e0d", 0.15, alpha=0.7, dirt=0, wear=False), segs=24)
+        ash = mat("#5e5b57", 0.95, var=0.3, dirt=0, wear=False)
+        for i, (x, y) in enumerate(((-0.12, -0.12), (-0.28, -0.1), (-0.05, -0.02))):
+            ball(0.05 - i * 0.01, (x, y, 0.0), ash, scale=(1.4, 1.1, 0.35), segs=10)
+        rnd = random.Random(41)
+        for i in range(4):
+            box((rnd.uniform(0.03, 0.07), rnd.uniform(0.02, 0.05), 0.01), (rnd.uniform(-0.4, 0.4), rnd.uniform(-0.46, -0.38), 0.006),
+                p["steel_dark"], rot=(0, 0, rnd.uniform(0, 90)))
+
+
+# ------------------------------------------------------------------ zombie treadwheel
+def stained(col, rough=0.8, amt=0.35, blood="#4e1914", scale=6.0):
+    """A cloth or skin material with dark dried-blood blotches over the usual wear."""
+    key = ("stained", col, rough, amt, blood, scale)
+    if key in MATS: return MATS[key]
+    m = mat(col, rough, var=0.22, dirt=0.35).copy(); m.name = "stained%d" % len(MATS)
+    nt = m.node_tree; b = nt.nodes.get("Principled BSDF")
+    src = b.inputs["Base Color"].links[0].from_socket
+    blot = ramp(nt, noise(nt, scale, 8), 0.66 - amt * 0.25, 0.7 - amt * 0.25)
+    nt.links.new(mix(nt, blot, src, lin(blood)), b.inputs["Base Color"])
+    MATS[key] = m
+    return m
+
+
+TREAD_C = Vector((0.0, 0.0, 0.8))        # the drum's centre: no axle, it rides on four rollers
+TREAD_R = 0.69                           # the iron tyre the rollers bear on
+TREAD_W = 0.27                           # half the drum's width (the hoops), along X; R + W stays inside the cell
+
+
+def zombie_walker(floor, k=0.83):
+    """A shambling zombie mid-stride on the drum's floor (z `floor` at its middle), facing the model front (-Y):
+    grey-green skin, a torn blood-stained shirt and jeans, head lolling, arms reaching ahead. Modelled about 1.45
+    tall and drawn at `k` of that so it fits the drum. Returns its waist, for the rope."""
+    pv = Vector((0, 0, 0.17))
+    HEAD.append(HEAD[-1] @ Matrix.Translation((0, 0, floor)) @ Matrix.Scale(k, 4) @ Matrix.Translation(-pv))
+    skin = stained("#7c9468", 0.75, 0.1, "#5a2a22", 9.0)
+    shirt = stained("#8d9184", 0.85, 0.4, "#4e1914", 5.0)
+    jeans = stained("#3d475c", 0.9, 0.2, "#2a1512", 4.0)
+    shoe = mat("#2a2420", 0.7, dirt=0.3)
+    face = mat("#7c9468", 0.75, var=0.22, dirt=0.2)                       # no blotch, so the face reads grey-green
+    hair = mat("#4a4a44", 0.9, dirt=0.1)
+    # legs mid-stride: the left one planted ahead, the right pushing off behind with its heel up
+    for x, hip, knee, ankle, toe in ((-0.08, (-0.08, 0.0, 0.8), (-0.085, -0.13, 0.5), (-0.085, -0.19, 0.24), (-0.085, -0.3, 0.2)),
+                                     (0.08, (0.08, 0.0, 0.8), (0.085, 0.07, 0.49), (0.085, 0.2, 0.28), (0.085, 0.27, 0.205))):
+        tube(hip, knee, 0.058, jeans, 10, r2=0.05); ball(0.05, knee, jeans, segs=10)
+        tube(knee, ankle, 0.05, jeans, 10, r2=0.042)
+        a, t = Vector(ankle), Vector(toe)
+        tube(a, t, 0.036, shoe, 8, r2=0.03); ball(0.04, a, shoe, segs=10)
+    box((0.27, 0.17, 0.15), (0, 0.0, 0.83), jeans, bevel=0.03)                     # hips
+    # torso leaning into the walk, shoulders hunched forward
+    tube((0, 0.01, 0.84), (0, -0.1, 1.25), 0.13, shirt, 14, r2=0.15)
+    ball(0.15, (0, -0.1, 1.25), shirt, scale=(1.15, 0.8, 0.6), segs=14)
+    box((0.3, 0.03, 0.12), (0.02, -0.03, 0.9), shirt, rot=(18, 0, 6), bevel=0.01)  # a torn shirt-tail flap
+    tube((0, -0.12, 1.3), (0.01, -0.17, 1.38), 0.045, face, 10)                    # neck
+    ball(0.1, (0.025, -0.21, 1.43), face, scale=(0.9, 1.0, 1.08), segs=16)         # head, lolling to one side
+    ball(0.09, (0.03, -0.16, 1.47), hair, scale=(0.95, 0.85, 0.8), segs=14)    # thin hair on the back of the skull
+    for ex in (-0.03, 0.065):
+        ball(0.017, (ex, -0.295, 1.44), mat("#2b1c18", 0.6, dirt=0, wear=False), segs=8)  # sunken eyes
+    box((0.06, 0.01, 0.015), (0.025, -0.3, 1.37), mat("#3a1814", 0.7, dirt=0, wear=False))   # slack mouth
+    # arms out in front, the zombie's reach: torn short sleeves, bare grey forearms
+    for s, sh, el, wr in ((-1, (-0.19, -0.1, 1.26), (-0.2, -0.33, 1.19), (-0.15, -0.55, 1.17)),
+                          (1, (0.19, -0.1, 1.26), (0.21, -0.32, 1.13), (0.17, -0.53, 1.08))):
+        ball(0.065, sh, shirt, segs=12)
+        mid = Vector(sh).lerp(Vector(el), 0.5)
+        tube(sh, mid, 0.06, shirt, 10, r2=0.055)
+        tube(mid, el, 0.042, skin, 10); ball(0.042, el, skin, segs=10)
+        tube(el, wr, 0.038, skin, 10, r2=0.032)
+        w = Vector(wr); d = (w - Vector(el)).normalized()
+        ball(0.04, w + d * 0.03, skin, scale=(0.7, 1.3, 0.6), segs=10)                 # limp hand
+        for f in (-0.022, 0.0, 0.022):
+            tube(w + d * 0.05 + Vector((f, 0, 0)), w + d * 0.1 + Vector((f, 0, -0.03)), 0.009, skin, 6)
+    HEAD.pop()
+    return Vector((0, 0, floor)) + (Vector((0.0, -0.02, 0.86)) - pv) * k
+
+
+def treadwheel_part(state):
+    """A zombie treadwheel: an open slatted drum on two wooden hoops shod with iron tyres, riding on four rollers on
+    a timber base, held upright by guide posts with rollers at the hoops' sides. The back roller drives a car
+    alternator by a belt on the left. Empty, the tether rope hangs off the short post at the front right; walking,
+    a grey-green zombie strides in the drum, tied by the waist to that post."""
+    p = P(); walking = state == "walking"
+    wood = mat("#8b7155", 0.85, var=0.22, dirt=0.4)
+    weath = mat("#7e7262", 0.9, var=0.25, dirt=0.4)
+    dark = p["wood_dark"]
+    iron = mat("#3c3e40", 0.55, 0.45, rust=0.35, dirt=0.3)
+    rope = mat("#b39a6c", 0.9, var=0.15, dirt=0.25)
+    C, R, W = TREAD_C, TREAD_R, TREAD_W
+    # base: two skids along Y, cross ties, roller blocks
+    for x in (-0.4, 0.4): box((0.1, 0.96, 0.09), (x, 0, 0.045), dark, bevel=0.01)
+    for y in (-0.42, 0.42): box((0.9, 0.08, 0.05), (0, y, 0.115), weath, bevel=0.008)
+    rr = 0.05
+    rollers = []
+    for sy in (-1, 1):
+        a = math.radians(38)
+        rc = C + Vector((0, sy * math.sin(a), -math.cos(a))) * (R + rr + 0.012)
+        rollers.append(rc)
+        for x in (-0.4, 0.4): box((0.1, 0.12, rc.z - 0.07), (x, rc.y, 0.09 + (rc.z - 0.07) / 2), wood, bevel=0.01)
+        cyl(0.016, 0.9, rc, iron, axis="X", segs=10)
+        for x in (-W, W): cyl(rr, 0.06, (x, rc.y, rc.z), iron, axis="X", segs=16)
+    # guide posts at the drum's sides, each with a braced foot and a small roller bearing on the hoop
+    for x in (-0.4, 0.4):
+        box((0.07, 0.07, C.z + 0.02), (x, 0, 0.09 + (C.z - 0.07) / 2), wood, bevel=0.008)
+        for sy in (-1, 1): tube((x, sy * 0.3, 0.1), (x, sy * 0.03, 0.5), 0.024, wood, 6)
+        cyl(0.03, 0.06, (x - math.copysign(0.07, x), 0, C.z), iron, axis="X", segs=12)
+        box((0.1, 0.05, 0.05), (x - math.copysign(0.03, x), 0, C.z + 0.05), dark)
+    # the drum: two hoops with iron tyres, slats between them, corner blocks inside the open ends
+    for x in (-W, W):
+        torus(R - 0.032, 0.032, C + Vector((x, 0, 0)), wood, axis="X", seg=56, rseg=6)
+        torus(R - 0.004, 0.011, C + Vector((x, 0, 0)), iron, axis="X", seg=56, rseg=6)
+    n = 24
+    for i in range(n):
+        a = 2 * math.pi * (i + 0.5) / n
+        d = Vector((0, math.sin(a), -math.cos(a)))
+        box((2 * W + 0.05, 0.075, 0.028), C + d * (R - 0.078), weath if i % 3 else wood, rot=(math.degrees(a), 0, 0), bevel=0.006)
+    for x in (-W, W):
+        for k in range(4):
+            a = 2 * math.pi * k / 4 + math.pi / 4
+            d = Vector((0, math.sin(a), -math.cos(a)))
+            box((0.04, 0.045, 0.045), C + Vector((x, 0, 0)) + d * (R - 0.078), dark, rot=(math.degrees(a), 0, 0))
+    # drive: a pulley on the back roller's left end, a belt down to a car alternator on the left skid
+    back = rollers[1]
+    pul = Vector((-0.425, back.y, back.z))
+    cyl(0.055, 0.03, pul, mat("#5d5f61", 0.45, 0.6, rust=0.2), axis="X", segs=24)
+    alt = Vector((-0.4, 0.17, 0.155))
+    box((0.16, 0.18, 0.025), (-0.43, 0.17, 0.077), dark)
+    cyl(0.066, 0.11, alt, mat("#9a9a94", 0.45, 0.55, rust=0.15, dirt=0.35), axis="X", segs=20)
+    for k in range(6): box((0.09, 0.004, 0.02), alt + Vector((0, math.cos(k), math.sin(k))) * 0.064, p["steel_dark"], rot=(math.degrees(k), 0, 0), bevel=0)
+    ap = alt + Vector((-0.05, 0, 0))
+    cyl(0.033, 0.03, ap, p["steel_dark"], axis="X", segs=16)
+    for s in (-1, 1):
+        dd = (pul - ap); nrm = Vector((0, -dd.z, dd.y)).normalized()
+        tube(ap + nrm * 0.033 * s, pul + nrm * 0.055 * s, 0.008, p["rubber"], 6)
+    path([(-0.38, 0.24, 0.17), (-0.34, 0.34, 0.1), (-0.38, 0.46, 0.015), (-0.44, 0.52, 0.012)], 0.007, p["wire_r"])
+    path([(-0.39, 0.23, 0.13), (-0.36, 0.32, 0.06), (-0.41, 0.46, 0.012), (-0.47, 0.5, 0.01)], 0.007, p["wire_k"])
+    # the tether post at the front right, the rope knotted round its head
+    tp = Vector((0.4, -0.36, 0.0))
+    box((0.08, 0.08, 0.74), tp + Vector((0, 0, 0.42)), wood, bevel=0.01)
+    knot = tp + Vector((0, 0, 0.66))
+    torus(0.052, 0.014, knot, rope, seg=16, rseg=6); torus(0.052, 0.014, knot + Vector((0, 0, 0.03)), rope, seg=16, rseg=6)
+    if walking:
+        waist = zombie_walker(C.z - (R - 0.092))
+        torus(0.125, 0.014, waist, rope, seg=20, rseg=6, rot=(8, 0, 0))
+        mid = knot.lerp(waist, 0.5) + Vector((0, 0, -0.05))
+        path([knot + Vector((-0.04, 0.02, 0)), mid, waist + Vector((0.11, -0.02, 0.0))], 0.012, rope, segs=8)
+    else:
+        path([knot + Vector((-0.03, -0.04, -0.01)), knot + Vector((-0.06, -0.07, -0.2)), knot + Vector((-0.05, -0.08, -0.4)),
+              knot + Vector((-0.02, -0.07, -0.5))], 0.012, rope, segs=8)
+        torus(0.065, 0.012, knot + Vector((-0.02, -0.07, -0.56)), rope, seg=18, rseg=6, rot=(0, 75, 20))
+
+
+def treadmill_icon():
+    """The Treadmill Generator for its inventory icon: a gym treadmill (deck, belt, motor hood, uprights, console
+    and rails) with a car alternator bolted to the hood and red and black leads up to the console."""
+    p = P()
+    frame = mat("#3a3c40", 0.5, 0.3, dirt=0.2)
+    grey = mat("#8e9297", 0.4, 0.55, dirt=0.15)
+    box((0.42, 1.1, 0.09), (0, 0.05, 0.065), frame, bevel=0.015)
+    box((0.34, 1.0, 0.012), (0, 0.06, 0.114), mat("#1c1d1f", 0.85, dirt=0.05))
+    for x in (-0.195, 0.195): box((0.05, 1.04, 0.02), (x, 0.06, 0.118), grey, bevel=0.004)
+    for x in (-0.18, 0.18): cyl(0.022, 0.05, (x, 0.58, 0.03), p["rubber"], axis="X", segs=12)
+    box((0.46, 0.22, 0.17), (0, -0.55, 0.105), mat("#4a4d52", 0.45, 0.3, dirt=0.15), bevel=0.03)   # motor hood
+    for x in (-0.2, 0.2): tube((x, -0.52, 0.18), (x, -0.6, 0.95), 0.03, grey, 12)
+    con = Vector((0, -0.63, 1.0))
+    box((0.5, 0.16, 0.2), con, frame, rot=(-30, 0, 0), bevel=0.025)                               # console
+    box((0.22, 0.01, 0.09), con + Vector((0, 0.07, 0.035)), glow("#7fe08a", 4), rot=(-30, 0, 0), bevel=0)
+    for x in (-0.13, 0.15): cyl(0.016, 0.01, con + Vector((x, 0.075, -0.03)), mat("#c23a2e", 0.4), rot=(60, 0, 0), segs=12)
+    for x in (-0.24, 0.24):
+        path([(x * 0.85, -0.6, 0.93), (x, -0.45, 0.82), (x, 0.0, 0.8)], 0.018, grey, segs=10)
+        cyl(0.024, 0.14, (x, -0.12, 0.8), p["rubber"], axis="Y", segs=12)
+    alt = Vector((0.31, -0.58, 0.1))
+    cyl(0.075, 0.13, alt, mat("#9a9a94", 0.45, 0.55, rust=0.1, dirt=0.3), axis="X", segs=20)
+    cyl(0.04, 0.03, alt + Vector((0.08, 0, 0)), p["steel_dark"], axis="X", segs=16)
+    path([(0.3, -0.52, 0.17), (0.24, -0.5, 0.35), (0.23, -0.56, 0.7), (0.2, -0.6, 0.92)], 0.011, p["wire_r"])
+    path([(0.33, -0.52, 0.16), (0.27, -0.48, 0.34), (0.26, -0.55, 0.68), (0.23, -0.59, 0.9)], 0.011, p["wire_k"])
+
+
+def rod_icon():
+    """The grounding rod laid down for its inventory icon: a thick copper rod with its clamp and a coil of ground wire."""
+    p = P(); cu = mat("#b4703f", 0.35, 0.8, var=0.1, dirt=0.1)
+    cyl(0.035, 0.62, (0, 0, 0.04), cu, axis="X", segs=16)
+    cyl(0.035, 0.08, (0.35, 0, 0.04), cu, axis="X", r2=0.001, rot=(0, 90, 0), segs=16)
+    box((0.06, 0.09, 0.09), (-0.22, 0, 0.04), p["brass"], bevel=0.01)
+    torus(0.09, 0.016, (-0.05, 0.16, 0.02), mat("#4c8f3a", 0.6), seg=32)
+    path([(-0.22, 0.04, 0.06), (-0.15, 0.12, 0.03), (-0.1, 0.16, 0.02)], 0.016, mat("#4c8f3a", 0.6))
+
+
+def gauge_icon_model():
+    """The wall gauge face-on for its icon, without the conduit that makes its world sprite so tall."""
+    box((0.24, 0.05, 0.32), (0, 0, 0), mat("#5d666c", 0.45, 0.4, dirt=0.15), bevel=0.014)
+    gauge((0, -0.027, 0.04), (0, 0, 0), 0.085, 0.86, rim="#c9ccd0")
+    lamp((0, -0.03, -0.1), True, "#6fe07a", 0.02)
+
+
 # ------------------------------------------------------------------ DazedPower taxonomy (mirrors tools/dp_taxonomy.py)
 DP_KINDS = ["array", "bank", "controller", "transformer", "lamp", "pedal", "windmill", "steam", "windsock", "vane",
             "propane", "petrol", "gauge", "rod", "bench", "hydro"]
@@ -516,10 +1085,21 @@ for _k in DP_KINDS:
             for _s in dp_states(_k, _m, _t):
                 for _p in range(1, (4 if (_k == "array" and _m == "xl") else 1) + 1):
                     DP_ROWS.append((_k, _m, _t, _s, _p))
+# The sheet has grown past the lists above (fence, cooler, heater, windspin); the taxonomy is the one true order, so
+# use it when it is beside this folder. Rows with no builder here are skipped by dp_render.
+try:
+    sys.path.insert(0, os.path.normpath(os.path.join(_here, "..")))
+    import dp_taxonomy as _T
+    DP_ROWS = list(_T.ROWS)
+    DP_TIERS = dict(_T.TIERS)
+except Exception as _e:
+    print("dz2: dp_taxonomy not found, using the built-in rows:", _e)
 DP_FAMILY = {("array", "ground"): "arrays", ("array", "tracker"): "trackers", ("array", "xl"): "xl", ("bank", "ground"): "banks",
              ("bank", "wall"): "walls", ("controller", "ground"): "controllers", ("transformer", "ground"): "transformer",
              ("lamp", "garden"): "lamps", ("lamp", "street"): "lamps", ("gauge", "wall"): "gauges", ("rod", "ground"): "rod",
-             ("bench", "ground"): "bench", ("hydro", "ground"): "hydro"}
+             ("bench", "ground"): "bench", ("hydro", "ground"): "hydro", ("windspin", "ground"): "windspin",
+             ("treadwheel", "ground"): "treadwheel", ("steamfire", "ground"): "steamfire",
+             ("woodgasfire", "ground"): "woodgasfire", ("petrolrun", "ground"): "petrolrun", ("propaneflame", "ground"): "propaneflame"}
 MP_TIER = {"makeshift": "makeshift", "salvaged": "salvaged", "workshop": "manufactured", "basic": "basic"}
 PIECE_OFFSET = {1: (0, 0), 2: (1, 0), 3: (0, 1), 4: (1, 1)}
 
@@ -531,11 +1111,19 @@ def dp_family(kind, mount):
 def set_wear(state, kind):
     WEAR["rust"] = 0.35 if state in ("broken", "cracked") else 0.0
     WEAR["dirt"] = 0.15 if state in ("broken", "cracked") else 0.0
-    WEAR["scorch"] = 0.7 if state == "broken" and kind in ("steam", "propane", "petrol") else 0.0
+    WEAR["scorch"] = 0.7 if state == "broken" and kind in ("steam", "propane", "petrol", "woodgas") else 0.0
+
+
+DP_BUILT_KINDS = {"array", "bank", "controller", "transformer", "lamp", "gauge", "rod", "bench", "hydro", "windspin",
+                  "fence", "cooler", "heater", "woodgas", "treadwheel", "steamfire", "woodgasfire", "petrolrun", "propaneflame"}
 
 
 def dp_build(kind, mount, tier, state):
-    set_wear(state, kind)
+    set_wear("broken" if state == "wobble" else state, kind)
+    if kind == "windspin": return build_windmill(MP_TIER[tier], state)
+    if kind == "steamfire": return steamfire_part(tier, state)
+    if kind == "woodgasfire": return woodgasfire_part(tier, state)
+    if kind in ("petrolrun", "propaneflame"): return gasfx_part(kind, tier, state)
     if kind in BUILDERS: return BUILDERS[kind](MP_TIER[tier], state)
     if kind == "array": return {"ground": array_static, "tracker": array_tracker, "xl": array_xl}[mount](tier, state)
     if kind == "bank": return (bank_ground if mount == "ground" else bank_wall)(tier, int(state[1:]))
@@ -546,6 +1134,45 @@ def dp_build(kind, mount, tier, state):
     if kind == "rod": return rod_part()
     if kind == "bench": return bench_part(state)
     if kind == "hydro": return hydro_part(state)
+    if kind == "fence": return fence_part(state)
+    if kind == "cooler": return cooler_part(state)
+    if kind == "heater": return heater_part(state)
+    if kind == "woodgas": return woodgas_part(tier, state)
+    if kind == "treadwheel": return treadwheel_part(state)
+
+
+def steamfire_part(tier, frame):
+    """A steam engine's fire frame (the client cycles these, DP_SteamFx): the running engine with its firebox door
+    open on flames, fire1..fire4, the smoke climbing a quarter puff a frame; or the idle engine (the warming sprite)
+    with the door open on banked embers. Everything but the firebox and the smoke is the plain sprite's model."""
+    global STEAM_FRAME
+    STEAM_FRAME = frame
+    try:
+        build_steam(MP_TIER[tier], "warming" if frame == "embers" else "running")
+    finally:
+        STEAM_FRAME = None
+
+
+def woodgasfire_part(tier, frame):
+    """A wood gas generator's fire frame (DP_GenFx): the running set with the gasifier's ash door open on flames,
+    fire1..fire4, its exhaust smoke climbing a quarter puff a frame; or the warming set with the door open on embers."""
+    global WG_FRAME
+    WG_FRAME = frame
+    try:
+        woodgas_part(tier, "warming" if frame == "embers" else "running")
+    finally:
+        WG_FRAME = None
+
+
+def gasfx_part(kind, tier, frame):
+    """A running petrol engine shaking with its thin exhaust puff (run1..run3), or a running propane engine's blue
+    burner flame and heat shimmer (flame1..flame3): dz_render's build_gas with GAS_FRAME set (DP_GenFx)."""
+    global GAS_FRAME
+    GAS_FRAME = frame
+    try:
+        build_gas("petrol" if kind == "petrolrun" else "propane", MP_TIER[tier], "running")
+    finally:
+        GAS_FRAME = None
 
 
 def make_root(start):
@@ -602,6 +1229,7 @@ def dp_render(families=None, only_rows=None):
         if families and fam not in families and "all" not in families: continue
         if only_rows is not None and ri not in only_rows: continue
         if (k, mo, t, s) in done: continue
+        if k not in BUILDERS and k not in DP_BUILT_KINDS: continue        # no model here
         done.add((k, mo, t, s))
         clear(); start = len(BUILT); dp_build(k, mo, t, s); root, fixed = make_root(start)
         out = os.path.join(OUT, "dp", fam); os.makedirs(out, exist_ok=True)
@@ -1026,10 +1654,17 @@ DP_ITEMS = {("array", "ground"): "DazedArray%s", ("array", "tracker"): "DazedTra
             ("pedal", "ground"): "DazedPedal%s", ("windmill", "ground"): "DazedWind%s", ("steam", "ground"): "DazedSteam%s",
             ("windsock", "ground"): "DazedWindsock", ("vane", "ground"): "DazedWeatherVane", ("propane", "ground"): "DazedPropane%s",
             ("petrol", "ground"): "DazedPetrol%s", ("gauge", "wall"): "DazedPowerGauge", ("rod", "ground"): "DazedGroundingRod",
-            ("bench", "ground"): "DazedChargerBench", ("hydro", "ground"): "DazedWaterWheel"}
+            ("bench", "ground"): "DazedChargerBench", ("hydro", "ground"): "DazedWaterWheel",
+            ("fence", "ground"): "DazedElectricFence", ("cooler", "wall"): "DazedRoomCooler", ("heater", "ground"): "DazedSpaceHeater",
+            ("woodgas", "ground"): "DazedWoodGas%s", ("treadwheel", "ground"): "DazedTreadwheel"}
 ICON_STATE = {"array": "clear", "bank": None, "controller": "on", "transformer": "on", "lamp": "off", "pedal": "off", "windmill": "still",
               "steam": "cold", "windsock": "full", "vane": "set", "propane": "off", "petrol": "off", "gauge": "full", "rod": "set",
-              "bench": "off", "hydro": "still"}
+              "bench": "off", "hydro": "still", "fence": "on", "cooler": "off", "heater": "on", "woodgas": "off",
+              "treadwheel": "empty"}
+# Parts whose world model makes a poor 32 px icon (too thin, or a long conduit) get a model of their own.
+ICON_MODEL = {"DazedGroundingRod": rod_icon, "DazedPowerGauge": gauge_icon_model}
+# Items with an icon but no sheet row of their own (the treadmill places vanilla's tile).
+EXTRA_ICONS = {"DazedTreadmill": treadmill_icon}
 
 
 def icon_shot(name, fn, folder, wall=False):
@@ -1039,13 +1674,21 @@ def icon_shot(name, fn, folder, wall=False):
     os.makedirs(folder, exist_ok=True); render(os.path.join(folder, name + ".png"))
 
 
-def dp_icons():
+def dp_icons(only=None):
+    """Every Dazed Power icon, or only the item names in `only`."""
     folder = os.path.join(OUT, "dp", "icons")
     for (k, mo), pat in DP_ITEMS.items():
         for t in DP_TIERS[k]:
             name = pat % t.capitalize() if "%s" in pat else pat
+            if only and name not in only: continue
             st = ICON_STATE[k] or "c%d" % BANK_CELLS[mo][t]
-            icon_shot(name, lambda k=k, mo=mo, t=t, st=st: dp_build(k, mo, t, st), folder, wall=(mo == "wall"))
+            fn = ICON_MODEL.get(name)
+            if fn: WEAR.update(rust=0.0, dirt=0.0, scorch=0.0)
+            icon_shot(name, fn or (lambda k=k, mo=mo, t=t, st=st: dp_build(k, mo, t, st)), folder, wall=(mo == "wall"))
+    for name, fn in EXTRA_ICONS.items():
+        if only and name not in only: continue
+        WEAR.update(rust=0.0, dirt=0.0, scorch=0.0); icon_shot(name, fn, folder)
+    if only: log("dp icons done", sorted(only)); return
     WEAR.update(rust=0.0, dirt=0.0, scorch=0.0)
     for name, fn in (("DazedPowerManual", manual_basic), ("DazedPowerManualAdv", manual_adv), ("DazedAlmanac", almanac_book),
                      ("DazedAmplifier", lambda: build_icon("OffGridAmplifier")), ("DazedGearKitLow", lambda: build_icon("OffGridGearKitLow")),
@@ -1095,6 +1738,7 @@ for job in JOBS:
     elif job.startswith("dp:"): dp_render(job[3:].split(","))
     elif job.startswith("pl:"): pl_render(job[3:].split(","))
     elif job == "icons:dp": dp_icons()
+    elif job.startswith("icons:dp:"): dp_icons(set(job[9:].split(",")))
     elif job == "icons:pl": pl_icons()
     elif job == "ui": ui_renders()
     log("job", job, "took %.0fs" % (time.time() - t0))

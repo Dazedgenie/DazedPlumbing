@@ -1,4 +1,4 @@
-# Dazed Plumbing  (v0.17.1, Build 42)
+# Dazed Plumbing  (v0.17.2, Build 42)
 
 Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core 1.9.0 or newer** (`DazedCore`), loaded first.
 Works with *Dazed Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
@@ -211,13 +211,14 @@ License: CC BY-NC-SA 4.0 (same as the core and Dazed Power).
 7. On a server: do 2-5 as a client, and check the second player sees the pipes and the menu counts without relogging.
 
 ## Art and tile tools (`tools/`)
-All world sprites and inventory icons are Blender renders (0.9.4), made with the pz-sprite-forge camera and light rig (`tools/blender/`, MIT):
+All world sprites and inventory icons are Blender renders in DazedPower's base style (0.17.2): Power's own rig (`tools/blender/dz2.py` and `dz_render.py`, copied from Dazed Power), so they share its camera, lights, painterly worn material, bevels and grade.
 
-1. In Blender 4.2+, run `tools/blender/dup_render.py` from the Python console with `ART` set to a folder holding it and `pz_sprite_forge.py`, and `FAMILIES` set to any of `tanks` (or `tanks:water` and so on), `pipes`, `pumps`, `purifier`, `downspout`, `wallpanel`, `icons` (or `icons:DazedWaterPanel` and so on). The cells land in `ART/out/<family>/<sprite index>.png` at 2x.
+1. `python tools/blender/dup_power_render.py -- <out> all` (plain Python with `pip install bpy`; or any of `tanks`, `pipes`, `valves`, `ports`, `machines`, `icons`) renders the tanks, pipes, valves, ports, both pumps, the purifier, the downspout, the sprinkler and the wall panel into `<out>/cells/<sprite index>.png` at 2x. Small tanks, pipes, fittings, pumps, downspout and sprinkler are dz2.py's own Plumbing models; the oval large and XL tanks, the purifier and the wall panel keep the shapes in `tools/blender/dup_render.py`, which it reads and runs on Power's material.
 2. Large and XL tanks span 2 or 3 squares. Each piece is rendered with its own square under the camera, plus an `<index>_m.png` mask of what stands on that square.
-3. `python3 tools/pack_art.py <out dirs...>` cuts the pieces with their masks, shrinks the cells to 128x256, sharpens them and repacks `dazedplumbing.pack`.
-4. `python3 tools/make_icons.py <out>/icons` writes the 32x32 icons.
-5. `python3 tools/scene_preview.py` lays cells out the way the game draws them, for checking.
+3. `python3 tools/blender/dup_machines_post.py <out> <final>` cuts the pieces with their masks, grades and shrinks the cells to 128x256 and makes the 32x32 icons; `python3 tools/pack_art.py <final>/cells` repacks `dazedplumbing.pack` (with Dazed Core's `tools/pzformat` on `PYTHONPATH` if Core is not checked out next to this repo). Copy `<final>/icons/*.png` to `common/media/textures/`.
+4. `python3 tools/scene_preview.py` lays cells out the way the game draws them, for checking.
+
+`tools/blender/dup_render.py` (the older pz-sprite-forge rig, MIT) still holds those shapes and can render the pre-0.17.2 look.
 
 The pipes are rendered light grey on purpose: the game tints them per fluid.
 
@@ -255,6 +256,7 @@ Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Co
 between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
+- **0.17.2 (art).** Every world sprite and icon is now in Dazed Power's base art style. Small tanks stand on a low steel stand; the large and XL tanks keep their oval basement-tank shape on legs; the purifier, wall water panel and fuel pumps keep their shapes. Pipes, valves, ports, both pumps, the downspout and the sprinkler use Power's models. Sprite numbers are unchanged, so placed objects in saves keep working. No code, recipe or sandbox changes.
 - **0.17.1 (housekeeping).** The tests moved out of the mod folder to `tests/` in the repo root, so they no longer ship to the Workshop. The four once-a-minute server hooks (tanks, pipes and mains, smokers, digesters) now run as steps of one pass (`DUP_Minute.lua`), in that order, and a step that errors is logged without stopping the others. The electric water pump recipe also takes a Dazed Salvage small electric motor in place of the engine parts (by item id; nothing changes without Salvage). Needs **Dazed Core 1.9.0**: the 14 world right-click hooks are registered through Core's one dispatcher (`DUP_Parts.worldMenu`, in the old order), the local `try`, `squareAt` and `clamp` copies are Core's, and the boot line warns if Core is older. The tests use Core's `engine_stub.lua`, and `.github/workflows/tests.yml` runs them on every push. No save migration, no sandbox changes.
 - **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain, and a **wall panel** item that opens it from inside the house. No save migration.
   - *Patch notes:*

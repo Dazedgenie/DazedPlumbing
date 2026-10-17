@@ -1,12 +1,12 @@
 """Grade and shrink dup_machines_render.py output exactly like DazedPower (tools/grade_all.py + tools/import_art.py).
 
     python3 dup_machines_post.py <render out dir> <final dir>
-<render out>/cells/<index>.png (256x512) -> <final>/cells/<index>.png (128x256)
+<render out>/cells/<index>.png (256x512, with <index>_m.png for a tank piece) -> <final>/cells/<index>.png (128x256)
 <render out>/icons/Item_*.png (256x256)  -> <final>/icons/Item_*.png (32x32)
 """
 import sys
 from pathlib import Path
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image, ImageChops, ImageEnhance, ImageFilter
 
 CW, CH = 128, 256
 SHADOW = 0.85                                    # strength of the contact shadow pass
@@ -40,8 +40,13 @@ def main(src, dst):
     n = 0
     for p in sorted((src / "cells").glob("*.png")):
         if not p.stem.isdigit(): continue
-        im = grade(Image.open(p).convert("RGBA"))
-        sp = p.with_name(p.stem + "_s.png")                     # contact shadow pass: laid under the machine
+        im = Image.open(p).convert("RGBA")
+        mp = p.with_name(p.stem + "_m.png")                     # a tank piece keeps only its own square
+        if mp.exists():                                          # (grown a pixel so neighbours close up, as pack_art.py)
+            keep = Image.open(mp).convert("RGBA").getchannel("R").filter(ImageFilter.MaxFilter(3))
+            im.putalpha(ImageChops.multiply(im.getchannel("A"), keep))
+        im = grade(im)
+        sp =p.with_name(p.stem + "_s.png")                     # contact shadow pass: laid under the machine
         if sp.exists():
             sh = Image.open(sp).convert("RGBA")
             a = sh.getchannel("A")
