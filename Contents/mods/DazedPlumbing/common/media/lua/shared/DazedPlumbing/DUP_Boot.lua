@@ -28,6 +28,11 @@ require "DazedPlumbing/DUP_Smokers"
 local P = DazedPlumb.Parts
 DazedPlumb.VERSION = "0.17.1"
 DazedCore.Boot.register("DazedPlumbing", DazedPlumb.VERSION)
+if DazedCore.Boot.require then
+    DazedCore.Boot.require("DazedPlumbing", "1.9.0")
+else
+    print("DazedPlumbing: needs Dazed Core 1.9.0, have " .. tostring(DazedCore.VERSION) .. ": update Dazed Core")
+end
 
 local function check()
     local sm = getScriptManager and getScriptManager()

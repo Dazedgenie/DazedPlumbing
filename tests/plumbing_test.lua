@@ -2,7 +2,7 @@
 local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
 local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"      -- Dazed Core, required
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
-local E = dofile("engine_stub.lua")
+local E = dofile(core .. "/../../../../../../tools/tests/engine_stub.lua")   -- Core's shared engine stand-in
 local fails, n = 0, 0
 local function empty(t) for _ in pairs(t) do return false end return true end
 local function ok(c, msg) n = n + 1 if not c then fails = fails + 1 E.realPrint("FAIL: " .. msg) end end
@@ -654,6 +654,38 @@ do
     ok(set ~= nil and #list == #P.allItems() + 14 and not dup, "the debug spawn set lists every tank and fitting once (" .. #list .. ")")
     ok(seen["Base.DazedPumpHand"] and seen["Base.DazedSmoker"] and seen["Base.DazedValve"] and seen["Base.DazedTankXLWaterCrafted"],
         "the debug spawn set reaches tanks, pumps, smoker and valve")
+end
+
+-- Core's right-click dispatcher: Parts.worldMenu hands a handler the player's number and the engine's own list.
+do
+    require "DazedCore/DC_Menu"
+    local got
+    getSpecificPlayer = getSpecificPlayer or function() return nil end
+    local player = { getPlayerNum = function() return 2 end }
+    local realGet = getSpecificPlayer
+    getSpecificPlayer = function(i) return i == 2 and player or nil end
+    local wo = { "wo" }
+    P.worldMenu("DazedPlumbing.test", function(num, ctx, w, test) got = { num, ctx, w, test } end, 101)
+    DazedCore.Menu.onWorld(2, "ctx", wo, false)
+    getSpecificPlayer = realGet
+    ok(got and got[1] == 2 and got[2] == "ctx" and got[3] == wo and got[4] == false, "a world menu handler gets (player number, context, worldobjects, test) through Core")
+    DazedCore.Menu.remove("DazedPlumbing.test")
+end
+
+-- The one minute pass runs its steps in order and a failing step does not stop the rest.
+do
+    require "DazedPlumbing/DUP_Minute"
+    local Mn = DazedPlumb.Minute
+    local seq = {}
+    Mn.add("t3", 903, function() seq[#seq + 1] = "c" end)
+    Mn.add("t1", 901, function() seq[#seq + 1] = "a" end)
+    Mn.add("t2", 902, function() error("boom") end)
+    Mn.run()
+    ok(table.concat(seq) == "ac", "minute steps run in order and skip past a failing one (" .. table.concat(seq) .. ")")
+    ok(E.printed[#E.printed] and tostring(E.printed[#E.printed]):find("minute step 't2' failed", 1, true), "the failing minute step is logged by name")
+    for _, name in ipairs({ "t1", "t2", "t3" }) do
+        for i, st in ipairs(Mn.steps) do if st.name == name then table.remove(Mn.steps, i) break end end
+    end
 end
 
 E.realPrint(string.format("plumbing_test: %d checks, %d failed", n, fails))

@@ -2,6 +2,7 @@
      its buffer, flow and filter, and fitting / removing a cartridge. The pipe
      rows come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Purifiers"
 require "DazedPlumbing/DUP_PumpMenu"
 require "DazedPlumbing/DUP_Power"
@@ -70,4 +71,4 @@ local function addPurifierMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addPurifierMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.purifier", addPurifierMenu, 111)

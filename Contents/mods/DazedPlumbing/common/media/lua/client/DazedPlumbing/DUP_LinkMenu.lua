@@ -12,6 +12,7 @@
      long run loaded, so the preview can be shorter than the truth.
 ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Links"
 require "DazedPlumbing/DUP_LinkActions"
 require "DazedPlumbing/DUP_Menu"
@@ -356,7 +357,7 @@ local function addDebugSquare(playerNum, context, worldobjects, test)
     context:addDebugOption("[Plumbing] redraw every pipe", nil, function() K.redrawAll() end)
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addLineMenu)
-Events.OnFillWorldObjectContextMenu.Add(addDebugSquare)
-Events.OnFillWorldObjectContextMenu.Add(addTankLinkMenu)
-Events.OnFillWorldObjectContextMenu.Add(addPipeMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.line", addLineMenu, 103)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.debugsquare", addDebugSquare, 104)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.tanklink", addTankLinkMenu, 105)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.pipe", addPipeMenu, 106)

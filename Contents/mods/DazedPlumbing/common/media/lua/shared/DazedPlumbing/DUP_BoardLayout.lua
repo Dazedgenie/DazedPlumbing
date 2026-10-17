@@ -15,6 +15,8 @@
        nowHour     the world hour, for "used N h ago"
        outOfRange  bool, the main's square is not loaded on the server: only the entry's figures ]]
 
+require "DazedCore/DC_Util"
+
 DazedPlumb = DazedPlumb or {}
 local Board = {}
 DazedPlumb.BoardLayout = Board
@@ -43,7 +45,7 @@ local C = {
 }
 Board.COLORS = C
 
-local function clamp(v, lo, hi) return math.max(lo, math.min(hi, v)) end
+local clamp = DazedCore.Util.clamp
 Board.clamp = clamp
 
 --- The first path in Board.TEX_DIRS whose texture the window can load, else nil (the face then draws a stand-in).

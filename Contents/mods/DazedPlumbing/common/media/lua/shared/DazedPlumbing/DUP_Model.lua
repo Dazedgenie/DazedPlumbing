@@ -18,12 +18,14 @@
        d.size / d.type / d.tier   identity (set by DUP_Parts)
 ]]
 
+require "DazedCore/DC_Util"
+
 DazedPlumb = DazedPlumb or {}
 DazedPlumb.Model = DazedPlumb.Model or {}
 local M = DazedPlumb.Model
 
 local min, max = math.min, math.max
-local function clamp(v, lo, hi) return min(hi, max(lo, v)) end
+local clamp = DazedCore.Util.clamp
 M.clamp = clamp
 
 M.SIZES = { "small", "large", "xl" }

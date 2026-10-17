@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for a fuel pump: the petrol on its line, refuel a parked vehicle and fill a petrol can.
      The pipe rows come from DUP_LinkMenu; the on/off switch of the electric pump comes from DUP_PumpMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_FuelPumps"
 require "DazedPlumbing/DUP_FuelActions"
 require "DazedPlumbing/DUP_PumpActions"
@@ -152,4 +153,4 @@ local function addFuelMenu(playerNum, context, worldobjects, test)
     if #cans == 0 then sub:addOption(getText("ContextMenu_DazedPlumb_FuelFillCanNone"), nil, nil).notAvailable = true end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addFuelMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.fuel", addFuelMenu, 102)

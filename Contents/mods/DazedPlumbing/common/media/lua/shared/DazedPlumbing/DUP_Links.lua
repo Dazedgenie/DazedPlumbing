@@ -177,10 +177,7 @@ function L.setSource(machine, adapter, source)
 end
 
 ----------------------------------------------------------- finding things
-local function squareAt(x, y, z)
-    local cell = getCell and getCell()
-    return cell and cell:getGridSquare(x, y, z) or nil
-end
+local squareAt = DazedCore.Util.squareAt
 
 --- The machine at a square for an adapter: obj, or nil + why ("unloaded"|"gone").
 function L.machineAt(x, y, z, adapter)

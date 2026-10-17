@@ -1,8 +1,9 @@
 -- The Main Water Panel's face (DUP_BoardLayout) on a sample snapshot: its click regions, what greys out, scrolling,
 -- scaling, the needles, the texture lookup order and the drawn stand-ins when the board textures are missing.
--- Run: lua board_test.lua <lua root>
+-- Run: lua board_test.lua <lua root> [<core root>]
 local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
-package.path = root .. "/shared/?.lua;" .. package.path
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"      -- Dazed Core, required
+package.path = core .. "/shared/?.lua;" .. root .. "/shared/?.lua;" .. package.path
 next = nil                                      -- the game's Lua has no next()
 local fails, n = 0, 0
 local function check(c, msg) n = n + 1 if not c then fails = fails + 1 print("FAIL: " .. msg) end end

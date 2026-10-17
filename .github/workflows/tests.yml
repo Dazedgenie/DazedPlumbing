@@ -1,0 +1,75 @@
+# Runs the headless Lua tests on every push and pull request.
+# Copy this file into any Dazed mod repo: set RUNNER to the repo's test runner and keep the DazedCore
+# checkout step, which the mods' tests need beside the repo (../DazedCore). The Dazed repos are private,
+# so every mod repo needs the DAZED_REPO_TOKEN secret (one fine-grained token, Contents read on all Dazed
+# repos; the same secret release-set.yml uses). DazedCore itself falls back to the default token.
+# A mod whose tests also need another Dazed mod beside it (Power EV needs DazedPower) lists it in EXTRA_REPOS.
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  # Folder holding run_all.lua (DazedCore: tools/tests; most mods: tools/tests or tests).
+  RUNNER: tests
+  # Other Dazed repos to check out beside this one, space separated (e.g. "DazedPower DazedPlumbing").
+  EXTRA_REPOS: ""
+
+jobs:
+  lua:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ${{ github.event.repository.name }}
+
+      - name: Check out DazedCore beside the repo
+        if: github.event.repository.name != 'DazedCore'
+        uses: actions/checkout@v4
+        with:
+          repository: Dazedgenie/DazedCore
+          path: DazedCore
+          token: ${{ secrets.DAZED_REPO_TOKEN || github.token }}
+
+      - name: Check out the other Dazed repos the tests need
+        if: env.EXTRA_REPOS != ''
+        env:
+          GH_TOKEN: ${{ secrets.DAZED_REPO_TOKEN || github.token }}
+        run: |
+          for r in $EXTRA_REPOS; do
+            git clone --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository_owner }}/$r.git" "$r"
+          done
+
+      - name: Install Lua
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.4 && sudo ln -sf /usr/bin/lua5.4 /usr/local/bin/lua
+
+      - name: Run the headless tests
+        working-directory: ${{ github.event.repository.name }}/${{ env.RUNNER }}
+        run: |
+          if [ -f run_all.lua ]; then lua run_all.lua
+          elif [ -f run_tests.lua ]; then lua run_tests.lua
+          elif [ -f run_tests.py ]; then pip install -q lupa && python3 run_tests.py
+          else echo "::error::no run_all.lua, run_tests.lua or run_tests.py in $PWD"; exit 1; fi
+
+      - name: Lint the scripts and Lua for known B42 traps
+        if: always()
+        working-directory: ${{ github.event.repository.name }}
+        run: |
+          set +e
+          bad=0
+          # Kahlua has no next(); a bare next( in mod Lua is a crash at run time.
+          hits=$(grep -rnE '(^|[^A-Za-z_.:])next\(' --include=*.lua Contents/ | grep -vE '^[^:]+:[0-9]+:\s*--')
+          if [ -n "$hits" ]; then echo "::error::next( in mod Lua:"; echo "$hits"; bad=1; fi
+          # Kahlua has no goto either (Lua 5.4's loadfile accepts it, so syntax_check cannot catch it).
+          hits=$(grep -rnE '(^|[^A-Za-z_])goto\s+[A-Za-z_]' --include=*.lua Contents/ | grep -vE '^[^:]+:[0-9]+:\s*--')
+          if [ -n "$hits" ]; then echo "::error::goto in mod Lua:"; echo "$hits"; bad=1; fi
+          # A DisplayName with a comma breaks the script parser.
+          hits=$(grep -rnE '^\s*DisplayName\s*=.*,.*,' --include=*.txt Contents/)
+          if [ -n "$hits" ]; then echo "::error::comma in DisplayName:"; echo "$hits"; bad=1; fi
+          # item:hasTag takes an ItemTag, never a string (Defences 0.2.0 bug).
+          hits=$(grep -rnE 'hasTag\("' --include=*.lua Contents/)
+          if [ -n "$hits" ]; then echo "::error::hasTag with a string:"; echo "$hits"; bad=1; fi
+          exit $bad

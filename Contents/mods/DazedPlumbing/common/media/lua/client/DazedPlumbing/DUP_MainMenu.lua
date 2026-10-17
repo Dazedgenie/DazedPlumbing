@@ -2,6 +2,7 @@
      what it serves, the line rate, Connect a building... (the core's Building Picker) and Disconnect.
      The pipe rows come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Mains"
 require "DazedPlumbing/DUP_Board"
 require "DazedCore/DC_Picker"
@@ -77,4 +78,4 @@ local function addMainMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addMainMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.main", addMainMenu, 107)

@@ -272,7 +272,7 @@ local function addTankMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addTankMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.tank", addTankMenu, 108)
 
 -- A long tank keeps its fluid container on its first piece only. When another piece is clicked, the game is
 -- handed the first piece too, so its full Fluid menu (drink, fill, pour in, transfer) shows on every square.

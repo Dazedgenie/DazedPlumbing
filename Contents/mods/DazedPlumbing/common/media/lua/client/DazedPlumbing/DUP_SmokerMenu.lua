@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for the smoker: gas on the line, lit state, what is smoking and Light / Extinguish.
      The pipe rows come from DUP_LinkMenu; meat goes in and out through the smoker's own container in the loot window. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Smokers"
 require "DazedPlumbing/DUP_SmokerActions"
 
@@ -54,4 +55,4 @@ local function addSmokerMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addSmokerMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.smoker", addSmokerMenu, 112)

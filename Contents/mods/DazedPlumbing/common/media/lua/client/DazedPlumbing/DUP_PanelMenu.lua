@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for a wall water panel, and its page in the Dazed guide.
      Bound, it offers Water panel (the main's board, worked through this panel); unbound, it says no main serves the house. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_WallPanels"
 require "DazedPlumbing/DUP_Board"
 
@@ -38,7 +39,7 @@ local function addPanelMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addPanelMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.panel", addPanelMenu, 109)
 
 -- The guide's Plumbing book lives in the core; the panel's page is added to it here (texts in this mod's IG_UI).
 local ok = pcall(require, "DazedCore/DC_Guide")

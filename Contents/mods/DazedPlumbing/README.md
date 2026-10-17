@@ -1,6 +1,6 @@
 # Dazed Plumbing  (v0.17.1, Build 42)
 
-Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core** (`DazedCore`), loaded first.
+Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core 1.9.0 or newer** (`DazedCore`), loaded first.
 Works with *Dazed Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
 
 ## Main water panel (0.17.0)
@@ -255,7 +255,7 @@ Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Co
 between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
-- **0.17.1 (housekeeping).** The tests moved out of the mod folder to `tests/` in the repo root, so they no longer ship to the Workshop. The four once-a-minute server hooks (tanks, pipes and mains, smokers, digesters) now run as steps of one pass (`DUP_Minute.lua`), in that order, and a step that errors is logged without stopping the others. The electric water pump recipe also takes a Dazed Salvage small electric motor in place of the engine parts (by item id; nothing changes without Salvage). No save migration, no sandbox changes.
+- **0.17.1 (housekeeping).** The tests moved out of the mod folder to `tests/` in the repo root, so they no longer ship to the Workshop. The four once-a-minute server hooks (tanks, pipes and mains, smokers, digesters) now run as steps of one pass (`DUP_Minute.lua`), in that order, and a step that errors is logged without stopping the others. The electric water pump recipe also takes a Dazed Salvage small electric motor in place of the engine parts (by item id; nothing changes without Salvage). Needs **Dazed Core 1.9.0**: the 14 world right-click hooks are registered through Core's one dispatcher (`DUP_Parts.worldMenu`, in the old order), the local `try`, `squareAt` and `clamp` copies are Core's, and the boot line warns if Core is older. The tests use Core's `engine_stub.lua`, and `.github/workflows/tests.yml` runs them on every push. No save migration, no sandbox changes.
 - **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain, and a **wall panel** item that opens it from inside the house. No save migration.
   - *Patch notes:*
     - New files: `DUP_MainPanel.lua` (server commands `mainValve`, `mainPrio`, `mainRate`, `mainShut`, `mainDrain`, `mainMachine`, `mainInfo` through `DazedCore.Net`, 250 ms / 500 ms limits), `DUP_BoardLayout.lua` (the face as draw ops), `DUP_Board.lua` (the window); tests `panel_test.lua` and `board_test.lua`.

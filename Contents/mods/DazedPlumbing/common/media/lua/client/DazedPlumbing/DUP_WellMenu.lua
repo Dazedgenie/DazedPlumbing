@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for the drilled well: power, status, output and the on/off switch.
      The pipe rows ("Well line -> Pipe to: <tank>") come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_DrilledWells"
 require "DazedPlumbing/DUP_PumpActions"
 require "DazedPlumbing/DUP_PumpMenu"
@@ -35,4 +36,4 @@ local function addWellMenu(playerNum, context, worldobjects, test)
     if U.addSwitchMenu then U.addSwitchMenu(sub, worldobjects, obj, playerObj) end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addWellMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.well", addWellMenu, 114)

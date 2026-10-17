@@ -2,6 +2,7 @@
      well's level, "Pump" (hand pump into its piped tank) and "Fill a
      container". The pipe / link rows come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Pumps"
 require "DazedPlumbing/DUP_PumpActions"
 require "DazedPlumbing/DUP_Power"
@@ -153,4 +154,4 @@ local function addPumpMenu(playerNum, context, worldobjects, test)
     if not any then sub:addOption(getText("ContextMenu_DazedPlumb_PumpFillNone"), nil, nil).notAvailable = true end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addPumpMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.pump", addPumpMenu, 110)

@@ -349,7 +349,7 @@ function K.plan(devSq, fluid, squares, role, id)
         end
     end
     local anyTarget = false
-    for _ in pairs(devTargets) do anyTarget = true break end      -- Kahlua has no next()
+    for _ in pairs(devTargets) do anyTarget = true break end      -- the game's Lua has no next-function
     if not anyTarget then return nil end
     local all = {}
     for k in pairs(devTargets) do all[k] = true end

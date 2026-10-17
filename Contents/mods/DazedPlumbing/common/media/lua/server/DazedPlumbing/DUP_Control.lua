@@ -14,6 +14,7 @@
 
 if isClient and isClient() then return end
 
+pcall(require, "DazedCore/DC_Util")
 pcall(require, "DazedCore/DC_Net")
 pcall(require, "DazedCore/DC_Control")
 pcall(require, "DazedCore/DC_Reach")
@@ -49,19 +50,8 @@ local function parts()
     return D.Parts, D.Model, D.Pipes, D.Net, D.Links, D.Pumps, D.Mains
 end
 
-local function try(obj, method, ...)
-    local P = DazedPlumb.Parts
-    if P and P.try then return P.try(obj, method, ...) end
-    if not obj or not obj[method] then return nil end
-    local ok, v = pcall(obj[method], obj, ...)
-    if ok then return v end
-    return nil
-end
-
-local function squareAt(x, y, z)
-    local cell = getCell and getCell()
-    return cell and try(cell, "getGridSquare", x, y, z) or nil
-end
+local try = DazedCore.Util.try
+local squareAt = DazedCore.Util.squareAt
 
 local function hoursNow()
     local gt = getGameTime and getGameTime()

@@ -139,6 +139,18 @@ local Util = DazedCore.Util
 local try = Util.try
 P.try = try
 
+--- Register a world right-click handler written as (playerNum, context, worldobjects, test) with Dazed Core's one
+--  dispatcher (Core 1.9.0 and later). With an older Core it hooks the engine event directly, as before.
+function P.worldMenu(id, fn, order)
+    local M = DazedCore.Menu
+    if M and M.world then
+        return M.world(id, function(player, context, _, _, worldobjects, test)
+            fn(player.getPlayerNum and player:getPlayerNum() or 0, context, worldobjects, test)
+        end, order)
+    end
+    if Events and Events.OnFillWorldObjectContextMenu then Events.OnFillWorldObjectContextMenu.Add(fn) end
+end
+
 --- Is a world object still standing on a square? A lifted or destroyed one answers false.
 function P.alive(o)
     local ix = try(o, "getObjectIndex")

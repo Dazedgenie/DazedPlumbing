@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for the biogas digester: waste, gas buffer and status, and "Add waste".
      The pipe rows come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Digesters"
 require "DazedPlumbing/DUP_DigesterActions"
 
@@ -99,4 +100,4 @@ local function addDigesterMenu(playerNum, context, worldobjects, test)
     end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addDigesterMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.digester", addDigesterMenu, 101)

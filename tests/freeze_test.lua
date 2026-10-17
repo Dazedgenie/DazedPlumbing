@@ -1,6 +1,7 @@
 -- Checks that Plumbing honours ice and cracks set by Dazed Climate (DUP_Net, DUP_Model). Run from run_all.sh.
 local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
-package.path = root .. "/shared/?.lua;" .. package.path
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"      -- Dazed Core, required
+package.path = core .. "/shared/?.lua;" .. root .. "/shared/?.lua;" .. package.path
 DazedClimate = { Plumbing = { enabled = function() return DazedClimate.on end } , on = true }
 require "DazedPlumbing/DUP_Net"
 require "DazedPlumbing/DUP_Model"

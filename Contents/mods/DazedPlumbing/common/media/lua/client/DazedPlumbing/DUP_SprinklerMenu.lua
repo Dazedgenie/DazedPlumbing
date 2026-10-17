@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- right-click menu for a garden sprinkler: the crops in reach, its state, the switch and the schedule.
      The pipe rows come from DUP_LinkMenu. ]]
 
+require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Sprinklers"
 require "DazedPlumbing/DUP_PumpActions"
 
@@ -79,4 +80,4 @@ local function addSprinklerMenu(playerNum, context, worldobjects, test)
     addScheduleMenu(sub, worldobjects, obj, playerObj, from, to, rainSkip)
 end
 
-Events.OnFillWorldObjectContextMenu.Add(addSprinklerMenu)
+DazedPlumb.Parts.worldMenu("DazedPlumbing.sprinkler", addSprinklerMenu, 113)

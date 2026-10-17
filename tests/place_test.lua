@@ -3,7 +3,7 @@
 local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
 local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"      -- Dazed Core, required
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
-local E = dofile("engine_stub.lua")
+local E = dofile(core .. "/../../../../../../tools/tests/engine_stub.lua")   -- Core's shared engine stand-in
 local fails, n = 0, 0
 local function ok(c, msg) n = n + 1 if not c then fails = fails + 1 E.realPrint("FAIL: " .. msg) end end
 
