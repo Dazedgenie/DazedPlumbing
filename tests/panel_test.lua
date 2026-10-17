@@ -2,8 +2,8 @@
 -- shut-off and drain, the minute's figures and day roll-over, use detection, the pause-line switch, and every panel
 -- command's checks (range, wall panel, unknown fixture, machine not on the line, rate limit) and mainInfo's shape.
 -- Run: lua panel_test.lua <lua root> [<core root>]
-local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"
+local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local print = E.realPrint

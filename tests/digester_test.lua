@@ -1,7 +1,7 @@
 -- The biogas digester on a fake engine: model maths, the add-waste logic, gas into a piped propane tank, load catch-up, placement and the file counts.
 -- Run: lua digester_test.lua <common/media/lua> [<core lua root>]
-local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"      -- Dazed Core, required
+local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"      -- Dazed Core, required
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local fails, n = 0, 0
@@ -59,7 +59,7 @@ for _, h in ipairs(Events.OnGameStart.handlers) do h() end
 local boot
 for _, line in ipairs(E.printed) do if line:find("DazedPlumbing: ready") or line:find("INCOMPLETE") then boot = line end end
 ok(boot and boot:find("256/256 tiles, 33/33 items", 1, true), "boot check counts the digester: " .. tostring(boot))
-ok(DazedPlumb.VERSION == "0.17.0" and slurp(media .. "/../../42/mod.info"):find("modversion=0.17.0", 1, true) ~= nil, "version 0.17.0 in the Lua and in mod.info")
+ok(DazedPlumb.VERSION == "0.17.1" and slurp(media .. "/../../42/mod.info"):find("modversion=0.17.1", 1, true) ~= nil, "version 0.17.1 in the Lua and in mod.info")
 
 local w = tonumber(itemsTxt:match("item DazedDigester%s*{.-Weight%s*=%s*([%d%.]+)"))
 ok(w and w < DazedCore.Heavy.LIMIT and DazedCore.Heavy.count(w) == 1, "the digester is one piece under the heavy limit, " .. tostring(w) .. " kg")

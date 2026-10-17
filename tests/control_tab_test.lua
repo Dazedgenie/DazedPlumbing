@@ -2,8 +2,8 @@
 -- as an admin, a moderator and a plain player (the last two must change nothing). Also writes the view for the
 -- lead's picture to /home/claude/work/views/plumbing.lua when that folder exists (or CONTROL_VIEWS names another).
 -- Run: lua control_tab_test.lua <lua root> [<core root>]
-local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"
+local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local print = E.realPrint

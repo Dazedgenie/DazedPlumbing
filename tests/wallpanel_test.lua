@@ -2,8 +2,8 @@
 -- serves its house, unbinding when the main goes, working the main through the panel (via), the board opened by key
 -- with the main out of range (waiting), Climate's frozen pipes on the status, and the guide page.
 -- Run: lua wallpanel_test.lua <lua root> [<core root>]
-local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"
+local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local print = E.realPrint

@@ -1,8 +1,8 @@
 -- The water main on a fake engine: connecting a house through the core's building resolver, reach and
 -- one-main-per-house rules, feeding every fixture in the footprint up to the line rate through a real pipe
 -- network, taps keeping their own fixtures, and housekeeping. Run: lua mains_test.lua <lua root> [<core root>]
-local root = arg[1] or "../../common/media/lua"
-local core = arg[2] or "../../../DazedCore/common/media/lua"
+local root = arg[1] or "../Contents/mods/DazedPlumbing/common/media/lua"
+local core = arg[2] or "../../DazedCore/Contents/mods/DazedCore/common/media/lua"
 package.path = core .. "/shared/?.lua;" .. core .. "/client/?.lua;" .. root .. "/shared/?.lua;" .. root .. "/server/?.lua;" .. root .. "/client/?.lua;" .. package.path
 local E = dofile("engine_stub.lua")
 local print = E.realPrint

@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- digesters in the live world (authority only).
      Registers every digester that streams in or is placed and settles it on load (the hours away, at most 48) and once a minute. ]]
 
+require "DazedPlumbing/DUP_Minute"
 require "DazedPlumbing/DUP_Digesters"
 
 local Dg = DazedPlumb.Digesters
@@ -25,7 +26,4 @@ end
 registerSprites()
 Events.OnGameStart.Add(registerSprites)
 Events.OnServerStarted.Add(registerSprites)
-Events.EveryOneMinute.Add(function()
-    if isClient and isClient() then return end
-    Dg.tick()
-end)
+DazedPlumb.Minute.add("digesters", 40, Dg.tick)

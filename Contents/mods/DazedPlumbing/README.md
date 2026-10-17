@@ -1,4 +1,4 @@
-# Dazed Plumbing  (v0.17.0, Build 42)
+# Dazed Plumbing  (v0.17.1, Build 42)
 
 Release 9 (0.15.0): **ice** with Dazed Climate (frozen pipes and tanks, cracked tanks you weld shut), on top of release 8's drilled well, smoker and sprinkler schedule, release 7's biogas digester, release 6's fuel pump, release 5's water main and Dazed Core. Needs **Dazed Core** (`DazedCore`), loaded first.
 Works with *Dazed Power* (generators and boilers on the pipes, the pump and purifier wired to a controller); needs nothing else.
@@ -230,9 +230,9 @@ The water main, both fuel pumps, the digester, the drilled well and the smoker (
 `pipe_art.py`, `machine_art.py`, `icon_art.py`, `main_art.py`, `fuelpump_art.py` and `digester_art.py` are the older flat drawings, kept for reference only. Running them would overwrite the renders.
 
 ## Tests (outside the game)
-`tools/tests/` runs the real Lua on a stand-in engine (Lua 5.1-compatible code; any Lua 5.1-5.4 will do):
+`tests/` (in the repo root, not shipped to the Workshop) runs the real Lua on a stand-in engine (Lua 5.1-compatible code; any Lua 5.1-5.4 will do):
 ```
-cd tools/tests
+cd tests
 lua net_test.lua                               # the pure network code
 lua plumbing_test.lua                          # links, actions, ticks, sync, taps, valves, flow
 lua place_test.lua                             # a large tank picked up is one item
@@ -246,7 +246,7 @@ lua sprinkler_test.lua                         # the sprinkler schedule: windows
 lua well_test.lua                              # the drilled well: output per minute, power by wire only, clean water, full tanks, the load
 lua smoker_test.lua                            # the smoker: burn rate, smoking timer, 48 h catch-up, no gas or a shut line, the smoked-food change
 lua run_all.lua [<core lua root>]              # the whole set (was run_all.sh; the Workshop refuses .sh files)
-# each takes <lua root> [<core lua root>]; the defaults expect DazedCore checked out beside this folder
+# each takes <lua root> [<core lua root>]; the defaults expect the DazedCore repo checked out beside the DazedPlumbing repo
 ```
 
 ## Licence
@@ -255,6 +255,7 @@ Dazed Plumbing is licensed **CC BY-NC-SA 4.0** (`LICENSE`), the same as Dazed Co
 between the Dazed mods freely. You may share and adapt it for non-commercial use with credit, under the same licence.
 
 ## Changes
+- **0.17.1 (housekeeping).** The tests moved out of the mod folder to `tests/` in the repo root, so they no longer ship to the Workshop. The four once-a-minute server hooks (tanks, pipes and mains, smokers, digesters) now run as steps of one pass (`DUP_Minute.lua`), in that order, and a step that errors is logged without stopping the others. No save migration, no sandbox changes.
 - **0.17.0.** **Main water panel** (see its section): a board for a connected water main with supply and demand dials, the house's line rate, the tanks and sources on the line, per-fixture valves and fill order, today's litres and a main shut-off with an optional drain, and a **wall panel** item that opens it from inside the house. No save migration.
   - *Patch notes:*
     - New files: `DUP_MainPanel.lua` (server commands `mainValve`, `mainPrio`, `mainRate`, `mainShut`, `mainDrain`, `mainMachine`, `mainInfo` through `DazedCore.Net`, 250 ms / 500 ms limits), `DUP_BoardLayout.lua` (the face as draw ops), `DUP_Board.lua` (the window); tests `panel_test.lua` and `board_test.lua`.

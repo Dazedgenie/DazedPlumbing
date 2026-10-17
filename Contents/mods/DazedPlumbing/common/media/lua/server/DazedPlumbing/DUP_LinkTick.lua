@@ -1,4 +1,5 @@
 --[[ Dazed Plumbing -- the pipe and network tick (authority only). ]]
+require "DazedPlumbing/DUP_Minute"
 require "DazedPlumbing/DUP_Links"
 require "DazedPlumbing/DUP_Fixtures"
 require "DazedPlumbing/DUP_Mains"
@@ -6,8 +7,7 @@ require "DazedPlumbing/DUP_MainPanel"
 require "DazedPlumbing/DUP_WallPanels"
 require "DazedPlumbing/DUP_Pumps"
 
-Events.EveryOneMinute.Add(function()
-    if isClient and isClient() then return end
+DazedPlumb.Minute.add("network", 20, function()
     DazedPlumb.Pipes.tick()          -- wear first, so a pipe broken this minute feeds nothing
     DazedPlumb.Mains.beforeFlow()    -- the panel's figures: which fixtures lost water since the last fill
     DazedPlumb.Links.tick()

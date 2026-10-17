@@ -1,6 +1,7 @@
 --[[ Dazed Plumbing -- smokers in the live world (authority only).
      Registers every smoker that streams in or is placed, settles it on load (the hours away, at most 48) and once a minute. ]]
 
+require "DazedPlumbing/DUP_Minute"
 require "DazedPlumbing/DUP_Smokers"
 
 local Sm = DazedPlumb.Smokers
@@ -25,7 +26,4 @@ end
 registerSprites()
 Events.OnGameStart.Add(registerSprites)
 Events.OnServerStarted.Add(registerSprites)
-Events.EveryOneMinute.Add(function()
-    if isClient and isClient() then return end
-    Sm.tick()
-end)
+DazedPlumb.Minute.add("smokers", 30, Sm.tick)

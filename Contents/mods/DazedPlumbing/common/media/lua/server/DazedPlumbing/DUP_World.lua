@@ -14,6 +14,7 @@
                destroyed in an explosion and a fire. Live world only.
 ]]
 
+require "DazedPlumbing/DUP_Minute"
 require "DazedPlumbing/DUP_Parts"
 require "DazedPlumbing/DUP_Downspouts"
 require "DazedPlumbing/DUP_TankFluid"
@@ -314,4 +315,4 @@ end
 registerSprites()
 Events.OnGameStart.Add(registerSprites)
 Events.OnServerStarted.Add(registerSprites)
-Events.EveryOneMinute.Add(W.tick)
+DazedPlumb.Minute.add("tanks", 10, W.tick)
