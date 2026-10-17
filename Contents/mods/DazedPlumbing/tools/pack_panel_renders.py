@@ -23,7 +23,8 @@ BASE, FACINGS = 256, ("E", "S", "W", "N")                  # DUP_WallPanels.BASE
 # The parts DUP_BoardLayout looks for in Plumbing's folder, at their 2x render sizes.
 BOARD_PARTS = {"tank_column": (120, 340), "knob": (72, 72), "wheel_open": (184, 184), "wheel_turned": (184, 184)}
 # Where the core's pzformat may be: beside this repo in a Workshop folder or a checkout (pack_tiles also looks).
-for cand in (MOD.parents[3] / "DazedCore/Contents/mods/DazedCore/tools/pzformat",
+for cand in (MOD.parents[3] / "DazedCore/tools/pzformat",                       # Core 1.9.0: tools/ at the repo root
+             MOD.parents[3] / "DazedCore/Contents/mods/DazedCore/tools/pzformat",
              MOD.parents[3] / "dazedcore/Contents/mods/DazedCore/tools/pzformat"):
     if cand.is_dir():
         sys.path.insert(0, str(cand))

@@ -13,6 +13,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE / "pzformat"))
 sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))
+sys.path.insert(0, str(HERE.parents[4] / "DazedCore/tools/pzformat"))      # Core 1.9.0 layout: tools/ at the Core repo root
 from machine_art import Canvas, parts_draw, STEEL, DARK, LIGHT  # noqa: E402
 from pipe_art import CW, CH, PACK, repack  # noqa: E402
 import pack_tiles  # noqa: E402

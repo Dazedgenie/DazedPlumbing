@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE / "pzformat"))                      # a local copy, if any
 sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Core
+sys.path.insert(0, str(HERE.parents[4] / "DazedCore/tools/pzformat"))      # Core 1.9.0 layout: tools/ at the Core repo root
 from packfile import TexturePack, PackEntry  # noqa: E402
 
 PACK = HERE.parent / "common/media/texturepacks/dazedplumbing.pack"

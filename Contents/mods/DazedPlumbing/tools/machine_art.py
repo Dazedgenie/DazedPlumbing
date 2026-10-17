@@ -188,5 +188,6 @@ if __name__ == "__main__":
     a = ap.parse_args()
     sys.path.insert(0, str(HERE / "pzformat"))                      # a local copy, if any
     sys.path.insert(0, str(HERE.parent.parent / "DazedCore/tools/pzformat"))   # the shared copy in Dazed Core
+    sys.path.insert(0, str(HERE.parents[4] / "DazedCore/tools/pzformat"))      # Core 1.9.0 layout: tools/ at the Core repo root
     print("page", build())
     if a.preview: preview(a.preview)
