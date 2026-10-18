@@ -26,7 +26,7 @@ require "DazedPlumbing/DUP_DrilledWells"
 require "DazedPlumbing/DUP_Smokers"
 
 local P = DazedPlumb.Parts
-DazedPlumb.VERSION = "0.17.2"
+DazedPlumb.VERSION = "0.18.0"
 DazedCore.Boot.register("DazedPlumbing", DazedPlumb.VERSION)
 if DazedCore.Boot.require then
     DazedCore.Boot.require("DazedPlumbing", "1.9.0")
