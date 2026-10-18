@@ -27,3 +27,11 @@ option DazedPlumb.MainFlow
     page = DazedPlumb,
     translation = DazedPlumb_MainFlow,
 }
+
+option DazedPlumb.SprinklerAnimation
+{
+    type = boolean,
+    default = true,
+    page = DazedPlumb,
+    translation = DazedPlumb_SprinklerAnimation,
+}

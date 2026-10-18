@@ -17,6 +17,9 @@
      Crops live in the game's farming system on the server (SFarmingSystem),
      so watering only happens on the authority; a client's menu just reads.
      SPRITES: dazedplumb_01_204..207 idle, 208..211 spraying (facings E, S, W, N).
+     Spray cycle (0.18.0): 264..295, 264 + frame * 4 + facing for frames 0..7 (the head from 90 degrees
+     one side of its front to 90 the other), shown only on this machine's screen by DUP_SprinklerFx;
+     each reads back as spraying, in its facing.
 ]]
 
 require "DazedPlumbing/DUP_Parts"
@@ -32,6 +35,8 @@ Z.BASE = 204
 Z.COUNT = 8
 Z.FACINGS = { "E", "S", "W", "N" }
 Z.ITEM = "Base.DazedSprinkler"
+Z.SPRAY_BASE = 264              -- the spray cycle's frames, SPRAY_FRAMES of them, four facings each
+Z.SPRAY_FRAMES = 8
 Z.ID = "dazed_sprinkler"
 Z.KEY = "dazedSprinkler"
 
@@ -56,9 +61,21 @@ function Z.sprite(facing, spraying)
     end
 end
 
+--- One frame of the spray cycle (0..SPRAY_FRAMES-1, wrapping) in a facing.
+function Z.frameSprite(facing, frame)
+    for i, f in ipairs(Z.FACINGS) do
+        if f == facing then return P.TILESET .. "_" .. (Z.SPRAY_BASE + (frame % Z.SPRAY_FRAMES) * 4 + i - 1) end
+    end
+end
+
 function Z.spriteInfo(name)
     local idx = P.indexOf(name)
-    if not idx or idx < Z.BASE or idx >= Z.BASE + Z.COUNT then return nil end
+    if not idx then return nil end
+    if idx >= Z.SPRAY_BASE and idx < Z.SPRAY_BASE + Z.SPRAY_FRAMES * 4 then
+        local n = idx - Z.SPRAY_BASE
+        return { facing = Z.FACINGS[n % 4 + 1], spraying = true, frame = math.floor(n / 4) }
+    end
+    if idx < Z.BASE or idx >= Z.BASE + Z.COUNT then return nil end
     local n = idx - Z.BASE
     return { facing = Z.FACINGS[n % 4 + 1], spraying = n >= 4 }
 end
@@ -286,13 +303,14 @@ function Z.setSpraying(obj, on)
     if obj.transmitUpdatedSpriteToClients and isServer and isServer() then obj:transmitUpdatedSpriteToClients() end
 end
 
--- A sprinkler saved mid-spray comes back idle; the next minute's watering turns it on again.
+-- A sprinkler saved mid-spray (on a spray frame too, in single player) comes back idle; the next minute's watering turns it on again.
 local function onLoad(obj)
     local info = Z.describe(obj)
     if info and info.spraying and DazedPlumb.Sync and DazedPlumb.Sync.authority() then Z.setSpraying(obj, false) end
 end
 if MapObjects and MapObjects.OnLoadWithSprite then
     for n = 4, 7 do MapObjects.OnLoadWithSprite(P.TILESET .. "_" .. (Z.BASE + n), onLoad, 6) end
+    for n = 0, Z.SPRAY_FRAMES * 4 - 1 do MapObjects.OnLoadWithSprite(P.TILESET .. "_" .. (Z.SPRAY_BASE + n), onLoad, 6) end
 end
 
 L.register({

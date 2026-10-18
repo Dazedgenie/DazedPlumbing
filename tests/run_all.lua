@@ -4,7 +4,7 @@ local lua = os.getenv("LUA") or "lua"
 local root = "../Contents/mods/DazedPlumbing/common/media/lua"
 local core = arg and arg[1] and (" " .. arg[1]) or ""
 local ok = true
-for _, t in ipairs({ "net", "plumbing", "place", "mains", "panel", "board", "wallpanel", "fuel", "digester", "freeze", "control_tab" }) do
+for _, t in ipairs({ "net", "plumbing", "place", "mains", "panel", "board", "wallpanel", "fuel", "digester", "freeze", "control_tab", "sprinklerfx" }) do
     local r1 = os.execute(lua .. " " .. t .. "_test.lua " .. root .. core)
     if r1 ~= true and r1 ~= 0 then ok = false end
 end

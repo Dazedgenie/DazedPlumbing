@@ -5,5 +5,7 @@
     "Sandbox_DazedPlumb_MainReach": "Water main reach (squares)",
     "Sandbox_DazedPlumb_MainReach_tooltip": "How far a water main may stand from the building it serves. Default 6.",
     "Sandbox_DazedPlumb_MainFlow": "Water main line rate (litres a minute)",
-    "Sandbox_DazedPlumb_MainFlow_tooltip": "The most water one main delivers to its whole house each minute, shared among the fixtures. Default 30."
+    "Sandbox_DazedPlumb_MainFlow_tooltip": "The most water one main delivers to its whole house each minute, shared among the fixtures. Default 30.",
+    "Sandbox_DazedPlumb_SprinklerAnimation": "Animate sprinklers",
+    "Sandbox_DazedPlumb_SprinklerAnimation_tooltip": "A spraying sprinkler on screen turns its head and jet round. Only on each player's own screen; off shows the still spraying sprite."
 }

@@ -7,7 +7,7 @@ the downspout and the sprinkler are dz2.py's own Plumbing models. The large and 
 the purifier and the wall panel keep Plumbing's shapes: their builders are read from dup_render.py and run through
 small adapters onto dz2.py's primitives and material. Sprite indices are dup_render.py's, so saves keep every object.
 
-    python tools/blender/dup_power_render.py -- <out dir> [all | tanks pipes valves ports machines icons]   (pip install bpy)
+    python tools/blender/dup_power_render.py -- <out dir> [all | tanks pipes valves ports machines spray icons]   (pip install bpy)
     python3 tools/blender/dup_machines_post.py <out dir> <final dir>     (cuts tank pieces by mask, grades, shrinks)
     python3 tools/pack_art.py <final dir>/cells                          (then copy <final>/icons/*.png to textures/)
 Icons rendered: the 12 large and XL tanks, the purifier and the wall panel (the others were already Power renders).
@@ -120,6 +120,39 @@ def tank(size, typ, tier):
         big_tank(2 if size == "large" else 3, typ, tier)
 
 
+# ------------------------------------------------------------------ the sprinkler's spray cycle (0.18.0)
+SPRAY_BASE, SPRAY_FRAMES = 264, 8        # sprite SPRAY_BASE + frame * 4 + facing column (E, S, W, N), as DUP_SprinklerFx
+
+
+def sprinkler_frame(k, n=SPRAY_FRAMES):
+    """dz2.py's spraying sprinkler with its head turned to step k of n across a half circle centred on the facing's
+    front (-90 to +90 degrees; DUP_SprinklerFx plays them 0..n-1 and back): the stand and hose stay put, the brass
+    head, impact arm and jet turn about the riser, the jet's drops have moved on along their arc, and the arm rocks
+    as an impact sprinkler's does."""
+    p = P(); brass = mat("#c39a48", 0.32, 0.7, dirt=0.2)
+    for a in (90, 210, 330):
+        d = Vector((math.cos(math.radians(a)), math.sin(math.radians(a)), 0))
+        tube(d * 0.2, Vector((0, 0, 0.3)), 0.008, p["steel"], 6)
+    cyl(0.012, 0.42, (0, 0, 0.34), p["steel"], segs=8)
+    cyl(0.025, 0.06, (0, 0, 0.58), brass, segs=12)
+    path([(0, 0, 0.1), (0.1, 0.1, 0.03), (0.25, 0.3, 0.02), (0.4, 0.45, 0.02)], 0.012, mat("#3a6b3a", 0.5))
+    HEAD.append(HEAD[-1] @ M((0, 0, 0), (0, 0, -90.0 + 180.0 * k / (n - 1))))
+    try:
+        tube((0, 0, 0.6), (0.0, -0.13, 0.66), 0.01, brass, 8)
+        box((0.02, 0.1, 0.012), (0.0, -0.04, 0.64), brass, rot=(0, 0, 30 if k % 2 == 0 else -15))
+        wat = puff("#d6e7f2", 0.28)
+        ph = k / n                                       # the drops move on a little each frame
+        for i in range(30):
+            t = min(1.0, (i + ph) / 29)
+            x = 0.03 * math.sin((i + ph) * 1.7) * t; y = -0.13 - t * 0.58; z = 0.66 + 0.42 * t - 0.6 * t * t   # inside its own cell
+            ball(0.008 + 0.012 * t, (x, y, z), wat, segs=8)
+        for i in range(8):
+            t = min(1.0, (i + ph) / 7)
+            ball(0.012 + 0.018 * t, (0.08 * t, -0.1 - 0.3 * t, 0.62 + 0.12 * t - 0.35 * t * t), puff("#e0edf5", 0.22), segs=10)
+    finally:
+        HEAD.pop()
+
+
 # ------------------------------------------------------------------ jobs
 def want(f):
     return "all" in _WANT or f in _WANT
@@ -164,6 +197,9 @@ if want("machines"):
     facings_render(lambda: sprinkler(False), CELLS, lambda c: SPRINKLER_BASE + c)
     facings_render(lambda: sprinkler(True), CELLS, lambda c: SPRINKLER_BASE + 4 + c)
     facings_render(lambda: PL["wallpanel"](False), CELLS, lambda c: WALLPANEL_BASE + c)
+if want("spray"):
+    for k in range(SPRAY_FRAMES):
+        facings_render(lambda k=k: sprinkler_frame(k), CELLS, lambda c, k=k: SPRAY_BASE + k * 4 + c)
 if want("icons"):
     for size, n in PL_SIZES[1:]:
         for typ in PL_TYPES:

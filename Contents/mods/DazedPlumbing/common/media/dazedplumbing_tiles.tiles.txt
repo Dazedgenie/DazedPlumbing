@@ -2,7 +2,7 @@ version = 1
 tileset
 {
     file = dazedplumb_01
-    size = 8,33
+    size = 8,37
     id = 1
     // dazedplumb_01_0
     tile
@@ -4635,5 +4635,677 @@ tileset
         Soffset = 1
         Woffset = 2
         Noffset = 3
+    }
+    // dazedplumb_01_264
+    tile
+    {
+        xy = 0,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_265
+    tile
+    {
+        xy = 1,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_266
+    tile
+    {
+        xy = 2,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_267
+    tile
+    {
+        xy = 3,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_268
+    tile
+    {
+        xy = 4,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_269
+    tile
+    {
+        xy = 5,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_270
+    tile
+    {
+        xy = 6,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_271
+    tile
+    {
+        xy = 7,33
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_272
+    tile
+    {
+        xy = 0,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_273
+    tile
+    {
+        xy = 1,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_274
+    tile
+    {
+        xy = 2,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_275
+    tile
+    {
+        xy = 3,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_276
+    tile
+    {
+        xy = 4,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_277
+    tile
+    {
+        xy = 5,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_278
+    tile
+    {
+        xy = 6,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_279
+    tile
+    {
+        xy = 7,34
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_280
+    tile
+    {
+        xy = 0,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_281
+    tile
+    {
+        xy = 1,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_282
+    tile
+    {
+        xy = 2,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_283
+    tile
+    {
+        xy = 3,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_284
+    tile
+    {
+        xy = 4,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_285
+    tile
+    {
+        xy = 5,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_286
+    tile
+    {
+        xy = 6,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_287
+    tile
+    {
+        xy = 7,35
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_288
+    tile
+    {
+        xy = 0,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_289
+    tile
+    {
+        xy = 1,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_290
+    tile
+    {
+        xy = 2,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_291
+    tile
+    {
+        xy = 3,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
+    }
+    // dazedplumb_01_292
+    tile
+    {
+        xy = 4,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = E
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = 0
+        Soffset = 1
+        Woffset = 2
+        Noffset = 3
+    }
+    // dazedplumb_01_293
+    tile
+    {
+        xy = 5,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = S
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -1
+        Soffset = 0
+        Woffset = 1
+        Noffset = 2
+    }
+    // dazedplumb_01_294
+    tile
+    {
+        xy = 6,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = W
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -2
+        Soffset = -1
+        Woffset = 0
+        Noffset = 1
+    }
+    // dazedplumb_01_295
+    tile
+    {
+        xy = 7,36
+        CustomName = Garden Sprinkler
+        GroupName = Dazed Plumbing
+        Facing = N
+        BlocksPlacement = 
+        Material = MetalScrap
+        Material2 = Plastic
+        MaterialType = Metal_Light
+        IsMoveAble = 
+        CustomItem = Base.DazedSprinkler
+        PickUpWeight = 30
+        PickUpLevel = 0
+        MoveType = Object
+        Eoffset = -3
+        Soffset = -2
+        Woffset = -1
+        Noffset = 0
     }
 }
