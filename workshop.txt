@@ -85,6 +85,6 @@ description=
 description=[h2]Licence[/h2]
 description=CC BY-NC-SA 4.0, the same as the rest of the Dazed suite. Share and adapt it for non-commercial use with credit, under the same licence.
 description=
-description=[i]Mod ID: DazedPlumbing · Version 0.18.0[/i]
+description=[i]Mod ID: DazedPlumbing · Version 0.18.1[/i]
 tags=Build 42;Building;Items;Multiplayer;Realistic
 visibility=unlisted

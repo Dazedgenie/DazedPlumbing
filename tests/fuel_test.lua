@@ -60,8 +60,8 @@ for _, h in ipairs(Events.OnGameStart.handlers) do h() end
 local boot
 for _, line in ipairs(E.printed) do if line:find("DazedPlumbing: ready") or line:find("INCOMPLETE") then boot = line end end
 ok(boot and boot:find("256/256 tiles, 33/33 items", 1, true), "boot check: " .. tostring(boot))
-ok(DazedPlumb.VERSION == "0.18.0", "version constant is 0.18.0")
-ok(slurp(media .. "/../../42/mod.info"):find("modversion=0.18.0", 1, true) ~= nil, "mod.info says 0.18.0")
+ok(DazedPlumb.VERSION == "0.18.1", "version constant is 0.18.1")
+ok(slurp(media .. "/../../42/mod.info"):find("modversion=0.18.1", 1, true) ~= nil, "mod.info says 0.18.1")
 for _, it in ipairs(Fp.allItems()) do ok(defined[it:match("%.(.+)$")], it .. " is defined") end
 
 -- tiles 236..243 name their item; each item points at its south tile; weights stay under the heavy limit

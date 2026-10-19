@@ -76,7 +76,8 @@ function R.take(obj, amount)
         local after = R.amount(obj)
         once("rainfc", "rain barrel: adjustAmount " .. (after < have - 1e-6 and "worked" or "did NOT lower it"))
         if after < have - 1e-6 then
-            if obj.sendObjectChange then pcall(obj.sendObjectChange, obj, "containers") end
+            -- an IsoObjectChange, never a string: a string throws, and each throw a pcall swallows leaks a Kahlua slot
+            if IsoObjectChange and obj.sendObjectChange then obj:sendObjectChange(IsoObjectChange.CONTAINERS) end
             return have - after
         end
     end
