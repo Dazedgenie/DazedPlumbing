@@ -1,7 +1,7 @@
 version=1
 id=3817416217
 title=Dazed Plumbing
-description=[b]Disclaimer: this mod was made with AI assistance.[/b] If you're not comfortable with that, please stop reading here. Still in development: expect bugs. Dedicated server testing isn't finished, but it should work.
+description=[b]Disclaimer: this mod was made with AI assistance.[/b] If you're not comfortable with that, please stop reading here. Still in development, so expect bugs: report them at https://discord.gg/qkP5CPHgy. Dedicated server testing isn't finished, but it should work.
 description=
 description=[img]https://raw.githubusercontent.com/Dazedgenie/Dazed-Workshop/main/Plumbing/images/banner.jpg?v=2[/img]
 description=
